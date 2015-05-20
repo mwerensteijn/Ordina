@@ -1,20 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Movement : MonoBehaviour {
-	private enum Lane { Left, Middle, Right };
-	private Lane currentLane = Lane.Middle;
-
-	private Lane newLane = Lane.Middle;
-	private Lane lookLane = Lane.Middle;
+public class AirplaneMovement : MonoBehaviour {
+	public enum AnswerPosition { Left, Middle, Right };
+	public AirplaneMovement.AnswerPosition answer = AnswerPosition.Middle;
 
 	private float movementSpeed = 10;
 	private float sideMovementSpeed = 15;
-	public GameObject head;
 
 	// Use this for initialization
 	void Start () {
-		
+
 	}
 	
 	// Update is called once per frame
@@ -24,29 +20,32 @@ public class Movement : MonoBehaviour {
 		float y = transform.position.y;
 		float z = transform.position.z + movementSpeed * Time.deltaTime;
 
-		if(head.transform.rotation.y < -0.3f) { 	  // Look left
-			lookLane = 0;
-
-
-			if(currentLane == Lane.Middle) {
-				newLane = Lane.Left;
-			} else if(currentLane == Lane.Right) {
-				newLane = Lane.Middle;
+		if(answer == AnswerPosition.Left) {
+			if(x > -48) {
+				x -= 30 * Time.deltaTime;
 			}
-		} else if(head.transform.rotation.y > 0.3f) { // Look Right
-			if(currentLane == Lane.Middle) {
-				newLane = Lane.Right;
-			} else if(currentLane == Lane.Left) {
-				newLane = Lane.Middle;
+		} else if(answer == AnswerPosition.Middle) {
+			if(x < -22) {
+				x += 30 * Time.deltaTime;
+			} else if(x > -10) {
+				x -= 30 * Time.deltaTime;
+			}
+		} else {
+			if(x < 15) {
+				x += 30 * Time.deltaTime;
 			}
 		}
 
-
-
-		x += sideMovementSpeed * Time.deltaTime * head.transform.rotation.y * 3.3f;
-
 		transform.position = new Vector3(x, y, z);
+	}
 
-		Debug.Log (currentLane);
+	void OnTriggerEnter(Collider other) {
+		if(other.name == "A") {
+			answer = AirplaneMovement.AnswerPosition.Left;
+		} else if(other.name == "B") {
+			answer = AirplaneMovement.AnswerPosition.Middle;
+		} else if(other.name == "C") {
+			answer = AirplaneMovement.AnswerPosition.Right;
+		}
 	}
 }
