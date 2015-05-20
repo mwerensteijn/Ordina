@@ -726,6 +726,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55284b6ae6b71e418512bd4dea8211b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLane: 1
+  newLane: 1
+  lookLane: 1
+  movementSpeed: 10
+  sideMovementSpeed: 15
   head: {fileID: 1275580875}
 --- !u!1001 &1822025463
 Prefab:
