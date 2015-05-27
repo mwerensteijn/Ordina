@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Timer
+  - LeftLane
+  - MiddleLane
+  - RightLane
   layers:
   - Default
   - TransparentFX

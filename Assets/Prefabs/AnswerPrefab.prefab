@@ -15,7 +15,7 @@ GameObject:
   - 114: {fileID: 11484376}
   m_Layer: 0
   m_Name: AnswerPrefab
-  m_TagString: Untagged
+  m_TagString: LeftLane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102662}
   m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
-  m_LocalPosition: {x: -53.5, y: 18.6000004, z: -111.800003}
+  m_LocalPosition: {x: -84.2097168, y: 29.7189522, z: -126.300873}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 442496}
@@ -139,11 +139,11 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 102662}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: .989355743, y: .197871178, z: .989355803}
-  m_Center: {x: 0, y: 7.45057989e-08, z: -4.32133675e-07}
+  m_Size: {x: 11.1276169, y: .197871178, z: 18.0529366}
+  m_Center: {x: .343330383, y: -1.90707325e-07, z: -1.59976888}
 --- !u!102 &10211882
 TextMesh:
   serializedVersion: 3

@@ -5,34 +5,56 @@ public class AirplaneMovement : MonoBehaviour {
 	public enum AnswerPosition { Left, Middle, Right };
 	public AirplaneMovement.AnswerPosition answer = AnswerPosition.Middle;
 
-	private float movementSpeed = 10;
-	private float sideMovementSpeed = 15;
+	private float leftLaneX;
+	private float middleLaneX;
+	private float rightLaneX;
+
+	private float sideMovementSpeed = 30f;
 
 	// Use this for initialization
 	void Start () {
+		leftLaneX = GameObject.FindGameObjectWithTag("LeftLane").transform.position.x;
+		middleLaneX = GameObject.FindGameObjectWithTag("MiddleLane").transform.position.x;
+		rightLaneX = GameObject.FindGameObjectWithTag("RightLane").transform.position.x;
 
+		Debug.Log (leftLaneX);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		//transform.position = transform.position + Camera.main.transform.forward * movementSpeed * Time.deltaTime;
 		float x = transform.position.x;
 		float y = transform.position.y;
-		float z = transform.position.z + movementSpeed * Time.deltaTime;
+		float z = transform.position.z;
 
 		if(answer == AnswerPosition.Left) {
-			if(x > -48) {
-				x -= 30 * Time.deltaTime;
+			if(x > leftLaneX) {
+				x -= sideMovementSpeed * Time.deltaTime;
+
+				if(x < leftLaneX) {
+					x = leftLaneX;
+				}
 			}
 		} else if(answer == AnswerPosition.Middle) {
-			if(x < -22) {
-				x += 30 * Time.deltaTime;
-			} else if(x > -10) {
-				x -= 30 * Time.deltaTime;
+			if(x < middleLaneX) {
+				x += sideMovementSpeed * Time.deltaTime;
+
+				if(x > middleLaneX) {
+					x = middleLaneX;
+				}
+			} else if(x > middleLaneX) {
+				x -= sideMovementSpeed * Time.deltaTime;
+			
+				if(x < middleLaneX) {
+					x = middleLaneX;
+				}
 			}
 		} else {
-			if(x < 15) {
-				x += 30 * Time.deltaTime;
+			if(x < rightLaneX) {
+				x += sideMovementSpeed * Time.deltaTime;
+
+				if(x > rightLaneX) {
+					x = rightLaneX;
+				}
 			}
 		}
 
@@ -40,11 +62,11 @@ public class AirplaneMovement : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if(other.name == "A") {
+		if(other.tag == "LeftLane") {
 			answer = AirplaneMovement.AnswerPosition.Left;
-		} else if(other.name == "B") {
+		} else if(other.tag == "MiddleLane") {
 			answer = AirplaneMovement.AnswerPosition.Middle;
-		} else if(other.name == "C") {
+		} else if(other.tag == "RightLane") {
 			answer = AirplaneMovement.AnswerPosition.Right;
 		}
 	}
