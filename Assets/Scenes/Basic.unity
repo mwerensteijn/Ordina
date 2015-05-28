@@ -309,7 +309,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 135567722}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &180020728
+--- !u!1 &180020728 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100006, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
   m_PrefabInternal: {fileID: 104513389}
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_EventMask:
     serializedVersion: 2
     m_Bits: 4294967291
---- !u!20 &180020735
+--- !u!20 &180020735 stripped
 Camera:
   m_PrefabParentObject: {fileID: 2000004, guid: b8b03d395f5734e98af91ccf44f9bf47,
     type: 2}
@@ -751,7 +751,7 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 468846043}
---- !u!4 &554809170
+--- !u!4 &554809170 stripped
 Transform:
   m_PrefabParentObject: {fileID: 423158, guid: 257f3b52282436942af2e191076894d5, type: 2}
   m_PrefabInternal: {fileID: 607403379}
@@ -1341,7 +1341,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1942342114}
   m_RootOrder: 0
---- !u!114 &1205830766
+--- !u!114 &1205830766 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11410386, guid: 257f3b52282436942af2e191076894d5,
     type: 2}
@@ -1861,7 +1861,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1675061419}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1772779845
+--- !u!4 &1772779845 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400008, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
   m_PrefabInternal: {fileID: 104513389}
