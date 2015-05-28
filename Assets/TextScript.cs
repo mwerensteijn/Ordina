@@ -13,6 +13,6 @@ public class TextScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         text.text = GetComponentInParent<Slider>().value.ToString() + "%" ;
-        Debug.Log(text.text);
+        //Debug.Log(text.text);
 	}
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ControlController : MonoBehaviour {
     
     public BulletSpawner bulletSpawner;
+    public Watergun watershooter;
 
     public List<GameObject> paintSpots;
 
@@ -18,6 +19,9 @@ public class ControlController : MonoBehaviour {
         if (Input.GetButtonDown("Fire1"))
         {
             bulletSpawner.Shoot();
+        } else if (Input.GetButton("Submit"))
+        {
+            watershooter.Shoot();
         }
 	}
 }

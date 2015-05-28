@@ -8,6 +8,8 @@ TagManager:
   - MiddleLane
   - RightLane
   - WorldMovement
+  - Answer
+  - Paintspot
   layers:
   - Default
   - TransparentFX
@@ -15,10 +17,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - paintspots
+  - paintbullets
   - 
   - 
   - 
