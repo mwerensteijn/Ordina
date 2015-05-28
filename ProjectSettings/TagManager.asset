@@ -7,6 +7,7 @@ TagManager:
   - LeftLane
   - MiddleLane
   - RightLane
+  - WorldMovement
   layers:
   - Default
   - TransparentFX
