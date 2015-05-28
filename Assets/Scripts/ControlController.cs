@@ -19,7 +19,7 @@ public class ControlController : MonoBehaviour {
         if (Input.GetButtonDown("Fire1"))
         {
             bulletSpawner.Shoot();
-        } else if (Input.GetButton("Fire2"))
+        } else if (Input.GetButton("Submit"))
         {
             watershooter.Shoot();
         }

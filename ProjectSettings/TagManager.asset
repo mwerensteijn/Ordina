@@ -7,6 +7,8 @@ TagManager:
   - LeftLane
   - MiddleLane
   - RightLane
+  - Answer
+  - Paintspot
   layers:
   - Default
   - TransparentFX
@@ -16,8 +18,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - paintspots
+  - paintbullets
   - 
   - 
   - 
