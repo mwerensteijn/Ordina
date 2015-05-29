@@ -14,12 +14,8 @@ public class AnswerCollision : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter(Collider other) {
-		if(other.tag == "LeftLane") { // The player has chosen the left answer.
-			worldMovementScript.SendMessage ("AnswerCollision", AirplaneMovement.AnswerPosition.Left);
-		} else if(other.tag == "MiddleLane") { // The player has chosen the middle answer.
-			worldMovementScript.SendMessage ("AnswerCollision", AirplaneMovement.AnswerPosition.Middle);
-		} else if(other.tag == "RightLane") { // The player has chosen the right answer.
-			worldMovementScript.SendMessage ("AnswerCollision", AirplaneMovement.AnswerPosition.Right);
+		if(other.tag == "LeftLane" || other.tag == "MiddleLane" || other.tag == "RightLane") { // The player has chosen the left answer.
+			worldMovementScript.SendMessage ("AnswerCollision", other.transform);
 		}
 	}
 }

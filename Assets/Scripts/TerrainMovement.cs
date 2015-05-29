@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class abc : MonoBehaviour {
+public class TerrainMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -12,8 +12,4 @@ public class abc : MonoBehaviour {
 	void Update () {
 	
 	}
-
-	
-	
-
 }

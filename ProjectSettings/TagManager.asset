@@ -10,6 +10,9 @@ TagManager:
   - WorldMovement
   - Answer
   - Paintspot
+  - Question
+  - Answer1
+  - Answer2
   layers:
   - Default
   - TransparentFX
@@ -17,8 +20,6 @@ TagManager:
   - 
   - Water
   - UI
-  - paintspots
-  - paintbullets
   - 
   - 
   - 
@@ -41,8 +42,10 @@ TagManager:
   - 
   - 
   - 
-  -
-  -
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
