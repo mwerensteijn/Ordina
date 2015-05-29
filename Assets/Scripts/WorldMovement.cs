@@ -15,7 +15,7 @@ public class WorldMovement : MonoBehaviour {
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
-	public float movementSpeed = 10f;
+	public static float movementSpeed = 20f;
 
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
