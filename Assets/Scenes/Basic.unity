@@ -607,6 +607,7 @@ GameObject:
   - 223: {fileID: 430083276}
   - 114: {fileID: 430083275}
   - 114: {fileID: 430083274}
+  - 114: {fileID: 430083277}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -690,6 +691,36 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!114 &430083277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 430083272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1205830766}
+          m_MethodName: Shoot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
+              Culture=neutral, PublicKeyToken=null
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &468846043
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,6 +879,26 @@ Prefab:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 8d7de9362ec9fb04488886a1a071e461, type: 2}
+    - target: {fileID: 1528650, guid: 257f3b52282436942af2e191076894d5, type: 2}
+      propertyPath: maxEmission
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1528650, guid: 257f3b52282436942af2e191076894d5, type: 2}
+      propertyPath: minEmission
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1528650, guid: 257f3b52282436942af2e191076894d5, type: 2}
+      propertyPath: Simulate in Worldspace?
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1528650, guid: 257f3b52282436942af2e191076894d5, type: 2}
+      propertyPath: m_OneShot
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2655170, guid: 257f3b52282436942af2e191076894d5, type: 2}
+      propertyPath: UV Animation.cycles
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 257f3b52282436942af2e191076894d5, type: 2}
   m_IsPrefabParent: 0
