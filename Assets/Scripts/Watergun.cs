@@ -12,16 +12,17 @@ public class Watergun : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonUp("Submit"))
+        /*if (Input.GetButtonUp("Submit"))
         {
             waterGun.GetComponent<EllipsoidParticleEmitter>().emit = false;
-        } 
+        } */
 	}
-    
+
     public void Shoot()
     {
+        Debug.Log("Enter shoot method");
         waterGun.GetComponent<EllipsoidParticleEmitter>().emit = true;
-        
+        Invoke("Start", 0.3f);
     }
 
     void OnParticleCollision(GameObject obj)
