@@ -55,10 +55,14 @@ public class WorldMovement : MonoBehaviour {
 		// Cache the x and y position of a row.
         float x = answerRowFront.transform.position.x;
         float y = answerRowBack.transform.position.y;
-
+        
 		// Move the rows towards the player.
         answerRowFront.transform.position = new Vector3(x, y, answerRowFront.transform.position.z + -movementSpeed * Time.deltaTime);
         answerRowBack.transform.position = new Vector3(x, y, answerRowBack.transform.position.z + -movementSpeed * Time.deltaTime);
+
+        
+
+        Debug.Log("Distance: " + Vector3.Distance(transform.Find("Hitbox").transform.position, answerRowFront.transform.position));
 
 		// If a row is not visible anymore, respawn it at the appearing position.
         if (answerRowFront.transform.position.z <= disappearPositionZ) {
