@@ -43,25 +43,37 @@ public class Bullet : MonoBehaviour {
         {
             xOffset = offsetValue;
         }
-        else
+        else if (contact.normal.x < 0)
         {
             xOffset = -offsetValue;
+        }
+        else
+        {
+            xOffset = 0;
         }
         if (contact.normal.y > 0)
         {
             yOffset = offsetValue;
         }
-        else
+        else if (contact.normal.y < 0)
         {
             yOffset = -offsetValue;
+        }
+        else
+        {
+            yOffset = 0;
         }
         if (contact.normal.z > 0)
         {
             zOffset = offsetValue;
         }
-        else
+        else if (contact.normal.z < 0)
         {
             zOffset = -offsetValue;
+        }
+        else
+        {
+            zOffset = 0;
         }
         
         ImpactList.Add(Instantiate(impact, new Vector3(contact.point.x + xOffset, contact.point.y + yOffset, contact.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject);
