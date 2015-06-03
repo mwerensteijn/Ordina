@@ -89,7 +89,6 @@ public class CropSprite : MonoBehaviour
 		croppedSpriteRect.height = (Mathf.Abs(bottomRightPoint.y - topLeftPoint.y)*pixelsToUnits)* (1/spriteToCrop.transform.localScale.y);
 		croppedSpriteRect.y = ((topLeftPoint.y - (spriteRenderer.bounds.center.y - spriteRenderer.bounds.size.y/2))*(1/spriteToCrop.transform.localScale.y))* pixelsToUnits - croppedSpriteRect.height;//*(spriteToCrop.transform.localScale.y);
 
-        Debug.Log(croppedSpriteRect);
         Sprite croppedSprite = Sprite.Create(spriteTexture, croppedSpriteRect, new Vector2(0,1), pixelsToUnits);
 		SpriteRenderer cropSpriteRenderer = croppedSpriteObj.AddComponent<SpriteRenderer>();	
 		cropSpriteRenderer.sprite = croppedSprite;
@@ -100,6 +99,16 @@ public class CropSprite : MonoBehaviour
         ImageAnswer imageAnswer = croppedSpriteObj.AddComponent<ImageAnswer>();
         imageAnswer.position = croppedSpriteRect;
 
+        croppedSpriteObj.AddComponent<BoxCollider2D>();
+
+        // Create a gameobject to hide the answer.
+        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        quad.transform.localScale = croppedSpriteObj.GetComponent<SpriteRenderer>().bounds.size;
+        quad.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION"); 
+        quad.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
+        quad.transform.position = topLeftPoint - ((topLeftPoint - bottomRightPoint) / 2);
+
+        imageAnswer.hideAnswer = quad;
 		
         //Destroy(spriteToCrop);
 	}
