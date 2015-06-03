@@ -15,6 +15,8 @@ public class Bullet : MonoBehaviour {
     private Ray ray;
     private RaycastHit hit;
 
+    private static GameObject answer = null;
+
 	// Use this for initialization
 	void Start () {
 
@@ -36,6 +38,30 @@ public class Bullet : MonoBehaviour {
             return;
         }
 
+        // Check if last bullet did hit an answer
+        if (answer != null)
+        {
+            // Show last answer
+            answer.SetActive(true);
+
+            // If a question is hit the answer should be on the position of the question
+            if (hit.collider.tag == "Question")
+            {
+                answer.transform.position = hit.collider.gameObject.transform.position;
+                answer.tag = "AnswerGiven";
+                answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);
+            }
+            answer = null;
+        }
+
+        // Check if the bullet did hit an answer
+        if (hit.collider.tag == "Answer")
+        {
+            Debug.Log("Answer");
+            answer = hit.collider.gameObject;
+            answer.SetActive(false);
+        }
+
         if (ImpactList.Count > 50)
         {
             GameObject firstImpactInList = ImpactList[0];
@@ -44,42 +70,7 @@ public class Bullet : MonoBehaviour {
         }
 
         // Offset is needed so the impact won't get stuck in an object
-        if (contact.normal.x > 0)
-        {
-            xOffset = offsetValue;
-        }
-        else if (contact.normal.x < 0)
-        {
-            xOffset = -offsetValue;
-        }
-        else
-        {
-            xOffset = 0;
-        }
-        if (contact.normal.y > 0)
-        {
-            yOffset = offsetValue;
-        }
-        else if (contact.normal.y < 0)
-        {
-            yOffset = -offsetValue;
-        }
-        else
-        {
-            yOffset = 0;
-        }
-        if (contact.normal.z > 0)
-        {
-            zOffset = offsetValue;
-        }
-        else if (contact.normal.z < 0)
-        {
-            zOffset = -offsetValue;
-        }
-        else
-        {
-            zOffset = 0;
-        }
+        calculateOffset(contact.normal);
 
         // Spawn impact
         ImpactList.Add(Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject);
@@ -88,4 +79,46 @@ public class Bullet : MonoBehaviour {
         // Destory bullet
         Destroy(this.gameObject);
     }
+
+    private void calculateOffset(Vector3 normal)
+    {
+        if (normal.x > 0)
+        {
+            xOffset = offsetValue;
+        }
+        else if (normal.x < 0)
+        {
+            xOffset = -offsetValue;
+        }
+        else
+        {
+            xOffset = 0;
+        }
+        if (normal.y > 0)
+        {
+            yOffset = offsetValue;
+        }
+        else if (normal.y < 0)
+        {
+            yOffset = -offsetValue;
+        }
+        else
+        {
+            yOffset = 0;
+        }
+        if (normal.z > 0)
+        {
+            zOffset = offsetValue;
+        }
+        else if (normal.z < 0)
+        {
+            zOffset = -offsetValue;
+        }
+        else
+        {
+            zOffset = 0;
+        }
+    }
+
 }
+
