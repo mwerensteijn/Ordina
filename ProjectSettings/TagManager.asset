@@ -13,6 +13,7 @@ TagManager:
   - Question
   - Answer1
   - Answer2
+  - AnswerGiven
   layers:
   - Default
   - TransparentFX
