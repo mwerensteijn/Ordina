@@ -48,6 +48,8 @@ public class Bullet : MonoBehaviour {
             if (hit.collider.tag == "Question")
             {
                 answer.transform.position = hit.collider.gameObject.transform.position;
+                answer.transform.rotation = hit.collider.gameObject.transform.rotation;
+                answer.transform.localScale = hit.collider.gameObject.transform.localScale;
                 answer.tag = "AnswerGiven";
                 answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);
             }
@@ -73,7 +75,9 @@ public class Bullet : MonoBehaviour {
         calculateOffset(contact.normal);
 
         // Spawn impact
-        ImpactList.Add(Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject);
+        GameObject impactA = Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject;
+        impactA.transform.parent = hit.collider.gameObject.transform;
+        ImpactList.Add(impactA);
         Debug.Log(ImpactList.Count);
 
         // Destory bullet
