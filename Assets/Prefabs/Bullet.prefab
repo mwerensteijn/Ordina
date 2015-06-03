@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e98cafc9b5ab94ba94d8c6c90f3a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  impact: {fileID: 171370, guid: cf8d2d4c73605be4b9943b142f8babab, type: 2}
+  impact: {fileID: 172634, guid: 62aaf743ee0515b4e9921209463c3af2, type: 2}
 --- !u!135 &13531076
 SphereCollider:
   m_ObjectHideFlags: 1

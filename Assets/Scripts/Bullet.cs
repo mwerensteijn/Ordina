@@ -28,14 +28,12 @@ public class Bullet : MonoBehaviour {
     void OnCollisionEnter(Collision collision)
     {
         ContactPoint contact = collision.contacts[0];
-        //if (collision.collider.tag.Equals("Answer"))
-        // {
-        // Check position of hit with a raycast
-        //ray = Camera.main.ScreenPointToRay(contact.point);
+        // Cast ray to be sure about the position.
         ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        if (Physics.Raycast(ray, out hit, 100))
+        if (!(Physics.Raycast(ray, out hit, 100)))
         {
-            Debug.Log("rayCasted.");
+            // ray didn't hit an object, return.
+            return;
         }
 
         if (ImpactList.Count > 50)
@@ -44,8 +42,8 @@ public class Bullet : MonoBehaviour {
             ImpactList.Remove(firstImpactInList);
             Destroy(firstImpactInList);
         }
-        //Debug.Log(contact.normal);
-        //Debug.Log(Quaternion.FromToRotation(Vector3.up, contact.normal));
+
+        // Offset is needed so the impact won't get stuck in an object
         if (contact.normal.x > 0)
         {
             xOffset = offsetValue;
@@ -82,21 +80,12 @@ public class Bullet : MonoBehaviour {
         {
             zOffset = 0;
         }
-        //Debug.Log(contact.point);
-        //Debug.Log(collision.contacts.Length);
-        //Debug.Log(hit.point);
-        //ImpactList.Add(Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject);
-        
-       
-        Quaternion rotation = Quaternion.FromToRotation(Vector3.up, contact.normal);
-        Debug.Log(rotation.eulerAngles);
-        // Quad needs to be rotated 90 degrees
-        Quaternion test = Quaternion.Euler(rotation.eulerAngles.x , rotation.eulerAngles.y, rotation.eulerAngles.z);
-        test.eulerAngles = new Vector3(rotation.eulerAngles.x + 270, rotation.eulerAngles.y + 180, rotation.eulerAngles.z);
-        Debug.Log(test.eulerAngles);
-        ImpactList.Add(Instantiate(impact, new Vector3(contact.point.x + xOffset, contact.point.y + yOffset, contact.point.z + zOffset), test) as GameObject);
+
+        // Spawn impact
+        ImpactList.Add(Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject);
         Debug.Log(ImpactList.Count);
 
+        // Destory bullet
         Destroy(this.gameObject);
     }
 }
