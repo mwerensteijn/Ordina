@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CropSprite : MonoBehaviour 
 {
+
 //	Reference for sprite which will be cropped and it has BoxCollider or BoxCollider2D
 	public GameObject spriteToCrop;
 
@@ -98,19 +100,7 @@ public class CropSprite : MonoBehaviour
 		croppedSpriteObj.transform.localScale = spriteToCrop.transform.localScale;
         ImageAnswer imageAnswer = croppedSpriteObj.AddComponent<ImageAnswer>();
         imageAnswer.position = croppedSpriteRect;
-
-        croppedSpriteObj.AddComponent<BoxCollider2D>();
-
-        // Create a gameobject to hide the answer.
-        GameObject quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        quad.transform.localScale = croppedSpriteObj.GetComponent<SpriteRenderer>().bounds.size;
-        quad.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION"); 
-        quad.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
-        quad.transform.position = topLeftPoint - ((topLeftPoint - bottomRightPoint) / 2);
-
-        imageAnswer.hideAnswer = quad;
-		
-        //Destroy(spriteToCrop);
+        imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
 	}
 
 //	Following method checks whether sprite is touched or not. There are two methods for simple collider and 2DColliders. you can use as per requirement and comment another one.
