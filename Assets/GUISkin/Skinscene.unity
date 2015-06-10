@@ -244,3 +244,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skin: {fileID: 11400000, guid: 9e67672e3aa6e84498a30367ac50105b, type: 2}
+  selectedGridInt: 0
+  selStrings:
+  - hallo1
+  - hallo2
+  - hallo3
+  - hallo2
+  - hallo3
+  - hallo2
+  - hallo3
+  - hallo2
+  - hallo3
+  - hallo2
+  - hallo3
+  scrollPosition: {x: 0, y: 0}
