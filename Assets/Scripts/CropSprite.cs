@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+using System.IO;
+
 public class CropSprite : MonoBehaviour 
 {
 
@@ -10,6 +12,7 @@ public class CropSprite : MonoBehaviour
 
 	private Vector3 startPoint, endPoint;
 	private bool isMousePressed;
+    private int cropCounter = 0;
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
@@ -36,8 +39,8 @@ public class CropSprite : MonoBehaviour
 			isMousePressed = true;
 			startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		} else if(Input.GetMouseButtonUp(0)) {
-			if(isMousePressed)
-				cropSprite();	
+            if (isMousePressed)
+                StartCoroutine(cropSprite());	
 			isMousePressed = false;
 		}
 
@@ -61,7 +64,10 @@ public class CropSprite : MonoBehaviour
 		bottomLine.SetPosition(1, new Vector3(endPoint.x, endPoint.y, 0));
 	}
 	//	Following method crops as per displayed cropping area
-	private void cropSprite() {
+	private IEnumerator cropSprite() {
+
+        yield return new WaitForEndOfFrame();
+
 //		Calculate topLeftPoint and bottomRightPoint of drawn rectangle
 		Vector3 topLeftPoint = startPoint, bottomRightPoint=endPoint;
 		if((startPoint.x > endPoint.x)) {
@@ -95,13 +101,28 @@ public class CropSprite : MonoBehaviour
 		SpriteRenderer cropSpriteRenderer = croppedSpriteObj.AddComponent<SpriteRenderer>();	
 		cropSpriteRenderer.sprite = croppedSprite;
 		topLeftPoint.z = -1;
+
 		croppedSpriteObj.transform.position = new Vector3(0,0,0);
 		croppedSpriteObj.transform.parent = spriteToCrop.transform.parent;
 		croppedSpriteObj.transform.localScale = spriteToCrop.transform.localScale;
         ImageAnswer imageAnswer = croppedSpriteObj.AddComponent<ImageAnswer>();
         imageAnswer.position = croppedSpriteRect;
         imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
-	}
+
+        Debug.Log(croppedSprite.texture.width + " " + croppedSprite.texture.height);
+
+        Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
+        CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
+        Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
+                                                            (int)croppedSprite.rect.y,
+                                                            (int)croppedSprite.rect.width ,
+                                                            (int)croppedSprite.rect.height);
+        CroppedTexture.SetPixels(pixels);
+        CroppedTexture.Apply();
+        byte[] test = CroppedTexture.EncodeToPNG();
+        cropCounter++;
+        File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
+    }
 
 //	Following method checks whether sprite is touched or not. There are two methods for simple collider and 2DColliders. you can use as per requirement and comment another one.
 
