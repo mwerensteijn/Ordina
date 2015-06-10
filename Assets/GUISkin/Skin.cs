@@ -1,50 +1,106 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class Skin : MonoBehaviour {
     public GUISkin skin;
+    public Vector2 scrollPosition = Vector2.zero;
 
-    public int selectedGridInt = 0;
-    public string[] selStrings = new string[] { "hallo1", "hallo2", "hallo3", "hallo2", "hallo3", "hallo2", "hallo3", "hallo2", "hallo3", "hallo2", "hallo3" };
+    public string path = "C:\\";
+    public string[] fileEntries;
+    public string[] directoryEntries;
+    public int entries;
+    public int selectedFileEntry = -1;
 
 	// Use this for initialization
 	void Start () {
-	    
+        ProcessPath();
 	}
 
-    public Vector2 scrollPosition = Vector2.zero;
+    public void ProcessPath() {
+        if (File.Exists(path)) {
+            Debug.Log("Error: the path is a file.");
+            fileEntries = null;
+            directoryEntries = null;
+
+            entries = 0;
+        } else if (Directory.Exists(path)) {
+            if (!path.EndsWith("\\")) {
+                path += "\\";
+            }
+
+            fileEntries = Directory.GetFiles(path);
+            for (int i = 0; i < fileEntries.Length; i++) {
+                fileEntries[i] = fileEntries[i].Substring(path.Length);
+            }
+            
+            directoryEntries = Directory.GetDirectories(path);
+            for (int i = 0; i < directoryEntries.Length; i++) {
+                directoryEntries[i] = directoryEntries[i].Substring(path.Length);
+            }
+                
+            entries = fileEntries.Length + directoryEntries.Length;
+        }
+    }
 
     void OnGUI() {
         GUI.skin = skin;
-        
 
         GUI.Box(new Rect(0, 0, 500, 340), "Open file");
         GUI.Button(new Rect(477, 3, 21, 21), "X");
         GUI.Label(new Rect(20, 50, 100, 20), "Look in:");
-        GUI.TextField(new Rect(120, 50, 200, 20), "C:\\");
+        path = GUI.TextField(new Rect(120, 50, 200, 20), path);
+        if (GUI.Button(new Rect(330, 50, 20, 20), "↑")) {
+            int index = path.LastIndexOf('\\', path.Length - 2, path.Length - 2);
+
+            if (index > 0) {
+                path = path.Substring(0, index);
+                ProcessPath();
+            }
+        }
         
         GUI.Box(new Rect(20, 80, 465, 200), "");
-        scrollPosition = GUI.BeginScrollView(new Rect(20, 80, 465, 200), scrollPosition, new Rect(0, 0, 200, 200), false, true);
 
-        GUI.Button(new Rect(0, 0, 445, 20), "Top-left");
-        GUI.Button(new Rect(0, 21, 445, 20), "Top-left");
-        GUI.Button(new Rect(0, 43, 445, 20), "Top-left");
-        GUI.Button(new Rect(0, 65, 445, 20), "Top-left");
-        GUI.EndScrollView();
-
-
-        GUI.Button(new Rect(360, 310, 120, 20), "Select image");
-/*
-        //GUILayout.BeginVertical("hallo", GUILayout.MaxHeight(50));
-        GUILayout.BeginScrollView(new Vector2(100, 100));
-        selectedGridInt = GUILayout.SelectionGrid(selectedGridInt, selStrings, 1, GUILayout.MaxHeight(2));
-        if (GUILayout.Button("Start")) {
-            Debug.Log("You choose: " + selStrings[selectedGridInt]);
+        if (Event.current.isKey) {
+            switch (Event.current.keyCode) {
+                case KeyCode.Return:
+                case KeyCode.KeypadEnter:
+                    Event.current.Use();    // Ignore event, otherwise there will be control name conflicts!
+                    ProcessPath();
+                    break;
+            }
         }
 
-        GUILayout.EndScrollView();
-        //GUILayout.EndVertical();
- * */
+        int scrollBarHeight = 20 * entries;
+        if (scrollBarHeight < 200) {
+            scrollBarHeight = 200;
+        }
+        scrollPosition = GUI.BeginScrollView(new Rect(20, 80, 465, 200), scrollPosition, new Rect(0, 0, 200, scrollBarHeight), false, true);
+
+        for (int i = 0; i < directoryEntries.Length; i++) {
+            if (GUI.Button(new Rect(2, (i * 22), 447, 20), directoryEntries[i])) {
+                path += directoryEntries[i];
+                selectedFileEntry = -1;
+                ProcessPath();
+            }
+        }
+
+        GUIStyle selectedFileStyle = new GUIStyle(GUI.skin.button);
+        selectedFileStyle.normal.textColor = new Color(1, 0.5568f, 0);
+
+        for (int i = 0; i < fileEntries.Length; i++) {
+            if (i == selectedFileEntry) {
+                GUI.Button(new Rect(2, ((i + directoryEntries.Length) * 22), 447, 20), fileEntries[i], selectedFileStyle);
+            } else {
+                if (GUI.Button(new Rect(2, ((i + directoryEntries.Length) * 22), 447, 20), fileEntries[i])) {
+                    selectedFileEntry = i;
+                }
+            }
+            
+        }
+
+        GUI.EndScrollView();
+        GUI.Button(new Rect(360, 310, 120, 20), "Select image");
     }
 	
 	// Update is called once per frame
