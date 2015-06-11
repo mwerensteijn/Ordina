@@ -14,6 +14,7 @@ TagManager:
   - Answer1
   - Answer2
   - AnswerGiven
+  - Bullet
   layers:
   - Default
   - TransparentFX

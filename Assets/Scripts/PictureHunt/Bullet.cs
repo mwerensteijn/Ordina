@@ -53,7 +53,7 @@ public class Bullet : MonoBehaviour {
                 answer.tag = "AnswerGiven";
                 answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);
             }
-            answer = null;
+            //answer = null;
         }
 
         // Check if the bullet did hit an answer
@@ -124,5 +124,10 @@ public class Bullet : MonoBehaviour {
         }
     }
 
+
+    public GameObject getAnswer()
+    {
+        return answer;
+    }
 }
 

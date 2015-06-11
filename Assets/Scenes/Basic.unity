@@ -744,8 +744,9 @@ GameObject:
   - 33: {fileID: 458364499}
   - 65: {fileID: 458364498}
   - 23: {fileID: 458364497}
+  - 114: {fileID: 458364500}
   m_Layer: 0
-  m_Name: Cube 1
+  m_Name: Question2
   m_TagString: Question
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -806,6 +807,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 458364495}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &458364500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 458364495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0de146789668474cb3dfde26ec2c5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  answerDescription: Blue
 --- !u!1 &468846043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1571,8 +1584,9 @@ GameObject:
   - 33: {fileID: 1201860966}
   - 65: {fileID: 1201860965}
   - 23: {fileID: 1201860964}
+  - 114: {fileID: 1201860968}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Question1
   m_TagString: Question
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1633,6 +1647,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1013313086}
   m_RootOrder: 0
+--- !u!114 &1201860968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1201860963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0de146789668474cb3dfde26ec2c5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  answerDescription: Red
 --- !u!114 &1205830766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1876,8 +1902,9 @@ GameObject:
   - 33: {fileID: 1299482531}
   - 65: {fileID: 1299482530}
   - 23: {fileID: 1299482529}
+  - 114: {fileID: 1299482532}
   m_Layer: 0
-  m_Name: Cube 2
+  m_Name: Question3
   m_TagString: Question
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1938,6 +1965,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1299482527}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1299482532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1299482527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0de146789668474cb3dfde26ec2c5b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  answerDescription: Green
 --- !u!1 &1315219332
 GameObject:
   m_ObjectHideFlags: 0
@@ -2186,7 +2225,7 @@ GameObject:
   - 23: {fileID: 1659056572}
   - 114: {fileID: 1659056576}
   m_Layer: 0
-  m_Name: Cube 1
+  m_Name: SubmitButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2258,7 +2297,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03ef26c5420d4e47aea17d73ab6926c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfQuestions: 3
+  m_Questions:
+  - {fileID: 1201860963}
+  - {fileID: 458364495}
+  - {fileID: 1299482527}
 --- !u!1 &1675061419
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,16 +11,39 @@ public class SubmitAnswers : MonoBehaviour
     {
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag.Equals("Bullet") ){
+            Submit();
+        }    
+    }
+
     void Submit()
     {
+        bool check = true;
+        Debug.Log("Submit");
+        foreach (GameObject question in m_Questions)
+        {
+            if (!(question.GetComponent<PictureQuestion>().isAnswered()))
+            {
+                Debug.Log("Not all questions are answered");
+                return;
+            }
+        }
         foreach(GameObject question in m_Questions){
             if (question.GetComponent<PictureQuestion>().checkAnswer())
             {
                 // Correct answer
             }else{
                 // Wrong answer
-                Debug.Log(question.GetComponent<PictureQuestion>().getDescription());
+                Debug.Log("Wrong should have been: " + question.GetComponent<PictureQuestion>().getDescription());
+                check = false;
             }
+        }
+        // Check if all answer were right
+        if (check)
+        {
+            Debug.Log("Well done");
         }
     }
 }
