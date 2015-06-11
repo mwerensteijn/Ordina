@@ -8,6 +8,13 @@ public class Answer: MonoBehaviour{
     private Vector3 defaultScale;
     private GameObject question = null;
 
+    public string answerDescription = "Default answer";
+
+
+    public Answer(string description){
+        answerDescription = description;
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -36,5 +43,10 @@ public class Answer: MonoBehaviour{
         transform.position = defaultPosition;
         transform.rotation = defaultRotation;
         transform.localScale = defaultScale;
+    }
+
+    public string getAnswerDescription()
+    {
+        return answerDescription;
     }
 }
