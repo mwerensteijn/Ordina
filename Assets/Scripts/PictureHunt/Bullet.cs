@@ -41,18 +41,21 @@ public class Bullet : MonoBehaviour {
         // Check if last bullet did hit an answer
         if (answer != null)
         {
-            // Show last answer
-            answer.SetActive(true);
-
             // If a question is hit the answer should be on the position of the question
             if (hit.collider.tag == "Question")
             {
-                answer.transform.position = hit.collider.gameObject.transform.position;
+                /*answer.transform.position = hit.collider.gameObject.transform.position;
                 answer.transform.rotation = hit.collider.gameObject.transform.rotation;
                 answer.transform.localScale = hit.collider.gameObject.transform.localScale;
                 answer.tag = "AnswerGiven";
-                answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);
+                answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);*/
+                
                 hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
+                hit.collider.GetComponent<Renderer>().material = answer.GetComponent<Renderer>().material;
+            }
+            else
+            {
+                answer.SetActive(true);
             }
             answer = null;
         }

@@ -5,10 +5,18 @@ public class PictureQuestion : MonoBehaviour
 {
     private Answer givenAnswer = null;
     [SerializeField] private string answerDescription = "Default answer";
+    private Renderer renderer;
+    private Material defaultMaterial;
 
     public PictureQuestion(string answer)
     {
         answerDescription = answer;
+    }
+
+    void Start()
+    {
+        renderer = GetComponent<Renderer>();
+        defaultMaterial = renderer.material;
     }
 
   /*  void OnCollisionEnter(Collision collision)
@@ -52,7 +60,12 @@ public class PictureQuestion : MonoBehaviour
 
     public void reset()
     {
+        if (givenAnswer != null)
+        {
+            givenAnswer.reset();
+        }
         givenAnswer = null;
+        renderer.material = defaultMaterial;
     }
 
 }
