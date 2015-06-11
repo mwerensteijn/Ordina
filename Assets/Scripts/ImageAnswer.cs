@@ -5,9 +5,9 @@ using System.Collections.Generic;
 public class ImageAnswer : MonoBehaviour {
     public static List<ImageAnswer> imageAnswers = new List<ImageAnswer>();
     public static float screenHeight = Camera.main.orthographicSize * 2f;
-    public static float screenWidth = screenHeight * Camera.main.aspect / Screen.width * 380;
+    public static float screenWidth = screenHeight * Camera.main.aspect / Screen.width * (Screen.width * 1/5);
     public static float objectHeight;
-
+    public float heightOffset;
     // Holds the left bottom corner of the image and the width & height.
     public Rect position;
 
@@ -33,7 +33,15 @@ public class ImageAnswer : MonoBehaviour {
 
     public void UpdatePositions() {
         for (int i = 1; i <= imageAnswers.Count; i++) {
-            imageAnswers[imageAnswers.Count - i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(10, Camera.main.pixelHeight * (1f / imageAnswers.Count * i), 1));
+            if (i < 2)
+            {
+                heightOffset = 0;
+            }
+            else
+            {
+                heightOffset = 20;
+            }
+            imageAnswers[imageAnswers.Count - i].transform.position = Camera.main.ScreenToWorldPoint(new Vector3(10, (Camera.main.pixelHeight * (1f / imageAnswers.Count * i) + heightOffset) , 1));
             float width = imageAnswers[imageAnswers.Count - i].GetComponent<SpriteRenderer>().sprite.bounds.size.x;
             float height = imageAnswers[imageAnswers.Count - i].GetComponent<SpriteRenderer>().sprite.bounds.size.y;
 
