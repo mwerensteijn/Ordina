@@ -52,8 +52,9 @@ public class Bullet : MonoBehaviour {
                 answer.transform.localScale = hit.collider.gameObject.transform.localScale;
                 answer.tag = "AnswerGiven";
                 answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);
+                hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
             }
-            //answer = null;
+            answer = null;
         }
 
         // Check if the bullet did hit an answer

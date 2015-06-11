@@ -11,7 +11,7 @@ public class PictureQuestion : MonoBehaviour
         answerDescription = answer;
     }
 
-    void OnCollisionEnter(Collision collision)
+  /*  void OnCollisionEnter(Collision collision)
     {
         string tag = collision.collider.tag;
         if (tag.Equals("Bullet"))
@@ -24,18 +24,16 @@ public class PictureQuestion : MonoBehaviour
                 Debug.Log("ANSWERRRR!!!!");
             }
         }
-    }
+    }*/
 
-    void OnParticleCollision(GameObject obj)
-    {
-        if (obj.tag.Equals("Water"))
-        {
-            givenAnswer = null;
-        }
-    }
     public string getDescription()
     {
         return answerDescription;
+    }
+
+    public void setAnswer(Answer answer)
+    {
+        givenAnswer = answer;
     }
 
     public bool checkAnswer()
@@ -50,6 +48,11 @@ public class PictureQuestion : MonoBehaviour
     public bool isAnswered()
     {
         return givenAnswer != null;
+    }
+
+    public void reset()
+    {
+        givenAnswer = null;
     }
 
 }
