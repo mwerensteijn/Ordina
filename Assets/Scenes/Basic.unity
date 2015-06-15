@@ -1234,6 +1234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 5436748, guid: 6fc36a5fe3f90e84ca16afc6ca3d5bed, type: 2}
   speed: 50
+  shotDelay: .5
 --- !u!1 &1013313085
 GameObject:
   m_ObjectHideFlags: 0
@@ -2473,7 +2474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1892731642
 Transform:
   m_ObjectHideFlags: 0

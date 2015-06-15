@@ -5,6 +5,9 @@ public class SubmitAnswers : MonoBehaviour
 {
     [SerializeField] 
     private GameObject[] m_Questions = new GameObject[3];
+
+    private int amountOfCorrectAnswers = 0;
+    private int amountOfWrongAnswers = 0;
     
 
     void Start()
@@ -33,9 +36,11 @@ public class SubmitAnswers : MonoBehaviour
         foreach(GameObject question in m_Questions){
             if (question.GetComponent<PictureQuestion>().checkAnswer())
             {
+                amountOfCorrectAnswers += 1;
                 // Correct answer
             }else{
                 // Wrong answer
+                amountOfWrongAnswers += 1;
                 Debug.Log("Wrong should have been: " + question.GetComponent<PictureQuestion>().getDescription());
                 check = false;
             }

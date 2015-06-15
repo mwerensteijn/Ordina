@@ -49,7 +49,7 @@ public class Bullet : MonoBehaviour {
                 answer.transform.localScale = hit.collider.gameObject.transform.localScale;
                 answer.tag = "AnswerGiven";
                 answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);*/
-                
+
                 hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
                 hit.collider.GetComponent<Renderer>().material = answer.GetComponent<Renderer>().material;
             }
@@ -82,7 +82,7 @@ public class Bullet : MonoBehaviour {
         GameObject impactA = Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject;
         impactA.transform.parent = hit.collider.gameObject.transform;
         ImpactList.Add(impactA);
-        Debug.Log(ImpactList.Count);
+        //Debug.Log(ImpactList.Count);
 
         // Destory bullet
         Destroy(this.gameObject);
