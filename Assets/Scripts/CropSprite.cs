@@ -9,14 +9,53 @@ public class CropSprite : MonoBehaviour
 
 //	Reference for sprite which will be cropped and it has BoxCollider or BoxCollider2D
 	public GameObject spriteToCrop;
+    public GameObject plane;
 
+    private bool hallo = true;
 	private Vector3 startPoint, endPoint;
 	private bool isMousePressed;
     private int cropCounter = 0;
+    private List<Rect> croppedRects = new List<Rect>();
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
-	void Start () {
+    public static Texture2D LoadPNG(string filePath) {
+
+        Texture2D tex = null;
+        byte[] fileData;
+
+        if (File.Exists(filePath)) {
+            fileData = File.ReadAllBytes(filePath);
+            tex = new Texture2D(2, 2);
+            tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+        }
+        return tex;
+    }
+
+    public void SetPlane() {
+        plane = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        plane.transform.localScale = spriteToCrop.GetComponent<SpriteRenderer>().bounds.size;
+        plane.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
+        plane.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
+        plane.transform.position = new Vector3(0, 0, 9);
+    }
+
+	IEnumerator Start () {
+        if (FileBrowser.selectedFile != "") {
+            WWW file = new WWW("file://" + FileBrowser.selectedFile);
+            yield return file;
+
+            Texture2D tex = file.texture;
+            Rect rec = new Rect(0, 0, tex.width, tex.height);
+            Vector2 pivot = new Vector2(0.5f, 0.5f);
+            Sprite newPlanet = Sprite.Create(tex, rec, pivot);
+
+            spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+        }
+
+        SetPlane();
+        spriteToCrop.AddComponent<BoxCollider2D>();
+
 		isMousePressed = false;
 //		Instantiate rectangle sides
 		leftLine = createAndGetLine("LeftLine");
@@ -35,12 +74,14 @@ public class CropSprite : MonoBehaviour
 	}
 
 	void Update () {
+        if (croppedRects.Count >= 4)
+            StartCoroutine(generateTexturesFromList(croppedRects));
 		if(Input.GetMouseButtonDown(0) && isSpriteTouched(spriteToCrop)) {
 			isMousePressed = true;
 			startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		} else if(Input.GetMouseButtonUp(0)) {
             if (isMousePressed)
-                StartCoroutine(cropSprite());	
+                StartCoroutine(cropSprite());
 			isMousePressed = false;
 		}
 
@@ -68,6 +109,10 @@ public class CropSprite : MonoBehaviour
 
         yield return new WaitForEndOfFrame();
 
+        //float[] leftBottomCorner, rightUpperCorner;
+        //leftBottomCorner = new float[2];
+        //rightUpperCorner = new float[2];
+
 //		Calculate topLeftPoint and bottomRightPoint of drawn rectangle
 		Vector3 topLeftPoint = startPoint, bottomRightPoint=endPoint;
 		if((startPoint.x > endPoint.x)) {
@@ -87,15 +132,28 @@ public class CropSprite : MonoBehaviour
 		Rect spriteRect = spriteToCrop.GetComponent<SpriteRenderer>().sprite.textureRect;
 
 		int pixelsToUnits = 100; // It's PixelsToUnits of sprite which would be cropped
-
+        
 //		Crop sprite
 
-		GameObject croppedSpriteObj = new GameObject("CroppedSprite");
-		Rect croppedSpriteRect = spriteRect;
+        //GameObject croppedSpriteObj = new GameObject("CroppedSprite");
+        Rect croppedSpriteRect = spriteRect;
 		croppedSpriteRect.width = (Mathf.Abs(bottomRightPoint.x - topLeftPoint.x)*pixelsToUnits)* (1/spriteToCrop.transform.localScale.x);
 		croppedSpriteRect.x = (Mathf.Abs(topLeftPoint.x - (spriteRenderer.bounds.center.x-spriteRenderer.bounds.size.x/2)) *pixelsToUnits)* (1/spriteToCrop.transform.localScale.x);
 		croppedSpriteRect.height = (Mathf.Abs(bottomRightPoint.y - topLeftPoint.y)*pixelsToUnits)* (1/spriteToCrop.transform.localScale.y);
 		croppedSpriteRect.y = ((topLeftPoint.y - (spriteRenderer.bounds.center.y - spriteRenderer.bounds.size.y/2))*(1/spriteToCrop.transform.localScale.y))* pixelsToUnits - croppedSpriteRect.height;//*(spriteToCrop.transform.localScale.y);
+
+        croppedRects.Add(croppedSpriteRect);
+
+        /*
+        Debug.Log(croppedRects.Count);
+        croppedRects.Add(croppedSpriteRect);
+        Debug.Log(croppedRects.Count);
+
+        //leftBottomCorner[0] = croppedSpriteRect.xMin;
+        //leftBottomCorner[1] = croppedSpriteRect.yMin;
+
+        //rightUpperCorner[0] = croppedSpriteRect.xMax;
+        //rightUpperCorner[1] = croppedSpriteRect.yMax;
 
         Sprite croppedSprite = Sprite.Create(spriteTexture, croppedSpriteRect, new Vector2(0,1), pixelsToUnits);
 		SpriteRenderer cropSpriteRenderer = croppedSpriteObj.AddComponent<SpriteRenderer>();	
@@ -122,6 +180,7 @@ public class CropSprite : MonoBehaviour
         byte[] test = CroppedTexture.EncodeToPNG();
         cropCounter++;
         File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
+         */
     }
 
 //	Following method checks whether sprite is touched or not. There are two methods for simple collider and 2DColliders. you can use as per requirement and comment another one.
@@ -151,4 +210,54 @@ public class CropSprite : MonoBehaviour
 
 		return false;
 	}
+
+    public IEnumerator generateTexturesFromList(List<Rect> croppedRects){
+        yield return new WaitForEndOfFrame();
+        int pixelsToUnits = 100;
+        
+        if (hallo == true)
+        {
+            for (int i = 0; i < croppedRects.Count; i++)
+            {
+                Debug.Log("Entered gekke moethode en forloopjeeessss");
+                GameObject croppedSpriteObj = new GameObject("CroppedSprite");
+
+                SpriteRenderer spriteRenderer = spriteToCrop.GetComponent<SpriteRenderer>();
+                Sprite spriteToCropSprite = spriteRenderer.sprite;
+                Texture2D spriteTexture = spriteToCropSprite.texture;
+                Rect spriteRect = spriteToCrop.GetComponent<SpriteRenderer>().sprite.textureRect;
+
+                Sprite croppedSprite = Sprite.Create(spriteTexture, croppedRects[i], new Vector2(0, 1), pixelsToUnits);
+                SpriteRenderer cropSpriteRenderer = croppedSpriteObj.AddComponent<SpriteRenderer>();
+                cropSpriteRenderer.sprite = croppedSprite;
+                //topLeftPoint.z = -1;
+
+                croppedSpriteObj.transform.position = new Vector3(0, 0, 0);
+                croppedSpriteObj.transform.parent = spriteToCrop.transform.parent;
+                croppedSpriteObj.transform.localScale = spriteToCrop.transform.localScale;
+
+                Debug.Log(spriteTexture.height);
+                Debug.Log(spriteTexture.width);
+                //ImageAnswer imageAnswer = croppedSpriteObj.AddComponent<ImageAnswer>();
+                //imageAnswer.position = croppedSpriteRect;
+                //imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
+                
+                            Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
+                            CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
+                            Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
+                                                                                (int)croppedSprite.rect.y,
+                                                                                (int)croppedSprite.rect.width,
+                                                                                (int)croppedSprite.rect.height);
+                            CroppedTexture.SetPixels(pixels);
+                            CroppedTexture.Apply();
+                            byte[] test = CroppedTexture.EncodeToPNG();
+                            cropCounter++;
+                            File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
+                            Debug.Log("Saved!");
+                 
+            }
+            hallo = false;
+        }
+
+    }
 }
