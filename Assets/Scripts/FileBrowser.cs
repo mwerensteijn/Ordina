@@ -2,15 +2,17 @@
 using System.Collections;
 using System.IO;
 
-public class Skin : MonoBehaviour {
+public class FileBrowser : MonoBehaviour {
     public GUISkin skin;
-    public Vector2 scrollPosition = Vector2.zero;
+    private Vector2 scrollPosition = Vector2.zero;
 
-    public string path = "C:\\";
-    public string[] fileEntries;
-    public string[] directoryEntries;
-    public int entries;
-    public int selectedFileEntry = -1;
+    private string path = "C:\\";
+    private string[] fileEntries;
+    private string[] directoryEntries;
+    private int entries;
+    private int selectedFileEntry = -1;
+
+    public static string selectedFile = "";
 
 	// Use this for initialization
 	void Start () {
@@ -100,7 +102,13 @@ public class Skin : MonoBehaviour {
         }
 
         GUI.EndScrollView();
-        GUI.Button(new Rect(360, 310, 120, 20), "Select image");
+        if (GUI.Button(new Rect(360, 310, 120, 20), "Select image")) {
+            if (selectedFileEntry >= 0) {
+                selectedFile = path + fileEntries[selectedFileEntry];
+
+                Application.LoadLevel("CMS");
+            }
+        }
     }
 	
 	// Update is called once per frame

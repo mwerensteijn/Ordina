@@ -6,10 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GUISkin/Skinscene.unity
+    path: Assets/Scenes/FileBrowser.unity
   - enabled: 1
     path: Assets/Scenes/MultipleChoice.unity
   - enabled: 1
     path: Assets/Scenes/Basic.unity
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
+  - enabled: 1
+    path: Assets/Scenes/CMS.unity

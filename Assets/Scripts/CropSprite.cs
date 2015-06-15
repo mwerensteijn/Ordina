@@ -16,7 +16,30 @@ public class CropSprite : MonoBehaviour
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
-	void Start () {
+    public static Texture2D LoadPNG(string filePath) {
+
+        Texture2D tex = null;
+        byte[] fileData;
+
+        if (File.Exists(filePath)) {
+            fileData = File.ReadAllBytes(filePath);
+            tex = new Texture2D(2, 2);
+            tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
+        }
+        return tex;
+    }
+
+	IEnumerator Start () {
+        WWW file = new WWW("file://" + FileBrowser.selectedFile);
+        yield return file;
+
+        Texture2D tex = file.texture;
+        Rect rec = new Rect(0, 0, tex.width, tex.height);
+        Vector2 pivot = new Vector2(0.5f, 0.5f);
+        Sprite newPlanet = Sprite.Create(tex, rec, pivot);
+
+        spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+
 		isMousePressed = false;
 //		Instantiate rectangle sides
 		leftLine = createAndGetLine("LeftLine");
