@@ -37,5 +37,9 @@ public class Watergun : MonoBehaviour {
             obj.GetComponent<Answer>().reset();
             obj.tag = "Answer";
         }
+        if (obj.tag == "Question")
+        {
+            obj.GetComponent<PictureQuestion>().reset();
+        }
     }
 }
