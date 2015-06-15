@@ -9,6 +9,8 @@ public class CropSprite : MonoBehaviour
 
 //	Reference for sprite which will be cropped and it has BoxCollider or BoxCollider2D
 	public GameObject spriteToCrop;
+    public GameObject plane;
+
     private bool hallo = true;
 	private Vector3 startPoint, endPoint;
 	private bool isMousePressed;
@@ -30,16 +32,29 @@ public class CropSprite : MonoBehaviour
         return tex;
     }
 
+    public void SetPlane() {
+        plane = GameObject.CreatePrimitive(PrimitiveType.Quad);
+        plane.transform.localScale = spriteToCrop.GetComponent<SpriteRenderer>().bounds.size;
+        plane.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
+        plane.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
+        plane.transform.position = new Vector3(0, 0, 9);
+    }
+
 	IEnumerator Start () {
-        WWW file = new WWW("file://" + FileBrowser.selectedFile);
-        yield return file;
+        if (FileBrowser.selectedFile != "") {
+            WWW file = new WWW("file://" + FileBrowser.selectedFile);
+            yield return file;
 
-        Texture2D tex = file.texture;
-        Rect rec = new Rect(0, 0, tex.width, tex.height);
-        Vector2 pivot = new Vector2(0.5f, 0.5f);
-        Sprite newPlanet = Sprite.Create(tex, rec, pivot);
+            Texture2D tex = file.texture;
+            Rect rec = new Rect(0, 0, tex.width, tex.height);
+            Vector2 pivot = new Vector2(0.5f, 0.5f);
+            Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
-        spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+            spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+        }
+
+        SetPlane();
+        spriteToCrop.AddComponent<BoxCollider2D>();
 
 		isMousePressed = false;
 //		Instantiate rectangle sides
