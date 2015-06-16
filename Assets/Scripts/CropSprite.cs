@@ -6,6 +6,7 @@ using System.IO;
 
 public class CropSprite : MonoBehaviour 
 {
+
 //	Reference for sprite which will be cropped and it has BoxCollider or BoxCollider2D
 	public GameObject spriteToCrop;
     public GameObject plane;
@@ -19,6 +20,7 @@ public class CropSprite : MonoBehaviour
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
     public static Texture2D LoadPNG(string filePath) {
+
         Texture2D tex = null;
         byte[] fileData;
 
@@ -27,7 +29,6 @@ public class CropSprite : MonoBehaviour
             tex = new Texture2D(2, 2);
             tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
-
         return tex;
     }
 
@@ -37,32 +38,6 @@ public class CropSprite : MonoBehaviour
         plane.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
         plane.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
         plane.transform.position = new Vector3(0, 0, 9);
-    }
-
-    void ResizeSpriteToScreen() {
-        SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
-        if (sr == null)
-            return;
-
-        transform.localScale = new Vector3(1, 1, 1);
-        
-        float width = sr.sprite.bounds.size.x;
-        float height = sr.sprite.bounds.size.y;
-
-        float worldScreenHeight = Camera.main.orthographicSize * 2.0f * 0.9f;
-        float maxWorldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.9f;
-        float worldScreenWidth = worldScreenHeight * (width / height);
-
-        if (worldScreenWidth > maxWorldScreenWidth) {
-            worldScreenWidth = maxWorldScreenWidth;
-            worldScreenHeight = worldScreenWidth * (height / width);
-        }
-        //float worldScreenWidth = worldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.9f;
-
-        float newWidth = worldScreenWidth / width;
-        float newHeight = worldScreenHeight / height;
-
-        spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
     }
 
 	IEnumerator Start () {
@@ -75,11 +50,10 @@ public class CropSprite : MonoBehaviour
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
+            
+
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
-
-        ResizeSpriteToScreen();
-
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
@@ -171,6 +145,8 @@ public class CropSprite : MonoBehaviour
 		croppedSpriteRect.y = ((topLeftPoint.y - (spriteRenderer.bounds.center.y - spriteRenderer.bounds.size.y/2))*(1/spriteToCrop.transform.localScale.y))* pixelsToUnits - croppedSpriteRect.height;//*(spriteToCrop.transform.localScale.y);
 
         croppedRects.Add(croppedSpriteRect);
+
+        
 
         /*
         Debug.Log(croppedRects.Count);
@@ -270,22 +246,28 @@ public class CropSprite : MonoBehaviour
                 //imageAnswer.position = croppedSpriteRect;
                 //imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
                 
-                            Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
-                            CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
-                            Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
-                                                                                (int)croppedSprite.rect.y,
-                                                                                (int)croppedSprite.rect.width,
-                                                                                (int)croppedSprite.rect.height);
-                            CroppedTexture.SetPixels(pixels);
-                            CroppedTexture.Apply();
-                            byte[] test = CroppedTexture.EncodeToPNG();
-                            cropCounter++;
-                            File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
-                            Debug.Log("Saved!");
+                
+                Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
+                CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
+                Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
+                                                                    (int)croppedSprite.rect.y,
+                                                                    (int)croppedSprite.rect.width,
+                                                                    (int)croppedSprite.rect.height);
+                CroppedTexture.SetPixels(pixels);
+                CroppedTexture.Apply();
+                byte[] test = CroppedTexture.EncodeToPNG();
+                cropCounter++;
+                File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
+                Debug.Log("Saved!");
+
+                GetComponent<dbController>().insertPicture(CroppedTexture);
+                GetComponent<dbController>().insertRectX(1, 1, 1, 1, 1);
                  
             }
             hallo = false;
         }
+
+        
 
     }
 }
