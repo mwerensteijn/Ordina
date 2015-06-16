@@ -96,6 +96,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 226367399}
   - 114: {fileID: 226367398}
+  - 114: {fileID: 226367400}
   m_Layer: 0
   m_Name: CropSprite
   m_TagString: Untagged
@@ -128,6 +129,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &226367400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 226367397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ea5f8d8dca44b48bb0d72b34eb813a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plane: {fileID: 0}
+  imgByteArr: 
 --- !u!1 &353629717
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,6 +342,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: .0219999999
+  m_StereoMirrorMode: 0
 --- !u!4 &1754716148
 Transform:
   m_ObjectHideFlags: 0
