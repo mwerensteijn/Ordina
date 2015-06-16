@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Mono.Data.Sqlite;
 using System;
+using System.IO;
+using System.Data;
 
 public class dbController : MonoBehaviour {
 	protected SqliteConnection dbconn;
@@ -47,5 +49,25 @@ public class dbController : MonoBehaviour {
 
 		
 	}
-	
+	private void insertData(String ImagePath, String ImageNaam)
+	{	
+		try
+		{
+			FileStream fs = new FileStream(@ImagePath, FileMode.Open, FileAccess.Read);
+			byte[] imgByteArr = new byte[fs.Length];
+			fs.Read(imgByteArr, 0, Convert.ToInt32(fs.Length));
+			fs.Close();
+			SqliteCommand cmd = new SqliteCommand();
+			cmd.CommandText  = @"INSERT INTO Afbeelding(name,img) VALUES(@Naam,@img)";
+			cmd.Parameters.Add (new SqliteParameter ("@naam", ImageNaam));
+			cmd.Parameters.Add(new SqliteParameter("@img", imgByteArr));
+				int result = cmd.ExecuteNonQuery ();
+					if (result == 1)
+				Debug.Log ("Afbeelding sorted");
+			}
+		catch (Exception ex)
+		{
+			Debug.Log ("PANIEK TIJDENS AFBEELDING OPSLAAN")
+		}
+	}	
 }
