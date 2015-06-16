@@ -6,12 +6,12 @@ using System.Data;
 
 public class dbController : MonoBehaviour {
 	protected SqliteConnection dbconn;
-    public GameObject plane;
+    //public GameObject plane;
     public byte[] imgByteArr;
 	
 	void Awake () {
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
-		dbconn.Open();
+        dbconn.Open();
 
         FileStream fs = new FileStream(Application.dataPath + "/database/DOGGOE.png", FileMode.Open, FileAccess.Read);
         imgByteArr = new byte[fs.Length];
@@ -23,13 +23,15 @@ public class dbController : MonoBehaviour {
 
         tex.LoadImage(imgByteArr);
 
-        insertPicture(tex, imgByteArr);
+        //insertRectX(1, 1, 1, 1, 1);
 
-        MeshRenderer rend = plane.GetComponent<MeshRenderer>();
-        rend.material.SetTexture("_MainTex", extractPicture());
+        //insertPicture(tex);
+
+        ////MeshRenderer rend = plane.GetComponent<MeshRenderer>();
+        ////rend.material.SetTexture("_MainTex", extractPicture());
 	}
 
-    void insertPicture(Texture2D pic, byte[] b)
+    public void insertPicture(Texture2D pic)
     {
         Texture2D tex = new Texture2D(2,2);
         byte[] bytes = null;
@@ -56,10 +58,10 @@ public class dbController : MonoBehaviour {
             Debug.Log("Values corrupted!");
         }
 
-        dbconn.Close();
+        //dbconn.Close();
     }
 
-    Texture2D extractPicture()
+    public Texture2D extractPicture()
     {
         Texture2D pic = new Texture2D(2,2);
 
@@ -67,7 +69,7 @@ public class dbController : MonoBehaviour {
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding FROM Afbeelding WHERE AfbeeldingID=38";
+        cmd.CommandText = "SELECT Afbeelding FROM Afbeelding WHERE AfbeeldingID=39";
         byte[] data = (byte[])cmd.ExecuteScalar();
 
         if (data != null && data != imgByteArr)
@@ -79,8 +81,20 @@ public class dbController : MonoBehaviour {
             Debug.Log("Entry in tabel met gegeven ID nummer NIET gevonden...");
         }
 
-        dbconn.Close();
+        //dbconn.Close();
 
         return pic;
+    }
+
+    public void insertRectX(int rectID, int x, int y, int length, int width)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = @"select last_insert_rowid()";
+        long lastRowID = (long)cmd.ExecuteScalar();
+        Debug.Log(lastRowID);
     }
 }

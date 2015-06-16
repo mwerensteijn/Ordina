@@ -50,6 +50,8 @@ public class CropSprite : MonoBehaviour
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
+            
+
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
 
@@ -143,6 +145,8 @@ public class CropSprite : MonoBehaviour
 		croppedSpriteRect.y = ((topLeftPoint.y - (spriteRenderer.bounds.center.y - spriteRenderer.bounds.size.y/2))*(1/spriteToCrop.transform.localScale.y))* pixelsToUnits - croppedSpriteRect.height;//*(spriteToCrop.transform.localScale.y);
 
         croppedRects.Add(croppedSpriteRect);
+
+        
 
         /*
         Debug.Log(croppedRects.Count);
@@ -242,22 +246,28 @@ public class CropSprite : MonoBehaviour
                 //imageAnswer.position = croppedSpriteRect;
                 //imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
                 
-                            Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
-                            CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
-                            Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
-                                                                                (int)croppedSprite.rect.y,
-                                                                                (int)croppedSprite.rect.width,
-                                                                                (int)croppedSprite.rect.height);
-                            CroppedTexture.SetPixels(pixels);
-                            CroppedTexture.Apply();
-                            byte[] test = CroppedTexture.EncodeToPNG();
-                            cropCounter++;
-                            File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
-                            Debug.Log("Saved!");
+                
+                Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
+                CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
+                Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
+                                                                    (int)croppedSprite.rect.y,
+                                                                    (int)croppedSprite.rect.width,
+                                                                    (int)croppedSprite.rect.height);
+                CroppedTexture.SetPixels(pixels);
+                CroppedTexture.Apply();
+                byte[] test = CroppedTexture.EncodeToPNG();
+                cropCounter++;
+                File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
+                Debug.Log("Saved!");
+
+                GetComponent<dbController>().insertPicture(CroppedTexture);
+                GetComponent<dbController>().insertRectX(1, 1, 1, 1, 1);
                  
             }
             hallo = false;
         }
+
+        
 
     }
 }
