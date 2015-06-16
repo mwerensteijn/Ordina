@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Assets.Scripts.HighScore;
 
-public class WorldMovement : MonoBehaviour {
+public class WorldMovement : MonoBehaviour, IScore {
 	// The states available in this MultipleChoice game.
 	public enum State
 	{
 		Init,
 		Idle,
 		CheckAnswer,
-		ChangeQuestion
+		ChangeQuestion,
+        ScoreScreen
 	}
 	
 	// Holds the current state.
@@ -34,6 +36,23 @@ public class WorldMovement : MonoBehaviour {
     private int currentQuestion = 0;
 
     private TextMesh questionText;
+
+    private bool minigameFinshed = false;
+
+    [SerializeField]
+    private int answerScoreWeigth = 0;
+    public int AnswerScoreWeigth { get { return answerScoreWeigth; } set { answerScoreWeigth = value; } }
+
+    [SerializeField]
+    private int timeScoreWeigth = 0;
+    public int TimeScoreWeigth { get { return timeScoreWeigth; } set { timeScoreWeigth = value; } }
+
+    private int totalAskedQuestions = 0;
+    public int TotalAskedQuestions { get { return totalAskedQuestions; } set { totalAskedQuestions = value; } }
+
+    private int totalCorrectQuestions = 0;
+    public int TotalCorrectQuestions { get { return totalCorrectQuestions; } set { totalCorrectQuestions = value; } }
+
 
 	// Initialization
 	void Start () {
@@ -62,6 +81,7 @@ public class WorldMovement : MonoBehaviour {
 
         
 
+
         //Debug.Log("Distance: " + Vector3.Distance(transform.Find("Hitbox").transform.position, answerRowFront.transform.position));
 
 		// If a row is not visible anymore, respawn it at the appearing position.
@@ -78,7 +98,7 @@ public class WorldMovement : MonoBehaviour {
             answerRowFront = answerRowBack;
             answerRowBack = temp;
             currentState = WorldMovement.State.ChangeQuestion;
-        } 
+        }
 	}
 
     private void DisableAnswering() {
@@ -104,9 +124,12 @@ public class WorldMovement : MonoBehaviour {
 			case WorldMovement.State.ChangeQuestion:
 				ChangeQuestion();
 				break;
+            case WorldMovement.State.ScoreScreen:
+                ShowScoreScreen();
+                StopCoroutine("FSM");
+                break;
 			}
-			
-			yield return null;	
+             yield return null;
 		}
 	}
 
@@ -140,36 +163,76 @@ public class WorldMovement : MonoBehaviour {
         answerRowFront.B = questions[currentQuestion].answers[1];
         answerRowFront.C = questions[currentQuestion].answers[2];
 
-        answerRowBack.A = questions[currentQuestion + 1].answers[0];
-        answerRowBack.B = questions[currentQuestion + 1].answers[1];
-        answerRowBack.C = questions[currentQuestion + 1].answers[2];
-
+        //voor nu om te controleren of het tekstbestand eindigt.
+        if (currentQuestion + 1 < questions.Length)
+        {
+            answerRowBack.A = questions[currentQuestion + 1].answers[0];
+            answerRowBack.B = questions[currentQuestion + 1].answers[1];
+            answerRowBack.C = questions[currentQuestion + 1].answers[2];
+        }
         currentState = WorldMovement.State.Idle;
 	}
 
-	private void CheckAnswer() {
-        if(givenAnswer.FindChild("Answer").GetComponent<TextMesh>().text.Equals(questions[currentQuestion].correctAnswer)) {
+    private void CheckAnswer()
+    {
+        if (givenAnswer.FindChild("Answer").GetComponent<TextMesh>().text.Equals(questions[currentQuestion].correctAnswer))
+        {
             givenAnswer.GetComponent<MeshRenderer>().material.color = Color.green;
-        } else {
+            totalCorrectQuestions += 1;
+        }
+        else
+        {
             givenAnswer.GetComponent<MeshRenderer>().material.color = Color.red;
         }
+        totalAskedQuestions += 1;
+        Debug.Log("aantal vragen: " + questions.Length + " + gestelde vragen: " + totalAskedQuestions);
 
-		currentState = WorldMovement.State.Idle;
-	}
+        if (questions.Length == totalAskedQuestions)
+        {
+            currentState = WorldMovement.State.ScoreScreen;
+            return;
+        }
 
-	private void ChangeQuestion() {
-        questionText.text = questions[++currentQuestion].question;
+        currentState = WorldMovement.State.Idle;
+    }
 
-        answerRowBack.A = questions[currentQuestion + 1].answers[0];
-        answerRowBack.B = questions[currentQuestion + 1].answers[1];
-        answerRowBack.C = questions[currentQuestion + 1].answers[2];
-          
-		currentState = WorldMovement.State.Idle;
-	}
+    private void ChangeQuestion()
+    {
+        if (currentQuestion < questions.Length)
+        {
+            questionText.text = questions[++currentQuestion].question;
+
+            answerRowBack.A = questions[currentQuestion].answers[0];
+            answerRowBack.B = questions[currentQuestion].answers[1];
+            answerRowBack.C = questions[currentQuestion].answers[2];
+
+            currentState = WorldMovement.State.Idle;
+        }
+    }
 
 	// Called by AnswerCollision script.
 	public void AnswerCollision(Transform answer) {
         givenAnswer = answer;
 		currentState = WorldMovement.State.CheckAnswer;
 	}
+
+    public void ShowScoreScreen() 
+    {
+        int totalScore = CalculateScore();
+        SaveScore(totalScore);
+    }
+
+    public int CalculateScore()
+    {
+        Debug.Log("answerscoreweight " + answerScoreWeigth);
+        Debug.Log("totalcorrect questions" + totalCorrectQuestions);
+        return (AnswerScoreWeigth * TotalCorrectQuestions) + (timeScoreWeigth * 1);
+        
+    }
+    public void SaveScore(int totalScore)
+    {
+        int playerId = 0;
+        Debug.Log("saving score: " + totalScore);
+        ScoreManager._instance.SaveHighScore(MiniGameEnum.Minigames.Vliegtuig, totalScore, playerId);
+    }
 }
