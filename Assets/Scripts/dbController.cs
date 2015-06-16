@@ -6,68 +6,81 @@ using System.Data;
 
 public class dbController : MonoBehaviour {
 	protected SqliteConnection dbconn;
+    public GameObject plane;
+    public byte[] imgByteArr;
 	
 	void Awake () {
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			dbconn = new SqliteConnection("URI=file:" +Application.dataPath + "/../Database.s3db");
-		} else {
-			dbconn = new SqliteConnection("URI=file:" +"C:/Users/daan/Documents/GitHub/Ordina/Assets/database/Database.s3db");	
-		}
-		
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
 		dbconn.Open();
-		
 
-			/*SqliteCommand cmd = new SqliteCommand("SELECT naam, Geb_ID FROM Gebruiker", dbconn);
-			SqliteDataReader reader = cmd.ExecuteReader();
-			
-			if (reader.HasRows) {
-				while(reader.Read()) {
-					string naam = reader.GetString (0);
-					string Geb_ID = reader.GetString (1);
-					
-					Debug.Log ( naam + Geb_ID );
-				}
-			}
-			
-			reader.Close();
-			reader = null;
-			cmd.Dispose();
-			cmd = null;
-			dbconn.Close();
-			dbconn = null;*/
-	
-		
-		SqliteCommand cmd = new SqliteCommand();
-		cmd.CommandText = @"INSERT INTO Gebruiker(naam) VALUES(@naam)";
-		cmd.Connection = dbconn;
-		cmd.Parameters.Add (new SqliteParameter ("@naam", "Chanan"));
-		//cmd.Parameters.Add (new SqliteParameter ("@Geb_ID", "99"));
-			
-		int i = cmd.ExecuteNonQuery ();
-		if (i == 1)
-			Debug.Log ("Query ok");
+        FileStream fs = new FileStream(Application.dataPath + "/database/DOGGOE.png", FileMode.Open, FileAccess.Read);
+        imgByteArr = new byte[fs.Length];
 
-		
+        fs.Read(imgByteArr, 0, Convert.ToInt32(fs.Length));
+        fs.Close();
+
+        Texture2D tex = new Texture2D(2,2);
+
+        tex.LoadImage(imgByteArr);
+
+        insertPicture(tex, imgByteArr);
+
+        MeshRenderer rend = plane.GetComponent<MeshRenderer>();
+        rend.material.SetTexture("_MainTex", extractPicture());
 	}
-	private void insertData(String ImagePath, String ImageNaam)
-	{	
-		try
-		{
-			FileStream fs = new FileStream(@ImagePath, FileMode.Open, FileAccess.Read);
-			byte[] imgByteArr = new byte[fs.Length];
-			fs.Read(imgByteArr, 0, Convert.ToInt32(fs.Length));
-			fs.Close();
-			SqliteCommand cmd = new SqliteCommand();
-			cmd.CommandText  = @"INSERT INTO Afbeelding(name,img) VALUES(@Naam,@img)";
-			cmd.Parameters.Add (new SqliteParameter ("@naam", ImageNaam));
-			cmd.Parameters.Add(new SqliteParameter("@img", imgByteArr));
-				int result = cmd.ExecuteNonQuery ();
-					if (result == 1)
-				Debug.Log ("Afbeelding sorted");
-			}
-		catch (Exception ex)
-		{
-			Debug.Log ("PANIEK TIJDENS AFBEELDING OPSLAAN")
-		}
-	}	
+
+    void insertPicture(Texture2D pic, byte[] b)
+    {
+        Texture2D tex = new Texture2D(2,2);
+        byte[] bytes = null;
+
+        bytes = pic.EncodeToPNG();
+
+        string dbLoc = "URI=file:" + Application.dataPath + "/database/Database.s3db";
+
+        dbconn = new SqliteConnection(dbLoc);
+
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "INSERT INTO Afbeelding(afbeelding) VALUES (@data)";
+        cmd.Prepare();
+
+        cmd.Parameters.Add("@data", DbType.Binary, bytes.Length);
+        cmd.Parameters["@data"].Value = bytes;
+        cmd.ExecuteNonQuery();
+
+        if (cmd.Parameters["@data"].Value != bytes)
+        {
+            Debug.Log("Values corrupted!");
+        }
+
+        dbconn.Close();
+    }
+
+    Texture2D extractPicture()
+    {
+        Texture2D pic = new Texture2D(2,2);
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+        cmd.CommandText = "SELECT Afbeelding FROM Afbeelding WHERE AfbeeldingID=38";
+        byte[] data = (byte[])cmd.ExecuteScalar();
+
+        if (data != null && data != imgByteArr)
+        {
+            pic.LoadImage(data);
+        }
+        else
+        {
+            Debug.Log("Entry in tabel met gegeven ID nummer NIET gevonden...");
+        }
+
+        dbconn.Close();
+
+        return pic;
+    }
 }

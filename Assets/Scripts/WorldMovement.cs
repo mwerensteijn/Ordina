@@ -62,7 +62,7 @@ public class WorldMovement : MonoBehaviour {
 
         
 
-        Debug.Log("Distance: " + Vector3.Distance(transform.Find("Hitbox").transform.position, answerRowFront.transform.position));
+        //Debug.Log("Distance: " + Vector3.Distance(transform.Find("Hitbox").transform.position, answerRowFront.transform.position));
 
 		// If a row is not visible anymore, respawn it at the appearing position.
         if (answerRowFront.transform.position.z <= disappearPositionZ) {
