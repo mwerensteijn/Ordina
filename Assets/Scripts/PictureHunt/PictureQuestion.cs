@@ -4,7 +4,7 @@ using System.Collections;
 public class PictureQuestion : MonoBehaviour
 {
     private Answer givenAnswer = null;
-    [SerializeField] private string answerDescription = "Default answer";
+    public string answerDescription = "Default answer";
     private Renderer renderer;
     private Material defaultMaterial;
 

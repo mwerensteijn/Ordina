@@ -3,8 +3,8 @@ using System.Collections;
 
 public class SubmitAnswers : MonoBehaviour
 {
-    [SerializeField] 
-    private GameObject[] m_Questions = new GameObject[3];
+     
+    public GameObject[] m_Questions = new GameObject[3];
 
     private int amountOfCorrectAnswers = 0;
     private int amountOfWrongAnswers = 0;

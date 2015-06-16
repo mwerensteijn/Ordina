@@ -6,7 +6,7 @@ using System.Data;
 
 public class dbController : MonoBehaviour {
 	protected SqliteConnection dbconn;
-	
+    public Texture2D texture;
 	void Awake () {
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
 			dbconn = new SqliteConnection("URI=file:" +Application.dataPath + "/../Database.s3db");
@@ -67,7 +67,49 @@ public class dbController : MonoBehaviour {
 			}
 		catch (Exception ex)
 		{
-			Debug.Log ("PANIEK TIJDENS AFBEELDING OPSLAAN")
+            Debug.Log("PANIEK TIJDENS AFBEELDING OPSLAAN");
 		}
-	}	
+	}
+
+    public int getAmountOfQuestions(string subject)
+    {
+        // TODO use database
+        return 2;
+    }
+
+    public int getAmountOfSubImages(string subject, int questionID)
+    {
+        // TODO use database
+        return 3;
+    }
+
+    public Vector2[] getSubImageCoordinates(string subject, int questionID, int subImageID)
+    {
+        // just a test not the real code
+        if (subImageID == 1)
+        {
+            return new Vector2[] { new Vector2(65, 75), new Vector2(85, 80), new Vector2(65, 150), new Vector2(85, 155) };
+        }
+        else
+        {
+            return new Vector2[] { new Vector2(25, 75), new Vector2(85, 80), new Vector2(25, 150), new Vector2(85, 155) };
+        }
+    }
+
+    public String getQuestionAnswer(string subject, int questionID, int subImageID)
+    {
+        if (subImageID == 1)
+        {
+            return "test1";
+        }
+        else
+        {
+            return "answer"+questionID+"_"+subImageID;
+        }
+    }
+
+    public Texture2D getBackgroundImage(string subject, int questionID)
+    {
+        return texture;
+    }
 }
