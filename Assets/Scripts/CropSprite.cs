@@ -6,7 +6,6 @@ using System.IO;
 
 public class CropSprite : MonoBehaviour 
 {
-
 //	Reference for sprite which will be cropped and it has BoxCollider or BoxCollider2D
 	public GameObject spriteToCrop;
     public GameObject plane;
@@ -20,7 +19,6 @@ public class CropSprite : MonoBehaviour
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
     public static Texture2D LoadPNG(string filePath) {
-
         Texture2D tex = null;
         byte[] fileData;
 
@@ -29,6 +27,7 @@ public class CropSprite : MonoBehaviour
             tex = new Texture2D(2, 2);
             tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
+
         return tex;
     }
 
@@ -38,6 +37,32 @@ public class CropSprite : MonoBehaviour
         plane.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
         plane.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
         plane.transform.position = new Vector3(0, 0, 9);
+    }
+
+    void ResizeSpriteToScreen() {
+        SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
+        if (sr == null)
+            return;
+
+        transform.localScale = new Vector3(1, 1, 1);
+        
+        float width = sr.sprite.bounds.size.x;
+        float height = sr.sprite.bounds.size.y;
+
+        float worldScreenHeight = Camera.main.orthographicSize * 2.0f * 0.9f;
+        float maxWorldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.9f;
+        float worldScreenWidth = worldScreenHeight * (width / height);
+
+        if (worldScreenWidth > maxWorldScreenWidth) {
+            worldScreenWidth = maxWorldScreenWidth;
+            worldScreenHeight = worldScreenWidth * (height / width);
+        }
+        //float worldScreenWidth = worldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.9f;
+
+        float newWidth = worldScreenWidth / width;
+        float newHeight = worldScreenHeight / height;
+
+        spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
     }
 
 	IEnumerator Start () {
@@ -52,6 +77,9 @@ public class CropSprite : MonoBehaviour
 
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
+
+        ResizeSpriteToScreen();
+
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
