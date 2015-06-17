@@ -26,4 +26,11 @@ public class DigitalClock : MonoBehaviour {
 		}
 		timer.text = minutesTimer.ToString("00") + ":" + Math.Floor(secondsTimer).ToString("00");
 	}
+
+    public int GetTotalSeconds() 
+    {
+        int roundedSeconds = (int)Math.Round(secondsTimer, 0);
+        int roundedMinuts = (int)Math.Round(minutesTimer, 0);
+        return roundedSeconds + (roundedMinuts * 60);
+    }
 }

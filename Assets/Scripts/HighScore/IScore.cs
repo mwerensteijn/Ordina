@@ -12,6 +12,6 @@ namespace Assets.Scripts.HighScore
         int TotalAskedQuestions { get; set; }
         int TotalCorrectQuestions { get; set; }
         int CalculateScore();
-        void SaveScore(int totalScore);
+        void SaveScore(int totalScore, int totalTimeSeconds);
     }
 }

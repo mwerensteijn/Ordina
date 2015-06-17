@@ -13,7 +13,9 @@ public class WorldMovement : MonoBehaviour, IScore {
 		ChangeQuestion,
         ScoreScreen
 	}
-	
+
+    private DigitalClock gameTimer;
+    private ProgressBar progressBar;
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
@@ -64,7 +66,8 @@ public class WorldMovement : MonoBehaviour, IScore {
         currentState = WorldMovement.State.Init;
         
         questionText = GameObject.FindGameObjectWithTag("Question").GetComponent<TextMesh>();
-
+        gameTimer = GameObject.FindGameObjectWithTag("time").GetComponent<DigitalClock>();
+        progressBar = GameObject.FindGameObjectWithTag("progressbar").GetComponent<ProgressBar>();
 		// Start finite state machine.
 		StartCoroutine("FSM");
 	}
@@ -171,6 +174,8 @@ public class WorldMovement : MonoBehaviour, IScore {
             answerRowBack.C = questions[currentQuestion + 1].answers[2];
         }
         currentState = WorldMovement.State.Idle;
+        Debug.Log("questions ammount: " + questions.Length);
+        progressBar.SetMaxAwnsers(questions.Length);
 	}
 
     private void CheckAnswer()
@@ -185,6 +190,7 @@ public class WorldMovement : MonoBehaviour, IScore {
             givenAnswer.GetComponent<MeshRenderer>().material.color = Color.red;
         }
         totalAskedQuestions += 1;
+        progressBar.UpdateProgressBar(totalAskedQuestions);
         Debug.Log("aantal vragen: " + questions.Length + " + gestelde vragen: " + totalAskedQuestions);
 
         if (questions.Length == totalAskedQuestions)
@@ -219,20 +225,21 @@ public class WorldMovement : MonoBehaviour, IScore {
     public void ShowScoreScreen() 
     {
         int totalScore = CalculateScore();
-        SaveScore(totalScore);
+        SaveScore(totalScore, gameTimer.GetTotalSeconds());
+        //laat score screen zien.
     }
 
     public int CalculateScore()
     {
         Debug.Log("answerscoreweight " + answerScoreWeigth);
         Debug.Log("totalcorrect questions" + totalCorrectQuestions);
-        return (AnswerScoreWeigth * TotalCorrectQuestions) + (timeScoreWeigth * 1);
+        return AnswerScoreWeigth * TotalCorrectQuestions;
         
     }
-    public void SaveScore(int totalScore)
+    public void SaveScore(int totalScore, int totalTimeSeconds)
     {
-        int playerId = 0;
-        Debug.Log("saving score: " + totalScore);
-        ScoreManager._instance.SaveHighScore(MiniGameEnum.Minigames.Vliegtuig, totalScore, playerId);
+        //database connectie en opslag nodig.
+        Debug.Log("total score: " + totalScore);
+        Debug.Log("total time in seconds: " + totalTimeSeconds);
     }
 }
