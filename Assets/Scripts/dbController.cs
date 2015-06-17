@@ -150,7 +150,7 @@ public class dbController : MonoBehaviour {
         return pic;
     }
 
-    public void insertRect(int x, int y, int width, int height)
+    public void insertRect(Rect rect)
     {
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
@@ -164,10 +164,10 @@ public class dbController : MonoBehaviour {
         cmd.CommandText = "INSERT INTO Rechthoek(AfbeeldingID, XCoordinaat, YCoordinaat, Breedte, Hoogte) VALUES(@lastRowID, @x, @y, @width, @height)";
         
         cmd.Parameters.Add(new SqliteParameter("@lastRowID", lastRowID));
-        cmd.Parameters.Add(new SqliteParameter("@x", x));
-        cmd.Parameters.Add(new SqliteParameter("@y", y));
-        cmd.Parameters.Add(new SqliteParameter("@width", width));
-        cmd.Parameters.Add(new SqliteParameter("@height", height));
+        cmd.Parameters.Add(new SqliteParameter("@x", rect.x));
+        cmd.Parameters.Add(new SqliteParameter("@y", rect.y));
+        cmd.Parameters.Add(new SqliteParameter("@width", rect.width));
+        cmd.Parameters.Add(new SqliteParameter("@height", rect.height));
         
         cmd.ExecuteNonQuery();
 
