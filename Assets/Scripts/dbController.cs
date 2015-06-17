@@ -3,6 +3,7 @@ using Mono.Data.Sqlite;
 using System;
 using System.IO;
 using System.Data;
+using System.Collections.Generic;
 
 public class dbController : MonoBehaviour {
 	protected SqliteConnection dbconn;
@@ -24,6 +25,8 @@ public class dbController : MonoBehaviour {
 
         tex.LoadImage(imgByteArr);
 
+        getRect(254);
+
         //insertRectX(1, 1, 1, 1, 1);
 
         //insertPicture(tex);
@@ -31,7 +34,8 @@ public class dbController : MonoBehaviour {
         ////MeshRenderer rend = plane.GetComponent<MeshRenderer>();
         ////rend.material.SetTexture("_MainTex", extractPicture());
 	}
-	private void insertData(String ImagePath, String ImageNaam)
+	
+    /*private void insertData(String ImagePath, String ImageNaam)
 	{	
 		try
 		{
@@ -51,7 +55,7 @@ public class dbController : MonoBehaviour {
 		{
             Debug.Log("PANIEK TIJDENS AFBEELDING OPSLAAN");
 		}
-	}
+	}*/
 
     public int getAmountOfQuestions(string subject)
     {
@@ -97,7 +101,6 @@ public class dbController : MonoBehaviour {
 
     public void insertPicture(Texture2D pic)
     {
-        Texture2D tex = new Texture2D(2,2);
         byte[] bytes = null;
 
         bytes = pic.EncodeToPNG();
@@ -125,7 +128,7 @@ public class dbController : MonoBehaviour {
         dbconn.Close();
     }
 
-    public Texture2D extractPicture()
+    public Texture2D getPicture()
     {
         Texture2D pic = new Texture2D(2,2);
 
@@ -172,5 +175,33 @@ public class dbController : MonoBehaviour {
         cmd.ExecuteNonQuery();
 
         dbconn.Close();
+    }
+
+    public List<Rect> getRect(int imgID)
+    {
+        List<Rect> lrect = new List<Rect>();
+        Rect rect = new Rect(0,0,0,0);
+        
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT * FROM Rechthoek WHERE AfbeeldingID=" + imgID;
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            rect.x = Convert.ToSingle(reader[2] + ""); rect.y = Convert.ToSingle(reader[3]+"");
+            rect.width = Convert.ToSingle(reader[4] + ""); rect.height = Convert.ToSingle(reader[5] + "");
+
+            //Debug.Log(rect.x + " " + rect.y + " " + rect.width + " " + rect.height);
+
+            lrect.Add(rect);
+        }
+
+        dbconn.Close();
+        return lrect;
     }
 }

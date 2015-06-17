@@ -107,7 +107,7 @@ public class CropSprite : MonoBehaviour
 		topLine = createAndGetLine("TopLine");
 		bottomLine = createAndGetLine("BottomLine");
 
-        saveTexture();
+        //saveTexture();
 	}
 
     //	Creates line through LineRenderer component
