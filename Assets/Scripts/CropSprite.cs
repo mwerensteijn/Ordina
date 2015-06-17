@@ -11,6 +11,9 @@ public class CropSprite : MonoBehaviour
 	public GameObject spriteToCrop;
     public GameObject plane;
 
+    public float minCropHeight = 5;
+    public float minCropWidth = 5;
+
     private bool hallo = true;
 	private Vector3 startPoint, endPoint;
 	private bool isMousePressed;
@@ -161,8 +164,6 @@ public class CropSprite : MonoBehaviour
 		Rect spriteRect = spriteToCrop.GetComponent<SpriteRenderer>().sprite.textureRect;
 
 		int pixelsToUnits = 100; // It's PixelsToUnits of sprite which would be cropped
-        
-//		Crop sprite
 
         //GameObject croppedSpriteObj = new GameObject("CroppedSprite");
         Rect croppedSpriteRect = spriteRect;
@@ -171,9 +172,25 @@ public class CropSprite : MonoBehaviour
 		croppedSpriteRect.height = (Mathf.Abs(bottomRightPoint.y - topLeftPoint.y)*pixelsToUnits)* (1/spriteToCrop.transform.localScale.y);
 		croppedSpriteRect.y = ((topLeftPoint.y - (spriteRenderer.bounds.center.y - spriteRenderer.bounds.size.y/2))*(1/spriteToCrop.transform.localScale.y))* pixelsToUnits - croppedSpriteRect.height;//*(spriteToCrop.transform.localScale.y);
 
-        croppedRects.Add(croppedSpriteRect);
+        if(croppedSpriteRect.width > minCropWidth && croppedSpriteRect.height > minCropHeight) {
+            croppedRects.Add(croppedSpriteRect);
+            //		Crop sprite
+            GameObject g = new GameObject("Question");
+            BoxCollider2D b = g.AddComponent<BoxCollider2D>();
+            b.size = new Vector2(bottomRightPoint.x - topLeftPoint.x, topLeftPoint.y - bottomRightPoint.y);
+            Vector3 pos = topLeftPoint - ((topLeftPoint - bottomRightPoint) / 2);
+            g.transform.position = new Vector3(pos.x, pos.y, 0);
+            ImageAnswer ia = g.AddComponent<ImageAnswer>();
+            ia.leftLine = leftLine;
+            ia.topLine = topLine;
+            ia.rightLine = rightLine;
+            ia.bottomLine = bottomLine;
 
-        
+            leftLine = createAndGetLine("LeftLine");
+            rightLine = createAndGetLine("RightLine");
+            topLine = createAndGetLine("TopLine");
+            bottomLine = createAndGetLine("BottomLine");
+        }
 
         /*
         Debug.Log(croppedRects.Count);
