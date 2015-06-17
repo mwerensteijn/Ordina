@@ -22,31 +22,6 @@ public class CropSprite : MonoBehaviour
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
-    public void ResizeSprite() {
-        SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
-        if (sr == null)
-            return;
-
-        transform.localScale = new Vector3(1, 1, 1);
-
-        float width = sr.sprite.bounds.size.x;
-        float height = sr.sprite.bounds.size.y;
-
-        float worldScreenHeight = Camera.main.orthographicSize * 2.0f * 0.8f;
-        float maxWorldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.8f;
-        float worldScreenWidth = worldScreenHeight * (width / height);
-
-        if (worldScreenWidth > maxWorldScreenWidth) {
-            worldScreenWidth = maxWorldScreenWidth;
-            worldScreenHeight = worldScreenWidth * (height / width);
-        }
-
-        float newWidth = worldScreenWidth / width;
-        float newHeight = worldScreenHeight / height;
-
-        spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
-    }
-
     public static Texture2D LoadPNG(string filePath) {
 
         Texture2D tex = null;
@@ -58,6 +33,11 @@ public class CropSprite : MonoBehaviour
             tex.LoadImage(fileData); //..this will auto-resize the texture dimensions.
         }
         return tex;
+    }
+
+    public void saveTexture()
+    {
+        GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture);
     }
 
     public void SetPlane() {
@@ -78,12 +58,8 @@ public class CropSprite : MonoBehaviour
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
-            
-
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
-
-        ResizeSprite();
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
@@ -94,6 +70,8 @@ public class CropSprite : MonoBehaviour
 		rightLine = createAndGetLine("RightLine");
 		topLine = createAndGetLine("TopLine");
 		bottomLine = createAndGetLine("BottomLine");
+
+        saveTexture();
 	}
 
     //	Creates line through LineRenderer component
@@ -304,8 +282,8 @@ public class CropSprite : MonoBehaviour
                 File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
                 Debug.Log("Saved!");
 
-                GetComponent<dbController>().insertPicture(CroppedTexture);
-                GetComponent<dbController>().insertRectX(1, 1, 1, 1, 1);
+                //GetComponent<dbController>().insertPicture(CroppedTexture);
+                GetComponent<dbController>().insertRect((int)croppedSprite.rect.x, (int)croppedSprite.rect.y, (int)croppedSprite.rect.width, (int)croppedSprite.rect.height);
                  
             }
             hallo = false;

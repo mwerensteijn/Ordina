@@ -90,7 +90,8 @@ public class dbController : MonoBehaviour {
         }
     }
 
-    public Texture2D getBackgroundImage(string subject, int questionID) {
+    public Texture2D getBackgroundImage(string subject, int questionID)
+    {
         return texture;
     }
 
@@ -121,7 +122,7 @@ public class dbController : MonoBehaviour {
             Debug.Log("Values corrupted!");
         }
 
-        //dbconn.Close();
+        dbconn.Close();
     }
 
     public Texture2D extractPicture()
@@ -144,20 +145,32 @@ public class dbController : MonoBehaviour {
             Debug.Log("Entry in tabel met gegeven ID nummer NIET gevonden...");
         }
 
-        //dbconn.Close();
+        dbconn.Close();
 
         return pic;
     }
 
-    public void insertRectX(int rectID, int x, int y, int length, int width)
+    public void insertRect(int x, int y, int width, int height)
     {
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
-        cmd.CommandText = @"select last_insert_rowid()";
+        cmd.CommandText = "SELECT MAX(AfbeeldingID) FROM Afbeelding";
         long lastRowID = (long)cmd.ExecuteScalar();
         Debug.Log(lastRowID);
+
+        cmd.CommandText = "INSERT INTO Rechthoek(AfbeeldingID, XCoordinaat, YCoordinaat, Breedte, Hoogte) VALUES(@lastRowID, @x, @y, @width, @height)";
+        
+        cmd.Parameters.Add(new SqliteParameter("@lastRowID", lastRowID));
+        cmd.Parameters.Add(new SqliteParameter("@x", x));
+        cmd.Parameters.Add(new SqliteParameter("@y", y));
+        cmd.Parameters.Add(new SqliteParameter("@width", width));
+        cmd.Parameters.Add(new SqliteParameter("@height", height));
+        
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
     }
 }
