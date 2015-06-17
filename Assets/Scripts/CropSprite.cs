@@ -19,6 +19,31 @@ public class CropSprite : MonoBehaviour
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
+    public void ResizeSprite() {
+        SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
+        if (sr == null)
+            return;
+
+        transform.localScale = new Vector3(1, 1, 1);
+
+        float width = sr.sprite.bounds.size.x;
+        float height = sr.sprite.bounds.size.y;
+
+        float worldScreenHeight = Camera.main.orthographicSize * 2.0f * 0.8f;
+        float maxWorldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.8f;
+        float worldScreenWidth = worldScreenHeight * (width / height);
+
+        if (worldScreenWidth > maxWorldScreenWidth) {
+            worldScreenWidth = maxWorldScreenWidth;
+            worldScreenHeight = worldScreenWidth * (height / width);
+        }
+
+        float newWidth = worldScreenWidth / width;
+        float newHeight = worldScreenHeight / height;
+
+        spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
+    }
+
     public static Texture2D LoadPNG(string filePath) {
 
         Texture2D tex = null;
@@ -54,6 +79,8 @@ public class CropSprite : MonoBehaviour
 
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
+
+        ResizeSprite();
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
