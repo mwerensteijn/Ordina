@@ -26,6 +26,31 @@ public class CropSprite : MonoBehaviour
         answers.Remove(i);
     }
 
+    public void ResizeTexture() {
+        SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
+        if (sr == null)
+            return;
+
+        transform.localScale = new Vector3(1, 1, 1);
+
+        float width = sr.sprite.bounds.size.x;
+        float height = sr.sprite.bounds.size.y;
+
+        float worldScreenHeight = Camera.main.orthographicSize * 2.0f * 0.8f;
+        float maxWorldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.8f;
+        float worldScreenWidth = worldScreenHeight * (width / height);
+
+        if (worldScreenWidth > maxWorldScreenWidth) {
+            worldScreenWidth = maxWorldScreenWidth;
+            worldScreenHeight = worldScreenWidth * (height / width);
+        }
+
+        float newWidth = worldScreenWidth / width;
+        float newHeight = worldScreenHeight / height;
+
+        spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
+    }
+
     public static Texture2D LoadPNG(string filePath) {
 
         Texture2D tex = null;
@@ -53,6 +78,10 @@ public class CropSprite : MonoBehaviour
         plane.transform.position = new Vector3(0, 0, 9);
     }
 
+    public void NewImage() {
+        Application.LoadLevel("FileBrowser");
+    }
+
 	IEnumerator Start () {
         if (FileBrowser.selectedFile != "") {
             WWW file = new WWW("file://" + FileBrowser.selectedFile);
@@ -65,6 +94,8 @@ public class CropSprite : MonoBehaviour
 
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
+
+        ResizeTexture();
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
