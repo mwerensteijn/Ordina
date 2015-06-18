@@ -160,6 +160,7 @@ GameObject:
   - 124: {fileID: 1895587400}
   - 81: {fileID: 1895587399}
   - 114: {fileID: 1895587404}
+  - 114: {fileID: 1895587405}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -220,6 +221,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: .0219999999
+  m_StereoMirrorMode: 0
 --- !u!4 &1895587403
 Transform:
   m_ObjectHideFlags: 0
@@ -248,6 +250,7 @@ MonoBehaviour:
   emptyTextArea: 0
   checkBox: 0
   popupWindowOpened: 0
+  succesFullySend: 0
   Question: 
   Answer1: 
   Answer2: 
@@ -262,6 +265,9 @@ MonoBehaviour:
   questionAreaPos: 0
   questionWidth: 0
   questionHeight: 0
+  topicAreaPos: 0
+  topicWidth: 0
+  topicHeight: 0
   answer1AreaPos: 0
   answer2AreaPos: 0
   answer3AreaPos: 0
@@ -277,3 +283,22 @@ MonoBehaviour:
   submitAlignLeft: 0
   submitButtonWidth: 0
   submitButtonHeight: 0
+  dropDownRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+--- !u!114 &1895587405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1895587398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ea5f8d8dca44b48bb0d72b34eb813a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texture: {fileID: 0}
+  imgByteArr: 

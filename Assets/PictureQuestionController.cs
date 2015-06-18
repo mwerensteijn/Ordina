@@ -22,9 +22,9 @@ public class PictureQuestionController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         dbControl = new dbController();
-        amountOfQuestions = dbControl.getAmountOfQuestions(1);
+        //amountOfQuestions = dbControl.getAmountOfQuestions(1);
         //subjectID = dbControl.
-        amountOfQuestions = dbControl.getAmountOfQuestions(1);
+        //amountOfQuestions = dbControl.getAmountOfQuestions(1);
         generateQuestionsList();
         spawnQuestion();
 	}
@@ -63,14 +63,14 @@ public class PictureQuestionController : MonoBehaviour {
         {
             return;
         }
-        int amountOfSubImages = dbControl.getAmountOfSubImages(subject, question);
+        //int amountOfSubImages = dbControl.getAmountOfSubImages(subject, question);
 
         // Max amount of subimages
         // if(amountOfSubImages > 5){ amountOfSubImages = 5; }
 
-        for (int subImage = 0; subImage < amountOfSubImages; subImage++)
+        /*for (int subImage = 0; subImage < amountOfSubImages; subImage++)
         {
-            Vector2[] coordinates = dbControl.getSubImageCoordinates(subject, question, subImage);
+            //Vector2[] coordinates = dbControl.getSubImageCoordinates(subject, question, subImage);
             // coordinates
             float maxX = 0;
             float maxY = 0;
@@ -112,8 +112,8 @@ public class PictureQuestionController : MonoBehaviour {
             GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(90,0,0)) as GameObject;
             answerGO.GetComponent<Answer>().answerDescription = answer;
 
-        }
-        questionTexture = dbControl.getBackgroundImage(subject, question);
+        }*/
+        //questionTexture = dbControl.getBackgroundImage(subject, question);
     }
 
     private float calculatePosition(int maxQuestions, int question, float startingPosition, float width){

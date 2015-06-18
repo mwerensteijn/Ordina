@@ -272,4 +272,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texture: {fileID: 0}
   imgByteArr: 
-  plane: {fileID: 0}
