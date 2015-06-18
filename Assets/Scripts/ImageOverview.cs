@@ -11,7 +11,7 @@ public class ImageOverview : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        if (imagesAmount > 9) {
+        /*if (imagesAmount > 9) {
             meerAfbeeldingen.SetActive(true);
         }
 
@@ -39,7 +39,7 @@ public class ImageOverview : MonoBehaviour {
             g[i].transform.localPosition = Vector3.zero;
             BoxCollider2D b = g[i].AddComponent<BoxCollider2D>();
             b.size = gridLayoutGroup.cellSize;
-        }
+        }*/
 	}
 
     public void AddImage() {
