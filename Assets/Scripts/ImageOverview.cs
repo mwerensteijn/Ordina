@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ImageOverview : MonoBehaviour {
     public GUISkin skin;
     public GameObject[] g;
     private GridLayoutGroup gridLayoutGroup;
-    private int imagesAmount = 9;
+    public int imagesAmount = 0;
     public GameObject meerAfbeeldingen;
 
 	// Use this for initialization
 	void Start () {
-        /*if (imagesAmount > 9) {
+        List<Texture2D> textures = GetComponent<dbController>().getPictures(9);
+        imagesAmount = textures.Count;
+
+        if (imagesAmount > 9) {
             meerAfbeeldingen.SetActive(true);
-        }
+        }/*
 
         g = new GameObject[imagesAmount];
         gridLayoutGroup = GameObject.FindGameObjectWithTag("ImageOverview").GetComponent<GridLayoutGroup>();
