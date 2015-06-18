@@ -6,7 +6,7 @@ public class AirplaneMovement : MonoBehaviour {
 	public enum AnswerPosition { Left, Middle, Right };
 	// Holds the position, the player is looking at
 	public AirplaneMovement.AnswerPosition lookingPosition = AnswerPosition.Middle;
-    private AirplaneMovement.AnswerPosition lockedPosition = AnswerPosition.Middle;
+    public  AirplaneMovement.AnswerPosition lockedPosition = AnswerPosition.Middle;
 
 	// X positions answers
 	private float leftLaneX;
@@ -14,6 +14,7 @@ public class AirplaneMovement : MonoBehaviour {
 	private float rightLaneX;
     
     public bool disableMovement = false;
+
 	// The movement speed of the airplane
 	private float sideMovementSpeed = 30f;
 
@@ -30,6 +31,7 @@ public class AirplaneMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         // Save the current position of the airplane
         float x = transform.position.x;
         float y = transform.position.y;
@@ -38,15 +40,15 @@ public class AirplaneMovement : MonoBehaviour {
         if (!disableMovement)
         {
 
-            //z < answerRowFront.transform.position.z &&
-            //Vector3.Dot(transform.position, answerRowFront.transform.position) < 0
             float distance = Vector3.Distance(transform.position, answerRowFront.transform.position);
             Debug.Log("distance " + distance);
-            if (distance < 50 && distance > 20)
+
+            //Vector3.Dot((answerRowFront.transform.position - transform.position).normalized, transform.forward) > 0
+            if (distance < 50)
             {
                 Debug.Log("Movement disabled!");
                 disableMovement = true;        
-                lockedPosition = lookingPosition;
+               // lockedPosition = lookingPosition;
                 Debug.Log("distance < 50 tot ring");
             }
 
@@ -69,6 +71,7 @@ public class AirplaneMovement : MonoBehaviour {
                             x = leftLaneX;
                         }
                     }
+                    lockedPosition = AnswerPosition.Left;
                 }
                 else if (lookingPosition == AnswerPosition.Middle)
                 { // If looking to the middle answer
@@ -91,6 +94,7 @@ public class AirplaneMovement : MonoBehaviour {
                             x = middleLaneX;
                         }
                     }
+                    lockedPosition = AnswerPosition.Middle;
                 }
                 else
                 { // If looking to the right answer
@@ -104,6 +108,7 @@ public class AirplaneMovement : MonoBehaviour {
                             x = rightLaneX;
                         }
                     }
+                    lockedPosition = AnswerPosition.Right;
                 }
             }
         }
@@ -162,20 +167,25 @@ public class AirplaneMovement : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-        if (!disableMovement)
-        {
             if (other.tag == "LeftLane")
             { // The player is looking at the left lane.
                 lookingPosition = AirplaneMovement.AnswerPosition.Left;
+                //lockedPosition = AirplaneMovement.AnswerPosition.Left;
             }
             else if (other.tag == "MiddleLane")
             { // The player is looking at the middle lane.
                 lookingPosition = AirplaneMovement.AnswerPosition.Middle;
+                //lookingPosition = AirplaneMovement.AnswerPosition.Middle;
             }
             else if (other.tag == "RightLane")
             { // The player is looking at the right lane.
                 lookingPosition = AirplaneMovement.AnswerPosition.Right;
+                //lookingPosition = AirplaneMovement.AnswerPosition.Right;
             }
-        }
 	}
+
+    public void SetSideMovementSpeed(float newSpeed) 
+    {
+        sideMovementSpeed = newSpeed;
+    }
 }
