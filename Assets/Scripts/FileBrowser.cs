@@ -12,7 +12,7 @@ public class FileBrowser : MonoBehaviour {
     private int entries;
     private int selectedFileEntry = -1;
 
-    public static string selectedFile = "";
+    public static Texture2D selectedTexture = null;
 
 	// Use this for initialization
 	void Start () {
@@ -104,11 +104,17 @@ public class FileBrowser : MonoBehaviour {
         GUI.EndScrollView();
         if (GUI.Button(new Rect(360, 310, 120, 20), "Select image")) {
             if (selectedFileEntry >= 0) {
-                selectedFile = path + fileEntries[selectedFileEntry];
-
-                Application.LoadLevel("CMS");
+                StartCoroutine(LoadTexture());
             }
         }
+    }
+
+    IEnumerator LoadTexture() {
+        WWW file = new WWW("file://" + path + fileEntries[selectedFileEntry]);
+        yield return file;
+
+        selectedTexture = file.texture;
+        Application.LoadLevel("CMS");
     }
 	
 	// Update is called once per frame

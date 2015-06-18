@@ -12,12 +12,12 @@ public class ImageOverview : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        List<Texture2D> textures = GetComponent<dbController>().getPictures(9);
+        List<Texture2D> textures = GetComponent<dbController>().getPicturesTexture(9);
         imagesAmount = textures.Count;
 
         if (imagesAmount > 9) {
             meerAfbeeldingen.SetActive(true);
-        }/*
+        }
 
         g = new GameObject[imagesAmount];
         gridLayoutGroup = GameObject.FindGameObjectWithTag("ImageOverview").GetComponent<GridLayoutGroup>();
@@ -31,7 +31,7 @@ public class ImageOverview : MonoBehaviour {
             // WWW file = new WWW("file:///C:/b.jpg");
             //yield return file;
 
-            Texture2D tex = GetComponent<dbController>().getPictures(1)[0];
+            Texture2D tex = textures[i];
             Rect rec = new Rect(0, 0, tex.width, tex.height);
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
@@ -43,7 +43,7 @@ public class ImageOverview : MonoBehaviour {
             g[i].transform.localPosition = Vector3.zero;
             BoxCollider2D b = g[i].AddComponent<BoxCollider2D>();
             b.size = gridLayoutGroup.cellSize;
-        }*/
+        }
 	}
 
     public void AddImage() {

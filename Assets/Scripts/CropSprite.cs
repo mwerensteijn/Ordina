@@ -82,12 +82,9 @@ public class CropSprite : MonoBehaviour
         Application.LoadLevel("FileBrowser");
     }
 
-	IEnumerator Start () {
-        if (FileBrowser.selectedFile != "") {
-            WWW file = new WWW("file://" + FileBrowser.selectedFile);
-            yield return file;
-
-            Texture2D tex = file.texture;
+	void Start () {
+        if (FileBrowser.selectedTexture != null) {
+            Texture2D tex = FileBrowser.selectedTexture;
             Rect rec = new Rect(0, 0, tex.width, tex.height);
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
