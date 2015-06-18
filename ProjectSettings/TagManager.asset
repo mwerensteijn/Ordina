@@ -15,8 +15,10 @@ TagManager:
   - Answer2
   - AnswerGiven
   - Bullet
-  - timer
   - ImageOverview
+  - time
+  - progressbar
+  - CardBoardMain
   layers:
   - Default
   - TransparentFX
