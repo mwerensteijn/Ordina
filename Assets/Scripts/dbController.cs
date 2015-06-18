@@ -108,7 +108,7 @@ public class dbController : MonoBehaviour {
     public List<Texture2D> getPictures(int subID)
     {
         List<Texture2D> pic = new List<Texture2D>();
-        Texture2D tex = new Texture2D(2, 2);
+        Texture2D tex;
 
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
@@ -123,6 +123,7 @@ public class dbController : MonoBehaviour {
 
             if (data != null)
             {
+                tex = new Texture2D(2, 2);
                 tex.LoadImage(data);
                 pic.Add(tex);
                 Debug.Log("Entry is gevonden!");

@@ -22,19 +22,11 @@ public class PictureQuestionController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         dbControl = new dbController();
-<<<<<<< HEAD
-        subjectID = dbControl.getSubject(subject);
-        //subjectID = 1;
 
-        questionsListID = dbControl.getQuestionIDs(subjectID);
-        amountOfQuestions = questionsListID.Count;
-
-=======
         //amountOfQuestions = dbControl.getAmountOfQuestions(1);
         //subjectID = dbControl.
         //amountOfQuestions = dbControl.getAmountOfQuestions(1);
         generateQuestionsList();
->>>>>>> e691c061939eae8b55fb20ad94c0ef8716e7f61d
         spawnQuestion();
 	}
 	

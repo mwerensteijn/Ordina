@@ -605,6 +605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skin: {fileID: 11400000, guid: 9e67672e3aa6e84498a30367ac50105b, type: 2}
   g: []
+  imagesAmount: 0
   meerAfbeeldingen: {fileID: 1746653036}
 --- !u!114 &1284569933
 MonoBehaviour:
