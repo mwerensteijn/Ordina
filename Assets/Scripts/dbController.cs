@@ -119,7 +119,7 @@ public class dbController : MonoBehaviour {
 
         while (reader.Read()) 
         {
-            byte[] data = (byte[])reader[1];
+            byte[] data = (byte[])reader[0];
 
             if (data != null)
             {
