@@ -66,8 +66,13 @@ public class CropSprite : MonoBehaviour
 
     public void saveTexture()
     {
-        GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture);
-        StartCoroutine(generateTexturesFromList(answers));
+        int pictureID = GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture);
+        GetComponent<dbController>().insertQuestion(pictureID, 9);
+        //StartCoroutine(generateTexturesFromList(answers));
+    }
+
+    public void Exit() {
+        Application.LoadLevel("ImageOverview");
     }
 
     public void SetPlane() {

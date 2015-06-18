@@ -55,8 +55,9 @@ public class dbController : MonoBehaviour {
             dbconn.Close();
     }
 
-    public void insertPicture(Texture2D pic)
+    public int insertPicture(Texture2D pic)
     {
+        int pictureID = -1;
         byte[] bytes = null;
 
         bytes = pic.EncodeToPNG();
@@ -81,7 +82,17 @@ public class dbController : MonoBehaviour {
             Debug.Log("Values corrupted!");
         }
 
+        cmd = new SqliteCommand(dbconn);
+        cmd.CommandText = "SELECT MAX(AfbeeldingID) FROM Afbeelding LIMIT 1";
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        if (reader.Read()) {
+            pictureID = Convert.ToInt32(reader[0]);
+        }
+
         dbconn.Close();
+
+        return pictureID;
     }
 
     public List<int> getPictureIDs(int subID)
@@ -257,6 +268,22 @@ public class dbController : MonoBehaviour {
 
         cmd.CommandText = "INSERT INTO Vraag(Vraag, OnderwerpID) VALUES(@vraag,@subject)";
         cmd.Parameters.Add(new SqliteParameter("@vraag", question));
+        cmd.Parameters.Add(new SqliteParameter("@subject", subjectID));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void insertQuestion(int pictureID, int subjectID) {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+
+        cmd.CommandText = "INSERT INTO Vraag(AfbeeldingID, OnderwerpID) VALUES(@afbeeldingid,@subject)";
+        cmd.Parameters.Add(new SqliteParameter("@afbeeldingid", pictureID));
         cmd.Parameters.Add(new SqliteParameter("@subject", subjectID));
         cmd.ExecuteNonQuery();
 
