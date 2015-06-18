@@ -15,8 +15,14 @@ TagManager:
   - Answer2
   - AnswerGiven
   - Bullet
+<<<<<<< HEAD
   - timer
   - ImageOverview
+=======
+  - time
+  - progressbar
+  - CardBoardMain
+>>>>>>> Vliegtuigminigame
   layers:
   - Default
   - TransparentFX
