@@ -441,43 +441,43 @@ Prefab:
     m_Modifications:
     - target: {fileID: 22465032, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22465032, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22441878, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22441878, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22441878, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22427460, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22427460, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22459724, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22459724, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22459724, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22492144, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_LocalPosition.x
@@ -986,8 +986,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: 0
   airplaneMovement: {fileID: 0}
-  disappearPositionZ: 118
-  answerScoreWeigth: 0
+  disappearPositionZ: 0
+  answerScoreWeigth: 10
   timeScoreWeigth: 0
 --- !u!1 &1583385811 stripped
 GameObject:
@@ -1205,6 +1205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lookingPosition: 1
+  lockedPosition: 1
   disableMovement: 0
 --- !u!54 &1754489763
 Rigidbody:
