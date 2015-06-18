@@ -9,10 +9,13 @@ public class SubmitAnswers : MonoBehaviour
 
     private int amountOfCorrectAnswers = 0;
     private int amountOfWrongAnswers = 0;
+
+    public PictureQuestionController questionController;
     
 
     void Start()
     {
+
     }
 
     void OnCollisionEnter(Collision collision)
@@ -57,5 +60,8 @@ public class SubmitAnswers : MonoBehaviour
         {
             Debug.Log("Well done");
         }
+
+        questionController.removeQuestion();
+        questionController.spawnQuestion();
     }
 }

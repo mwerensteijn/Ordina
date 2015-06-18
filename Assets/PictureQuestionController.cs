@@ -15,7 +15,7 @@ public class PictureQuestionController : MonoBehaviour {
     //List<int> questionsList = new List<int>();
     //List<string> questionsList;
     List<int> questionsListID;
-
+    List<GameObject> pictureQuestionObjects;
     PictureQuestionController(string subject)
     {
         this.subject = subject;
@@ -61,6 +61,7 @@ public class PictureQuestionController : MonoBehaviour {
 
     public void spawnQuestion()
     {
+        pictureQuestionObjects = new List<GameObject>();
         Texture2D questionTexture;
         int question = findRandomNextQuestion();
         if (question.Equals(""))
@@ -114,11 +115,13 @@ public class PictureQuestionController : MonoBehaviour {
             pq.answerDescription = answer;
 
             submit.addQuestion(pq);
+            pictureQuestionObjects.Add(pictureQuestionGO);
             
 
             // Spawn answer object
             GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(90,0,0)) as GameObject;
             answerGO.GetComponent<Answer>().answerDescription = answer;
+            pictureQuestionObjects.Add(answerGO);
 
         }
         questionTexture = dbControl.getBackgroundImage(subjectID, question);
@@ -137,5 +140,12 @@ public class PictureQuestionController : MonoBehaviour {
 
      //   }
             return value;
+    }
+
+    public void removeQuestion()
+    {
+        for(int i = 0; i < pictureQuestionObjects.Count; i++){
+            Destroy(pictureQuestionObjects[i]);
+        }
     }
 }
