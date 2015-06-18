@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class PictureQuestionController : MonoBehaviour {
     public string subject = "y u no pick subject?"; // Chosen subject
+    public int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
     dbController dbControl; // Database contoller
 
@@ -21,7 +22,12 @@ public class PictureQuestionController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         dbControl = new dbController();
+<<<<<<< HEAD
+        amountOfQuestions = dbControl.getAmountOfQuestions(1);
+=======
+        //subjectID = dbControl.
         amountOfQuestions = dbControl.getAmountOfQuestions(subject);
+>>>>>>> origin/master
         generateQuestionsList();
         spawnQuestion();
 	}
