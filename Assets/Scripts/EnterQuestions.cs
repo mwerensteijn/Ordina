@@ -7,6 +7,8 @@ public class EnterQuestions : MonoBehaviour {
     public Texture2D texture;
     public GUISkin CustomSkin;
 
+    dbController database; 
+
     public bool emptyTextArea, checkBox, popupWindowOpened, succesFullySend = false;
 
     GUIContent checkBox1 = new GUIContent();
@@ -17,7 +19,7 @@ public class EnterQuestions : MonoBehaviour {
     
     bool answer1IsRight, answer2IsRight, answer3IsRight;
 
-    public string Question, Answer1, Answer2, Answer3;
+    public string Question, Answer1, Answer2, Answer3, Subject;
 
     public float offset, checkBoxAlignLeft, checkBoxHeight;
     public float checkBoxWidth, checkBox1Pos, checkBox2Pos, checkBox3Pos;
@@ -42,13 +44,11 @@ public class EnterQuestions : MonoBehaviour {
 
     void Awake()
     {
-        list.Add("h");
-        list.Add("a");
-        list.Add("l");
-        list.Add("l");
-        list.Add("o");
-        list.Add("o");
-        list.Add("o");
+        database = Camera.main.GetComponent<dbController>();
+
+        list = database.getSubjects();
+        if(list.Count >= 0)
+            Subject = list[0];
         Question = "";
         Answer1 = "";
         Answer2 = "";
@@ -129,6 +129,7 @@ public class EnterQuestions : MonoBehaviour {
 
             if (GUI.Button(new Rect(dropDownRect.x, dropDownRect.y, dropDownRect.width, 25f), ""))
             {
+               
                 if (!show)
                 {
                     show = true;
@@ -153,10 +154,11 @@ public class EnterQuestions : MonoBehaviour {
                     {
                         show = false;
                         indexNumber = index;
-                        Debug.Log(indexNumber);
+                        Subject = list[index];
+                        Debug.Log(Subject);
                     }
 
-                    GUI.Label(new Rect(10f, (index * 25), dropDownRect.height, 25f), list[index]);
+                    GUI.Label(new Rect(10f, (index * 25), 150f, 25f), list[index]);
 
                 }
 
@@ -190,11 +192,11 @@ public class EnterQuestions : MonoBehaviour {
         {
             emptyTextArea = checkBox = popupWindowOpened = succesFullySend = false;
 
-            dbController database = Camera.main.GetComponent<dbController>();
-            database.insertQuestion(Question, database.getSubject("")); //TODO - De string moet ingevuld worden met de string!
-            database.insertAnswer(Answer1, 1); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
-            database.insertAnswer(Answer2, 1); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
-            database.insertAnswer(Answer3, 1); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
+
+            database.insertQuestion(Question, database.getSubjectID(Subject)); //TODO - De string moet ingevuld worden met de string!
+            database.insertAnswer(Answer1, database.getQuestionID(Question), answer1IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
+            database.insertAnswer(Answer2, database.getQuestionID(Question), answer2IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
+            database.insertAnswer(Answer3, database.getQuestionID(Question), answer3IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
 
             Application.LoadLevel("EnterQuestions");
 

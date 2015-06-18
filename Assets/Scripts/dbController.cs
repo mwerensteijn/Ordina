@@ -84,7 +84,7 @@ public class dbController : MonoBehaviour {
         dbconn.Close();
     }
 
-    public List<int> getPictures(int subID)
+    public List<int> getPictureIDs(int subID)
     {
         List<int> pic = new List<int>();
 
@@ -119,7 +119,7 @@ public class dbController : MonoBehaviour {
 
         while (reader.Read()) 
         {
-            byte[] data = (byte[])reader[1];
+            byte[] data = (byte[])reader[0];
 
             if (data != null)
             {
@@ -159,7 +159,7 @@ public class dbController : MonoBehaviour {
         return pic;
     }
 
-    public int getPicture(Texture2D img)
+    public int getPictureID(Texture2D img)
     {
         int picID = 0;
         byte[] bytes = null;
@@ -178,7 +178,7 @@ public class dbController : MonoBehaviour {
         return picID;
     }
 
-    public int getPicture(byte[] img)
+    public int getPictureID(byte[] img)
     {
         int picID = 0;
 
@@ -254,7 +254,7 @@ public class dbController : MonoBehaviour {
         //cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Onderwerp=" + subject;
         //subjectID = (int)((Int64)cmd.ExecuteScalar());
 
-        cmd.CommandText = "INSERT INTO Vraag(Vraag, OnderwerpID) VALUES(@vraag, @subject)";
+        cmd.CommandText = "INSERT INTO Vraag(Vraag, OnderwerpID) VALUES(@vraag,@subject)";
         cmd.Parameters.Add(new SqliteParameter("@vraag", question));
         cmd.Parameters.Add(new SqliteParameter("@subject", subjectID));
         cmd.ExecuteNonQuery();
@@ -262,7 +262,7 @@ public class dbController : MonoBehaviour {
         dbconn.Close();
     }
 
-    public List<int> getQuestions(int subjectID)
+    public List<int> getQuestionIDs(int subjectID)
     {
         List<int> lstr = new List<int>();
 
@@ -312,7 +312,7 @@ public class dbController : MonoBehaviour {
         return lstr;
     }
 
-    public int getQuestion(string question)
+    public int getQuestionID(string question)
     {
         int id = 0;
 
@@ -322,9 +322,9 @@ public class dbController : MonoBehaviour {
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT VraagID FROM Vraag WHERE Vraag=" + question;
+        cmd.CommandText = "SELECT VraagID FROM Vraag WHERE Vraag='" + question + "'";
 
-        id = (int)((Int32)cmd.ExecuteScalar());
+        id = Convert.ToInt32(cmd.ExecuteScalar());
 
         dbconn.Close();
 
@@ -394,7 +394,7 @@ public class dbController : MonoBehaviour {
         return answers;
     }
 
-    public List<int> getAnswers(string question)
+    public List<int> getAnswerIDs(string question)
     {
         List<int> answers = new List<int>();
 
@@ -503,21 +503,21 @@ public class dbController : MonoBehaviour {
         return subjects;
     }
 
-    public int getSubject(string subject)
+    public int getSubjectID(string subject)
     {
         int answerID = -1;
+        string bryanisboos;
 
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
-
+        Debug.Log(subject);
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Subject='" + subject + "'";// + subject;
-        answerID = (int)((Int64)cmd.ExecuteScalar());
-
+        cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Subject ='"+ subject+ "'";
+        bryanisboos = cmd.ExecuteScalar() + "";
+        answerID = Convert.ToInt32(bryanisboos);
         dbconn.Close();
-
         return answerID;
     }
 

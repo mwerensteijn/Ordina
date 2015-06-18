@@ -61,7 +61,7 @@ public class SubmitAnswers : MonoBehaviour
             Debug.Log("Well done");
         }
 
-        questionController.removeQuestion();
+        //questionController.removeQuestion();
         questionController.spawnQuestion();
     }
 }

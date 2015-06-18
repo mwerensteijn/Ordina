@@ -1717,7 +1717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554d7b52e03737a41ac010feb97d3d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subject: wiskunde
+  subject: Wiskunde
   subjectID: 0
   pictureQuestion: {fileID: 1299482527}
   pictureAnswer: {fileID: 1107828183}
