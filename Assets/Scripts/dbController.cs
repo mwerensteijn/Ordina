@@ -76,65 +76,6 @@ public class dbController : MonoBehaviour {
         return subjects;
     }
 
-    public int getAmountOfQuestions(int subjectID)
-    {
-        int amount = 0;
-
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
-        dbconn.Open();
-
-        SqliteCommand cmd = new SqliteCommand();
-
-        cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subjectID;
-        SqliteDataReader reader = cmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            amount++;
-        }
-
-        dbconn.Close();
-
-        return amount;
-    }
-
-    public int getAmountOfSubImages(int subject, int questionID)
-    {
-        // TODO use database
-        return 3;
-    }
-
-    public Vector2[] getSubImageCoordinates(int subject, int questionID, int subImageID)
-    {
-        // just a test not the real code
-        if (subImageID == 1)
-        {
-            return new Vector2[] { new Vector2(65, 75), new Vector2(85, 80), new Vector2(65, 150), new Vector2(85, 155) };
-        }
-        else
-        {
-            return new Vector2[] { new Vector2(25, 75), new Vector2(85, 80), new Vector2(25, 150), new Vector2(85, 155) };
-        }
-    }
-
-    public String getQuestionAnswer(int subject, int questionID, int subImageID)
-    {
-        if (subImageID == 1)
-        {
-            return "test1";
-        }
-        else
-        {
-            return "answer"+questionID+"_"+subImageID;
-        }
-    }
-
-    public Texture2D getBackgroundImage(int subject, int questionID)
-    {
-        return texture;
-    }
-
     public void insertPicture(Texture2D pic)
     {
         byte[] bytes = null;
