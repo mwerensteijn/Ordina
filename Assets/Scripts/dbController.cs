@@ -10,37 +10,68 @@ public class dbController : MonoBehaviour {
     public Texture2D texture;
     //public GameObject plane;
     public byte[] imgByteArr;
+
+    public GameObject plane;
 	
 	void Awake () {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
-        dbconn.Open();
-
-        FileStream fs = new FileStream(Application.dataPath + "/database/DOGGOE.png", FileMode.Open, FileAccess.Read);
-        imgByteArr = new byte[fs.Length];
-
-        fs.Read(imgByteArr, 0, Convert.ToInt32(fs.Length));
-        fs.Close();
-
-        Texture2D tex = new Texture2D(2,2);
-
-        tex.LoadImage(imgByteArr);
-
-        //Debug things
-        insertSubject("Wiskunde");
-        int Subbbbje = getSubject("Wiskunde");
-        insertQuestion("Wat is 1+1?", Subbbbje);
-        List<int> lstr = getQuestionIDs(Subbbbje);
-        Debug.Log(lstr[0]);
-        insertAnswer("1+1 = 2", Convert.ToInt32(lstr[0]));
-
-        dbconn.Close();
+        testshit();
 
 	}
 
-    public int getAmountOfQuestions(string subject)
+    public void testshit()
     {
-        // TODO use database
-        return 2;
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        //FileStream fs = new FileStream(Application.dataPath + "/database/DOGGOE.png", FileMode.Open, FileAccess.Read);
+        //imgByteArr = new byte[fs.Length];
+
+        //fs.Read(imgByteArr, 0, Convert.ToInt32(fs.Length));
+        //fs.Close();
+
+        Texture2D tex = new Texture2D(2, 2);
+
+        //tex.LoadImage(imgByteArr);
+
+        List<Texture2D> test = getPictures(getSubject("Wiskunde"));
+
+        tex = test[0];
+
+        MeshRenderer rend = plane.GetComponent<MeshRenderer>();
+        rend.material.SetTexture(1, tex);
+
+        //Debug things
+        //insertSubject("Wiskunde");
+        //int Subbbbje = getSubject("Wiskunde");
+        //insertQuestion("Wat is 1+1?", Subbbbje);
+        //List<int> lstr = getQuestionIDs(Subbbbje);
+        //Debug.Log(lstr[0]);
+        //insertAnswer("1+1 = 2", Convert.ToInt32(lstr[0]));
+
+        dbconn.Close();
+    }
+
+    public int getAmountOfQuestions(int subjectID)
+    {
+        int amount = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subjectID;
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            amount++;
+        }
+
+        dbconn.Close();
+
+        return amount;
     }
 
     public int getAmountOfSubImages(int subject, int questionID)
@@ -108,26 +139,43 @@ public class dbController : MonoBehaviour {
         dbconn.Close();
     }
 
-    public Texture2D getPicture()
+    public List<Texture2D> getPictures(int subID)
     {
-        Texture2D pic = new Texture2D(2,2);
-
+        List<int> ids = new List<int>();
+        List<Texture2D> pic = new List<Texture2D>();
+        Texture2D tex = new Texture2D(2, 2);
+        
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding FROM Afbeelding WHERE AfbeeldingID=39";
-        byte[] data = (byte[])cmd.ExecuteScalar();
+        cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subID;
+        SqliteDataReader reader = cmd.ExecuteReader();
 
-        if (data != null && data != imgByteArr)
+        while (reader.Read())
         {
-            pic.LoadImage(data);
-        }
-        else
-        {
-            Debug.Log("Entry in tabel met gegeven ID nummer NIET gevonden...");
+            ids.Add(Convert.ToInt32(reader[2]+""));
         }
 
+        reader.Close();
+
+        for(int i = 0; i < ids.Count-1; i++) {
+            cmd.CommandText = "SELECT Afbeelding FROM Afbeelding WHERE AfbeeldingID=" + ids[i];
+            
+            byte[] data = (byte[])cmd.ExecuteScalar();
+
+            if (data != null)
+            {
+                tex.LoadImage(data);
+                pic.Add(tex);
+                Debug.Log("Entry is gevonden!");
+            }
+            else
+            {
+                Debug.Log("Entry in tabel met gegeven ID nummer NIET gevonden...");
+            }
+        }
+        
         dbconn.Close();
 
         return pic;
@@ -222,11 +270,11 @@ public class dbController : MonoBehaviour {
         cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subjectID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
-        int index = 0;
+        //int index = 0;
         while (reader.Read())
         {
             lstr.Add(Convert.ToInt32(reader[0]+""));
-            index++;
+            //index++;
         }
 
         dbconn.Close();
