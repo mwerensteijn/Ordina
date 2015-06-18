@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 public class EnterQuestions : MonoBehaviour {
 
-    public Texture2D texture;
+    public Texture2D texture, addButton;
     public GUISkin CustomSkin;
 
     dbController database; 
 
-    public bool emptyTextArea, checkBox, popupWindowOpened, succesFullySend = false;
+    public bool emptyTextArea, checkBox, popupWindowOpened, succesFullySend, showAddSubjectBool = false;
 
     GUIContent checkBox1 = new GUIContent();
     GUIContent checkBox2 = new GUIContent();
@@ -29,10 +29,11 @@ public class EnterQuestions : MonoBehaviour {
     public float labelAlignLeft, labelWidth, labelHeight, answerAlignLeft, answersWidth, answerHeight;
     public float backAlignLeft, backButtonWidth, backButtonHeight;
     public float submitAlignLeft, submitButtonWidth, submitButtonHeight;
+    public float addButtonAlignLeft, addButtonWidth, addButtonHeight;
 
     private Rect windowRect = new Rect(Screen.width / 3, Screen.height / 3, Screen.width / 2.5f, Screen.height / 8);
 
-
+    private string _newSubject;
     private Vector2 scrollViewVector = Vector2.zero;
     public Rect dropDownRect;
     public static List<string> list = new List<string>();
@@ -53,6 +54,7 @@ public class EnterQuestions : MonoBehaviour {
         Answer1 = "";
         Answer2 = "";
         Answer3 = "";
+        _newSubject = "";
 
         offset = Screen.width / 3;
         checkBoxAlignLeft = Screen.width - (Screen.width / 10);
@@ -93,7 +95,12 @@ public class EnterQuestions : MonoBehaviour {
         submitButtonWidth = 80f;
         submitButtonHeight = 30f;
 
-        dropDownRect = new Rect(answerAlignLeft, questionAreaPos - (topicHeight * 6), topicWidth, 30f);
+        dropDownRect = new Rect(answerAlignLeft, questionAreaPos - (topicHeight * 2), topicWidth, 30f);
+
+        addButtonAlignLeft = checkBoxAlignLeft;
+        addButtonWidth = checkBoxWidth;
+        addButtonHeight = checkBoxHeight;
+
     }
 
 
@@ -127,6 +134,7 @@ public class EnterQuestions : MonoBehaviour {
                 Application.LoadLevel("GUI");
             }
 
+            // Dropdown menu
             if (GUI.Button(new Rect(dropDownRect.x, dropDownRect.y, dropDownRect.width, 25f), ""))
             {
                
@@ -170,6 +178,11 @@ public class EnterQuestions : MonoBehaviour {
             }
        }
 
+        if(GUI.Button(new Rect(addButtonAlignLeft, topicAreaPos - addButtonHeight, addButtonWidth, addButtonHeight), addButton))
+        {
+            showAddSubjectBool = true;
+        }
+
         if (emptyTextArea)
         {
             windowRect = GUI.Window(0, windowRect, ShowGui, "Vul alle velden in a.u.b.");
@@ -184,6 +197,24 @@ public class EnterQuestions : MonoBehaviour {
             popupWindowOpened = true;
             windowRect = GUI.Window(1, windowRect, ShowSuccesFullySend, "Gelukt. De vraag staat nu in de database");
         }
+        if(showAddSubjectBool)
+        {
+            GUI.Window(2, windowRect, ShowAddSubject, "Vul een onderwerp in");
+            popupWindowOpened = true;
+        }
+    }
+
+    private void ShowAddSubject(int windowID)
+    {
+        _newSubject = GUI.TextArea(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 2.7f * 2), windowRect.width / 3, windowRect.height / 3.5f), _newSubject);
+        if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 2.4f), windowRect.width / 3, windowRect.height / 3), "Doorgaan"))
+        {
+            database.insertSubject(_newSubject);
+            list.Add(_newSubject);
+            emptyTextArea = checkBox = popupWindowOpened = succesFullySend = showAddSubjectBool = false;
+        }
+        GUI.FocusWindow(2);
+        GUI.DragWindow();
     }
 
     private void ShowSuccesFullySend(int windowID)
@@ -194,6 +225,7 @@ public class EnterQuestions : MonoBehaviour {
 
 
             database.insertQuestion(Question, database.getSubjectID(Subject)); //TODO - De string moet ingevuld worden met de string!
+            
             database.insertAnswer(Answer1, database.getQuestionID(Question), answer1IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
             database.insertAnswer(Answer2, database.getQuestionID(Question), answer2IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
             database.insertAnswer(Answer3, database.getQuestionID(Question), answer3IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
@@ -265,7 +297,7 @@ public class EnterQuestions : MonoBehaviour {
 
     private void _UserInsertQuestions()
     {
-        GUI.Label(new Rect(labelAlignLeft, topicAreaPos - (topicHeight * 5), topicWidth, topicHeight), "Onderwerp");
+        GUI.Label(new Rect(labelAlignLeft, topicAreaPos - topicHeight , topicWidth, topicHeight), "Onderwerp");
 
         GUI.Label(new Rect(labelAlignLeft, checkBox1Pos - (checkBoxHeight * 2), labelWidth, labelHeight), "Vraag");
         Question = GUI.TextArea(new Rect(answerAlignLeft, questionAreaPos, questionWidth, questionHeight), Question);

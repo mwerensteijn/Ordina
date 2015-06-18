@@ -246,15 +246,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   texture: {fileID: 2800000, guid: 1d975582da792004f879829f7f5053a2, type: 3}
+  addButton: {fileID: 2800000, guid: 78d4914dc2933ad46ae9ec057a0a561d, type: 3}
   CustomSkin: {fileID: 11400000, guid: d91b933f02c11fe4f86b5409de9afe4f, type: 2}
   emptyTextArea: 0
   checkBox: 0
   popupWindowOpened: 0
   succesFullySend: 0
+  showAddSubjectBool: 0
   Question: 
   Answer1: 
   Answer2: 
   Answer3: 
+  Subject: 
   offset: 0
   checkBoxAlignLeft: 0
   checkBoxHeight: 0
@@ -283,6 +286,9 @@ MonoBehaviour:
   submitAlignLeft: 0
   submitButtonWidth: 0
   submitButtonHeight: 0
+  addButtonAlignLeft: 0
+  addButtonWidth: 0
+  addButtonHeight: 0
   dropDownRect:
     serializedVersion: 2
     x: 0
