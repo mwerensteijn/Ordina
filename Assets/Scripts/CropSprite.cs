@@ -11,13 +11,45 @@ public class CropSprite : MonoBehaviour
 	public GameObject spriteToCrop;
     public GameObject plane;
 
-    private bool hallo = true;
+    public float minCropHeight = 5;
+    public float minCropWidth = 5;
+
 	private Vector3 startPoint, endPoint;
 	private bool isMousePressed;
     private int cropCounter = 0;
-    private List<Rect> croppedRects = new List<Rect>();
+    private static List<ImageAnswer> answers = new List<ImageAnswer>();
+    //private List<Rect> croppedRects = new List<Rect>();
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
+
+    public static void RemoveAnswer(ImageAnswer i) {
+        answers.Remove(i);
+    }
+
+    public void ResizeTexture() {
+        SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
+        if (sr == null)
+            return;
+
+        transform.localScale = new Vector3(1, 1, 1);
+
+        float width = sr.sprite.bounds.size.x;
+        float height = sr.sprite.bounds.size.y;
+
+        float worldScreenHeight = Camera.main.orthographicSize * 2.0f * 0.8f;
+        float maxWorldScreenWidth = worldScreenHeight / Screen.height * Screen.width * 0.8f;
+        float worldScreenWidth = worldScreenHeight * (width / height);
+
+        if (worldScreenWidth > maxWorldScreenWidth) {
+            worldScreenWidth = maxWorldScreenWidth;
+            worldScreenHeight = worldScreenWidth * (height / width);
+        }
+
+        float newWidth = worldScreenWidth / width;
+        float newHeight = worldScreenHeight / height;
+
+        spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
+    }
 
     public static Texture2D LoadPNG(string filePath) {
 
@@ -32,12 +64,22 @@ public class CropSprite : MonoBehaviour
         return tex;
     }
 
+    public void saveTexture()
+    {
+        GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture);
+        StartCoroutine(generateTexturesFromList(answers));
+    }
+
     public void SetPlane() {
         plane = GameObject.CreatePrimitive(PrimitiveType.Quad);
         plane.transform.localScale = spriteToCrop.GetComponent<SpriteRenderer>().bounds.size;
         plane.GetComponent<MeshRenderer>().material.EnableKeyword("_EMISSION");
         plane.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", Color.white);
         plane.transform.position = new Vector3(0, 0, 9);
+    }
+
+    public void NewImage() {
+        Application.LoadLevel("FileBrowser");
     }
 
 	IEnumerator Start () {
@@ -50,10 +92,10 @@ public class CropSprite : MonoBehaviour
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
-            
-
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
         }
+
+        ResizeTexture();
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
@@ -64,6 +106,8 @@ public class CropSprite : MonoBehaviour
 		rightLine = createAndGetLine("RightLine");
 		topLine = createAndGetLine("TopLine");
 		bottomLine = createAndGetLine("BottomLine");
+
+        //saveTexture();
 	}
 
     //	Creates line through LineRenderer component
@@ -76,8 +120,6 @@ public class CropSprite : MonoBehaviour
 	}
 
 	void Update () {
-        if (croppedRects.Count >= 4)
-            StartCoroutine(generateTexturesFromList(croppedRects));
 		if(Input.GetMouseButtonDown(0) && isSpriteTouched(spriteToCrop)) {
 			isMousePressed = true;
 			startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -134,8 +176,6 @@ public class CropSprite : MonoBehaviour
 		Rect spriteRect = spriteToCrop.GetComponent<SpriteRenderer>().sprite.textureRect;
 
 		int pixelsToUnits = 100; // It's PixelsToUnits of sprite which would be cropped
-        
-//		Crop sprite
 
         //GameObject croppedSpriteObj = new GameObject("CroppedSprite");
         Rect croppedSpriteRect = spriteRect;
@@ -144,9 +184,27 @@ public class CropSprite : MonoBehaviour
 		croppedSpriteRect.height = (Mathf.Abs(bottomRightPoint.y - topLeftPoint.y)*pixelsToUnits)* (1/spriteToCrop.transform.localScale.y);
 		croppedSpriteRect.y = ((topLeftPoint.y - (spriteRenderer.bounds.center.y - spriteRenderer.bounds.size.y/2))*(1/spriteToCrop.transform.localScale.y))* pixelsToUnits - croppedSpriteRect.height;//*(spriteToCrop.transform.localScale.y);
 
-        croppedRects.Add(croppedSpriteRect);
+        if(croppedSpriteRect.width > minCropWidth && croppedSpriteRect.height > minCropHeight) {
+            //		Crop sprite
+            GameObject g = new GameObject("Question");
+            BoxCollider2D b = g.AddComponent<BoxCollider2D>();
+            b.size = new Vector2(bottomRightPoint.x - topLeftPoint.x, topLeftPoint.y - bottomRightPoint.y);
+            Vector3 pos = topLeftPoint - ((topLeftPoint - bottomRightPoint) / 2);
+            g.transform.position = new Vector3(pos.x, pos.y, 0);
+            ImageAnswer ia = g.AddComponent<ImageAnswer>();
+            ia.leftLine = leftLine;
+            ia.topLine = topLine;
+            ia.rightLine = rightLine;
+            ia.bottomLine = bottomLine;
 
-        
+            leftLine = createAndGetLine("LeftLine");
+            rightLine = createAndGetLine("RightLine");
+            topLine = createAndGetLine("TopLine");
+            bottomLine = createAndGetLine("BottomLine");
+
+            ia.rect = croppedSpriteRect;
+            answers.Add(ia);
+        }
 
         /*
         Debug.Log(croppedRects.Count);
@@ -215,59 +273,14 @@ public class CropSprite : MonoBehaviour
 		return false;
 	}
 
-    public IEnumerator generateTexturesFromList(List<Rect> croppedRects){
+    public IEnumerator generateTexturesFromList(List<ImageAnswer> answers){
         yield return new WaitForEndOfFrame();
-        int pixelsToUnits = 100;
         
-        if (hallo == true)
-        {
-            for (int i = 0; i < croppedRects.Count; i++)
-            {
-                Debug.Log("Entered gekke moethode en forloopjeeessss");
-                GameObject croppedSpriteObj = new GameObject("CroppedSprite");
+        dbController db = GetComponent<dbController>();
 
-                SpriteRenderer spriteRenderer = spriteToCrop.GetComponent<SpriteRenderer>();
-                Sprite spriteToCropSprite = spriteRenderer.sprite;
-                Texture2D spriteTexture = spriteToCropSprite.texture;
-                Rect spriteRect = spriteToCrop.GetComponent<SpriteRenderer>().sprite.textureRect;
+        for (int i = 0; i < answers.Count; i++) {
 
-                Sprite croppedSprite = Sprite.Create(spriteTexture, croppedRects[i], new Vector2(0, 1), pixelsToUnits);
-                SpriteRenderer cropSpriteRenderer = croppedSpriteObj.AddComponent<SpriteRenderer>();
-                cropSpriteRenderer.sprite = croppedSprite;
-                //topLeftPoint.z = -1;
-
-                croppedSpriteObj.transform.position = new Vector3(0, 0, 0);
-                croppedSpriteObj.transform.parent = spriteToCrop.transform.parent;
-                croppedSpriteObj.transform.localScale = spriteToCrop.transform.localScale;
-
-                Debug.Log(spriteTexture.height);
-                Debug.Log(spriteTexture.width);
-                //ImageAnswer imageAnswer = croppedSpriteObj.AddComponent<ImageAnswer>();
-                //imageAnswer.position = croppedSpriteRect;
-                //imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
-                
-                
-                Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
-                CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
-                Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
-                                                                    (int)croppedSprite.rect.y,
-                                                                    (int)croppedSprite.rect.width,
-                                                                    (int)croppedSprite.rect.height);
-                CroppedTexture.SetPixels(pixels);
-                CroppedTexture.Apply();
-                byte[] test = CroppedTexture.EncodeToPNG();
-                cropCounter++;
-                File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
-                Debug.Log("Saved!");
-
-                GetComponent<dbController>().insertPicture(CroppedTexture);
-                GetComponent<dbController>().insertRectX(1, 1, 1, 1, 1);
-                 
-            }
-            hallo = false;
+            db.insertRect(answers[i].rect);
         }
-
-        
-
     }
 }

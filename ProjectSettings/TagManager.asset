@@ -15,6 +15,8 @@ TagManager:
   - Answer2
   - AnswerGiven
   - Bullet
+  - timer
+  - ImageOverview
   layers:
   - Default
   - TransparentFX
