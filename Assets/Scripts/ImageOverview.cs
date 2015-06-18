@@ -5,25 +5,29 @@ using UnityEngine.UI;
 public class ImageOverview : MonoBehaviour {
     public GUISkin skin;
     public GameObject[] g;
-    public GameObject imageOverview;
-    public GridLayoutGroup gridLayoutGroup;
+    private GridLayoutGroup gridLayoutGroup;
+    private int imagesAmount = 9;
+    public GameObject meerAfbeeldingen;
 
 	// Use this for initialization
-	IEnumerator Start () {
-        g = new GameObject[9];
+	void Start () {
+        if (imagesAmount > 9) {
+            meerAfbeeldingen.SetActive(true);
+        }
+
+        g = new GameObject[imagesAmount];
         gridLayoutGroup = GameObject.FindGameObjectWithTag("ImageOverview").GetComponent<GridLayoutGroup>();
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < imagesAmount; i++) {
             g[i] = new GameObject();
             g[i].AddComponent<ImageOverviewImage>();
             Image r = g[i].AddComponent<Image>();
             r.preserveAspect = true;
 
+            // WWW file = new WWW("file:///C:/b.jpg");
+            //yield return file;
 
-            WWW file = new WWW("file:///C:/b.jpg");
-            yield return file;
-
-            Texture2D tex = file.texture;
+            Texture2D tex = GetComponent<dbController>().getPicture();
             Rect rec = new Rect(0, 0, tex.width, tex.height);
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
@@ -38,8 +42,12 @@ public class ImageOverview : MonoBehaviour {
         }
 	}
 
+    public void AddImage() {
+        Application.LoadLevel("FileBrowser");
+    }
+
 	// Update is called once per frame
 	void Update () {
-	    
+
 	}
 }
