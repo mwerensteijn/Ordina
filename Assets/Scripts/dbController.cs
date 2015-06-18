@@ -93,7 +93,7 @@ public class dbController : MonoBehaviour {
     public Texture2D getBackgroundImage(string subject, int questionID)
     {
         return texture;
-
+    }
     public void insertPicture(Texture2D pic)
     {
         Texture2D tex = new Texture2D(2,2);

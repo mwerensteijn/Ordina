@@ -203,7 +203,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2000002, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_Enabled
@@ -993,7 +993,7 @@ RectTransform:
   m_LocalScale: {x: .00999999978, y: .00999999978, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_AnchorMin: {x: 0, y: .25}
   m_AnchorMax: {x: 1, y: .75}
   m_AnchoredPosition: {x: -.000134706497, y: 330}
@@ -1249,7 +1249,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1013313086
 Transform:
   m_ObjectHideFlags: 0
@@ -1700,6 +1700,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554d7b52e03737a41ac010feb97d3d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  subject: 
+  pictureQuestion: {fileID: 1299482527}
+  pictureAnswer: {fileID: 1107828183}
 --- !u!4 &1222274902
 Transform:
   m_ObjectHideFlags: 0
@@ -2734,7 +2737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1942342114
 Transform:
   m_ObjectHideFlags: 0
