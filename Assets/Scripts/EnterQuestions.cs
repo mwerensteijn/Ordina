@@ -129,7 +129,6 @@ public class EnterQuestions : MonoBehaviour {
 
             if (GUI.Button(new Rect(dropDownRect.x, dropDownRect.y, dropDownRect.width, 25f), ""))
             {
-               
                 if (!show)
                 {
                     show = true;
@@ -142,9 +141,9 @@ public class EnterQuestions : MonoBehaviour {
 
             if (show)
             {
-                scrollViewVector = GUI.BeginScrollView(new Rect(dropDownRect.x, dropDownRect.y + 25, dropDownRect.width, 125), scrollViewVector, new Rect(0, 0,0, Mathf.Max(topicHeight, ((list.Count-1) * 30))));
+                scrollViewVector = GUI.BeginScrollView(new Rect(dropDownRect.x, dropDownRect.y + 25, dropDownRect.width, 125), scrollViewVector, new Rect(0, 0,0, Mathf.Max(topicHeight, ((list.Count) * 25f))));
 
-                GUI.Box(new Rect(0, 0, dropDownRect.width, Mathf.Max(300, ((list.Count-1) * 30))), "");
+                GUI.Box(new Rect(0, 0, dropDownRect.width, Mathf.Max(300, ((list.Count-1) * 25f))), "");
                
 
                 for (int index = 0; index < list.Count; index++)
@@ -152,13 +151,14 @@ public class EnterQuestions : MonoBehaviour {
 
                     if (GUI.Button(new Rect(0, (index * 25), questionWidth, 25f), ""))
                     {
+                        GUI.BringWindowToFront(0);
                         show = false;
                         indexNumber = index;
                         Subject = list[index];
                         Debug.Log(Subject);
                     }
 
-                    GUI.Label(new Rect(10f, (index * 25), dropDownRect.height, 25f), list[index]);
+                    GUI.Label(new Rect(10f, (index * 25), dropDownRect.height + 50f, 25f), list[index]);
 
                 }
 
@@ -166,7 +166,7 @@ public class EnterQuestions : MonoBehaviour {
             }
             else
             {
-                GUI.Label(new Rect(dropDownRect.x + 10f, dropDownRect.y, dropDownRect.width, 30f), list[indexNumber]);
+                GUI.Label(new Rect(dropDownRect.x + 10f, dropDownRect.y, dropDownRect.width, 25f), list[indexNumber]);
             }
        }
 
