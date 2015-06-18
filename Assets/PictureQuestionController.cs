@@ -10,6 +10,7 @@ public class PictureQuestionController : MonoBehaviour {
 
     public GameObject pictureQuestion;
     public GameObject pictureAnswer;
+    public GameObject backgroundImage;
     public SubmitAnswers submit;
 
     List<int> questionsListID = new List<int>();
@@ -72,15 +73,65 @@ public class PictureQuestionController : MonoBehaviour {
             // Spawn pictureQuestion object
             GameObject pictureQuestionGO = Instantiate(pictureQuestion, new Vector3(4, 3, calculatePosition(amountOfSubImages, subImage, -5, 10)), new Quaternion(0, 0, 0, 0)) as GameObject;
             pictureQuestionGO.GetComponent<PictureQuestion>().answerDescription = answer;
+            // 100 is a bad guess for now
+            pictureQuestionGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height/100, rects[subImage].width/100);
             
 
             // Spawn answer object
             GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(90,0,0)) as GameObject;
             answerGO.GetComponent<Answer>().answerDescription = answer;
-         
+            // 100 is a bad guess for now
+            answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
             questionTexture = dbControl.getPicture(question);
-            answerGO.GetComponent<Renderer>().material.SetTexture("test", questionTexture);
+            //questionTexture.height is 1 (100%)
+            //questionTexture.width is 1 (100%)
+
+            int tHeight = questionTexture.height;
+            int tWidth = questionTexture.width;
+            float rectHeight = rects[subImage].height;
+            float rectWidth = rects[subImage].width;
+            float xOffset = rects[subImage].x / tWidth;
+            float yOffset = rects[subImage].y/tHeight;
+            Vector2[] newUV = new Vector2[]{
+                 new Vector2(xOffset,  yOffset),  // left bottom
+                new Vector2(xOffset + rectWidth/tWidth, yOffset + rectHeight/tHeight),   // right top
+                 new Vector2(xOffset + rectWidth/tWidth,  yOffset), // right bottom
+                new Vector2(xOffset, yOffset + rectHeight/tHeight), //  left Top
+                
+                 new Vector2(0.0f,  0.0f),  // left bottom
+                new Vector2(1.0f, 1.0f),   // right top
+                 new Vector2(1.0f,  0.0f), // right bottom
+                new Vector2(0.0f, 1.0f), //  left Top
+
+                  new Vector2(0.0f,  0.0f),  // left bottom
+                new Vector2(1.0f, 1.0f),   // right top
+                 new Vector2(1.0f,  0.0f), // right bottom
+                new Vector2(0.0f, 1.0f), //  left Top
+
+                  new Vector2(0.0f,  0.0f),  // left bottom
+                new Vector2(1.0f, 1.0f),   // right top
+                 new Vector2(1.0f,  0.0f), // right bottom
+                new Vector2(0.0f, 1.0f), //  left Top
+
+                  new Vector2(0.0f,  0.0f),  // left bottom
+                new Vector2(1.0f, 1.0f),   // right top
+                 new Vector2(1.0f,  0.0f), // right bottom
+                new Vector2(0.0f, 1.0f), //  left Top
+
+                  new Vector2(0.0f,  0.0f),  // left bottom
+                new Vector2(1.0f, 1.0f),   // right top
+                 new Vector2(1.0f,  0.0f), // right bottom
+                new Vector2(0.0f, 1.0f) //  left Top 
+            };
+            answerGO.GetComponent<MeshFilter>().mesh.uv = newUV;
+            pictureQuestionGO.GetComponent<MeshFilter>().mesh.uv = newUV;
+
+            answerGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
+            pictureQuestionGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
         }
+        // Disabled because DB doesn't work yet
+        //questionTexture = dbControl.getPicture(question);
+        //backgroundImage.GetComponent<Renderer>().material.mainTexture = questionTexture;
     }
 
     private float calculatePosition(int maxQuestions, int question, float startingPosition, float width){
