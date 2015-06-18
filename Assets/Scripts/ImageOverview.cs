@@ -1,19 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class ImageOverview : MonoBehaviour {
     public GUISkin skin;
     public GameObject[] g;
     private GridLayoutGroup gridLayoutGroup;
-    private int imagesAmount = 9;
+    public int imagesAmount = 0;
     public GameObject meerAfbeeldingen;
 
 	// Use this for initialization
 	void Start () {
-        /*if (imagesAmount > 9) {
+        List<Texture2D> textures = GetComponent<dbController>().getPictures(9);
+        imagesAmount = textures.Count;
+
+        if (imagesAmount > 9) {
             meerAfbeeldingen.SetActive(true);
-        }
+        }/*
 
         g = new GameObject[imagesAmount];
         gridLayoutGroup = GameObject.FindGameObjectWithTag("ImageOverview").GetComponent<GridLayoutGroup>();
@@ -27,7 +31,7 @@ public class ImageOverview : MonoBehaviour {
             // WWW file = new WWW("file:///C:/b.jpg");
             //yield return file;
 
-            Texture2D tex = GetComponent<dbController>().getPicture();
+            Texture2D tex = GetComponent<dbController>().getPictures(1)[0];
             Rect rec = new Rect(0, 0, tex.width, tex.height);
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);

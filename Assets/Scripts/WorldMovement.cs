@@ -11,6 +11,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 		Idle,
 		CheckAnswer,
 		ChangeQuestion,
+        FinishMiniGame,
         ScoreScreen
 	}
 
@@ -23,8 +24,6 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
-    // answerRowBack always is the row with answers in the back of the game
-    //public AnswerRow answerRowBack;
 
     public AirplaneMovement airplaneMovement;
 
@@ -47,10 +46,6 @@ public class WorldMovement : MonoBehaviour, IScore {
     private int answerScoreWeigth = 0;
     public int AnswerScoreWeigth { get { return answerScoreWeigth; } set { answerScoreWeigth = value; } }
 
-    [SerializeField]
-    private int timeScoreWeigth = 0;
-    public int TimeScoreWeigth { get { return timeScoreWeigth; } set { timeScoreWeigth = value; } }
-
     private int totalAskedQuestions = 0;
     public int TotalAskedQuestions { get { return totalAskedQuestions; } set { totalAskedQuestions = value; } }
 
@@ -61,7 +56,6 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// Initialization
 	void Start () {
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answer1"));
-   //     answerRowBack = new AnswerRow(GameObject.FindGameObjectWithTag("Answer2"));
 		
         // Set the appear position.
         appearPositionZ = answerRowFront.transform.position.z;
@@ -81,20 +75,23 @@ public class WorldMovement : MonoBehaviour, IScore {
         float x = answerRowFront.transform.position.x;
         float y = answerRowFront.transform.position.y;
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !airplaneMovement.disableMovement)
         {
-            movementSpeed = 80;
+            movementSpeed = 80f;
+            airplaneMovement.SetSideMovementSpeed(80f);
+            airplaneMovement.disableMovement = true;
         }
-        else { movementSpeed = 20; }
+        
 		// Move the rows towards the player.
         answerRowFront.transform.position = new Vector3(x, y, answerRowFront.transform.position.z + -movementSpeed * Time.deltaTime);
-        //answerRowBack.transform.position = new Vector3(x, y, answerRowBack.transform.position.z + -movementSpeed * Time.deltaTime);
-            
-        //Debug.Log("Distance: " + Vector3.Distance(transform.Find("Hitbox").transform.position, answerRowFront.transform.position));
 
 		// If a row is not visible anymore, respawn it at the appearing position.
         if (answerRowFront.transform.position.z <= airplaneMovement.transform.position.z) {
             answerRowFront.transform.position = new Vector3(x, y, appearPositionZ);
+
+            airplaneMovement.disableMovement = false;
+            airplaneMovement.SetSideMovementSpeed(30f);
+            movementSpeed = 20f;
 
             Color a = new Color(1f / 255 * 231, 1f / 255 * 155, 1f / 255 * 19);
 
@@ -132,6 +129,9 @@ public class WorldMovement : MonoBehaviour, IScore {
 			case WorldMovement.State.ChangeQuestion:
 				ChangeQuestion();
 				break;
+            case WorldMovement.State.FinishMiniGame:
+                StopMovement();
+                break;
             case WorldMovement.State.ScoreScreen:
                 ShowScoreScreen();
                 StopCoroutine("FSM");
@@ -171,13 +171,6 @@ public class WorldMovement : MonoBehaviour, IScore {
         answerRowFront.B = questions[currentQuestion].answers[1];
         answerRowFront.C = questions[currentQuestion].answers[2];
 
-        //voor nu om te controleren of het tekstbestand eindigt.
-        //if (currentQuestion + 1 < questions.Length)
-        //{
-        //    answerRowBack.A = questions[currentQuestion + 1].answers[0];
-        //    answerRowBack.B = questions[currentQuestion + 1].answers[1];
-        //    answerRowBack.C = questions[currentQuestion + 1].answers[2];
-        //}
         currentState = WorldMovement.State.Idle;
         Debug.Log("questions ammount: " + questions.Length);
         progressBar.SetMaxAwnsers(questions.Length);
@@ -200,7 +193,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
         if (questions.Length == totalAskedQuestions)
         {
-            currentState = WorldMovement.State.ScoreScreen;
+            currentState = WorldMovement.State.FinishMiniGame;
             return;
         }
 
@@ -225,8 +218,14 @@ public class WorldMovement : MonoBehaviour, IScore {
 	public void AnswerCollision(Transform answer) {
         givenAnswer = answer;
 		currentState = WorldMovement.State.CheckAnswer;
-        airplaneMovement.disableMovement = false;
 	}
+
+    public void StopMovement() 
+    {
+        movementSpeed = 0f;
+        airplaneMovement.disableMovement = true;
+        currentState = WorldMovement.State.ScoreScreen;
+    }
 
     public void ShowScoreScreen() 
     {
