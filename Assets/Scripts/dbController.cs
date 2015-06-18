@@ -43,13 +43,13 @@ public class dbController : MonoBehaviour {
         return 2;
     }
 
-    public int getAmountOfSubImages(string subject, int questionID)
+    public int getAmountOfSubImages(int subject, int questionID)
     {
         // TODO use database
         return 3;
     }
 
-    public Vector2[] getSubImageCoordinates(string subject, int questionID, int subImageID)
+    public Vector2[] getSubImageCoordinates(int subject, int questionID, int subImageID)
     {
         // just a test not the real code
         if (subImageID == 1)
@@ -62,7 +62,7 @@ public class dbController : MonoBehaviour {
         }
     }
 
-    public String getQuestionAnswer(string subject, int questionID, int subImageID)
+    public String getQuestionAnswer(int subject, int questionID, int subImageID)
     {
         if (subImageID == 1)
         {
@@ -74,7 +74,7 @@ public class dbController : MonoBehaviour {
         }
     }
 
-    public Texture2D getBackgroundImage(string subject, int questionID)
+    public Texture2D getBackgroundImage(int subject, int questionID)
     {
         return texture;
     }

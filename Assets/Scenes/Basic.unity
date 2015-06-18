@@ -714,6 +714,24 @@ MonoBehaviour:
   m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1205830766}
+          m_MethodName: Shoot
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
+        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   delegates:
   - eventID: 2
     callback:
@@ -724,8 +742,7 @@ MonoBehaviour:
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine, Version=0.0.0.0,
-              Culture=neutral, PublicKeyToken=null
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
@@ -1700,9 +1717,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554d7b52e03737a41ac010feb97d3d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subject: 
+  subject: wiskunde
+  subjectID: 0
   pictureQuestion: {fileID: 1299482527}
   pictureAnswer: {fileID: 1107828183}
+  submit: {fileID: 1659056576}
 --- !u!4 &1222274902
 Transform:
   m_ObjectHideFlags: 0
@@ -2340,10 +2359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c03ef26c5420d4e47aea17d73ab6926c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Questions:
-  - {fileID: 1201860963}
-  - {fileID: 458364495}
-  - {fileID: 1299482527}
+  m_Questions: []
 --- !u!1 &1675061419
 GameObject:
   m_ObjectHideFlags: 0
@@ -2681,6 +2697,7 @@ MonoBehaviour:
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
+  m_RepeatDelay: .5
   m_AllowActivationOnMobileDevice: 0
 --- !u!114 &1916003475
 MonoBehaviour:

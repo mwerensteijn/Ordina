@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SubmitAnswers : MonoBehaviour
 {
      
-    public GameObject[] m_Questions = new GameObject[3];
+    public List<PictureQuestion> m_Questions = new List<PictureQuestion>();
 
     private int amountOfCorrectAnswers = 0;
     private int amountOfWrongAnswers = 0;
@@ -21,20 +22,26 @@ public class SubmitAnswers : MonoBehaviour
         }    
     }
 
+    public void addQuestion(PictureQuestion question)
+    {
+        m_Questions.Add(question);
+    }
+
+    
     void Submit()
     {
         bool check = true;
         Debug.Log("Submit");
-        foreach (GameObject question in m_Questions)
+        foreach (PictureQuestion question in m_Questions)
         {
-            if (!(question.GetComponent<PictureQuestion>().isAnswered()))
+            if (!(question.isAnswered()))
             {
                 Debug.Log("Not all questions are answered");
                 return;
             }
         }
-        foreach(GameObject question in m_Questions){
-            if (question.GetComponent<PictureQuestion>().checkAnswer())
+        foreach(PictureQuestion question in m_Questions){
+            if (question.checkAnswer())
             {
                 amountOfCorrectAnswers += 1;
                 // Correct answer
