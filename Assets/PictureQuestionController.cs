@@ -21,7 +21,7 @@ public class PictureQuestionController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         dbControl = new dbController();
-        amountOfQuestions = dbControl.getAmountOfQuestions(subject);
+        amountOfQuestions = dbControl.getAmountOfQuestions(1);
         generateQuestionsList();
         spawnQuestion();
 	}
