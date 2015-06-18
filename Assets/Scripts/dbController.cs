@@ -539,4 +539,140 @@ public class dbController : MonoBehaviour {
         return answer;
     }
 
+    public void insertScore(string spelerNaam, string onderwerp, int spelID, int score, int tijd, int aantalGesteldeVragen, int correctBeantwoorddeVragen)
+    {
+        int spelerID = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Score(SpelerID, SpelID, Onderwerp, BehaaldeScore, AantalGesteldeVragen, CorrectBeantwoorddeVragen, Tijd) VALUES(@player, @SpelID, @Onderwerp, @BehaaldeScore, @AGV, @CBV, @tijd)";
+
+        spelerID = getPlayerID(spelerNaam);
+
+        cmd.Parameters.Add(new SqliteParameter("@player", spelerID));
+        cmd.Parameters.Add(new SqliteParameter("@SpelID", spelID));
+        cmd.Parameters.Add(new SqliteParameter("@Onderwerp", onderwerp));
+        cmd.Parameters.Add(new SqliteParameter("@BehaaldeScore", score));
+        cmd.Parameters.Add(new SqliteParameter("@AGV", aantalGesteldeVragen));
+        cmd.Parameters.Add(new SqliteParameter("@CBV", correctBeantwoorddeVragen));
+        cmd.Parameters.Add(new SqliteParameter("@tijd", tijd));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void insertScore(int spelerID, string onderwerp, int spelID, int score, int tijd, int aantalGesteldeVragen, int correctBeantwoorddeVragen)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Score(SpelerID, SpelID, Onderwerp, BehaaldeScore, AantalGesteldeVragen, CorrectBeantwoorddeVragen, Tijd) VALUES(@player, @SpelID, @Onderwerp, @BehaaldeScore, @AGV, @CBV, @tijd)";
+
+        cmd.Parameters.Add(new SqliteParameter("@player", spelerID));
+        cmd.Parameters.Add(new SqliteParameter("@SpelID", spelID));
+        cmd.Parameters.Add(new SqliteParameter("@Onderwerp", onderwerp));
+        cmd.Parameters.Add(new SqliteParameter("@BehaaldeScore", score));
+        cmd.Parameters.Add(new SqliteParameter("@AGV", aantalGesteldeVragen));
+        cmd.Parameters.Add(new SqliteParameter("@CBV", correctBeantwoorddeVragen));
+        cmd.Parameters.Add(new SqliteParameter("@tijd", tijd));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public int getScore(int playerID)
+    {
+        int score = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT BehaaldeScore FROM Score WHERE SpelerID='" + playerID + "'";
+        score = Convert.ToInt32(cmd.ExecuteScalar() + "");
+
+        dbconn.Close();
+
+        return score;
+    }
+
+    public int getScore(string player)
+    {
+        int score = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT BehaaldeScore FROM Score WHERE SpelerNaam='" + player + "'";
+        score = Convert.ToInt32(cmd.ExecuteScalar() + "");
+
+        dbconn.Close();
+
+        return score;
+    }
+
+    public void insertPlayerData(string playerName)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Speler(SpelerNaam) VALUES(@player)";
+
+        cmd.Parameters.Add(new SqliteParameter("@player", playerName));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public string getPlayer(int playerID)
+    {
+        string player = "";
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT SpelerNaam FROM Speler WHERE SpelerID='" + playerID + "'";
+        player = cmd.ExecuteScalar() + "";
+
+        dbconn.Close();
+
+        return player;
+    }
+
+    public int getPlayerID(string playerName)
+    {
+        int player = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT SpelerID FROM Speler WHERE SpelerNaam='" + playerName + "'";
+        player = Convert.ToInt32(cmd.ExecuteScalar() + "");
+
+        dbconn.Close();
+
+        return player;
+    }
+
 }
