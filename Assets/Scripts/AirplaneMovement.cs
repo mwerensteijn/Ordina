@@ -41,24 +41,14 @@ public class AirplaneMovement : MonoBehaviour {
         {
 
             float distance = Vector3.Distance(transform.position, answerRowFront.transform.position);
-            Debug.Log("distance " + distance);
 
-            //Vector3.Dot((answerRowFront.transform.position - transform.position).normalized, transform.forward) > 0
             if (distance < 50)
             {
-                Debug.Log("Movement disabled!");
-                disableMovement = true;        
-               // lockedPosition = lookingPosition;
-                Debug.Log("distance < 50 tot ring");
+                disableMovement = true;                
             }
-
-                // nog te doen
-            // verwijderen 2de rij ringen
-            // afstand berekene en userinput locken, vliegtuig op dat moment in de collidende baan laten vliegen (binnen de afstand van ring en vliegtuig goed poisitioneren)
 
             else
             {
-
                 if (lookingPosition == AnswerPosition.Left)
                 { // If looking to the left answer
                     // Move the airplane to the left lane
@@ -170,17 +160,14 @@ public class AirplaneMovement : MonoBehaviour {
             if (other.tag == "LeftLane")
             { // The player is looking at the left lane.
                 lookingPosition = AirplaneMovement.AnswerPosition.Left;
-                //lockedPosition = AirplaneMovement.AnswerPosition.Left;
             }
             else if (other.tag == "MiddleLane")
             { // The player is looking at the middle lane.
                 lookingPosition = AirplaneMovement.AnswerPosition.Middle;
-                //lookingPosition = AirplaneMovement.AnswerPosition.Middle;
             }
             else if (other.tag == "RightLane")
             { // The player is looking at the right lane.
                 lookingPosition = AirplaneMovement.AnswerPosition.Right;
-                //lookingPosition = AirplaneMovement.AnswerPosition.Right;
             }
 	}
 
