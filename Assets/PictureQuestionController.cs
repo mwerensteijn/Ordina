@@ -13,7 +13,6 @@ public class PictureQuestionController : MonoBehaviour {
     public SubmitAnswers submit;
 
     List<int> questionsListID = new List<int>();
-
     PictureQuestionController(string subject)
     {
         this.subject = subject;
@@ -35,20 +34,11 @@ public class PictureQuestionController : MonoBehaviour {
 	
 	}
 
-    // Almost not ugly method for generating a question list needed to get "random" questions just once
-    void generateQuestionsList()
-    {
-        questionsListID = new List<int>();
-        for(int i = 0; i < amountOfQuestions; i++){
-            questionsListID.Add(i);
-        }
-    }
 
     public int findRandomNextQuestion()
     {
         int question = -1;
-        if (questionsListID.Count > 0)
-        {
+        if (questionsListID.Count > 0){
             int index = Random.Range(0, questionsListID.Count);
             question = questionsListID[index];
             questionsListID.Remove(index);
