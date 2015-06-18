@@ -81,11 +81,13 @@ public class WorldMovement : MonoBehaviour, IScore {
         float x = answerRowFront.transform.position.x;
         float y = answerRowFront.transform.position.y;
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !airplaneMovement.disableMovement)
         {
-            movementSpeed = 80;
+            movementSpeed = 80f;
+            airplaneMovement.SetSideMovementSpeed(80f);
+            airplaneMovement.disableMovement = true;
         }
-        else { movementSpeed = 20; }
+        
 		// Move the rows towards the player.
         answerRowFront.transform.position = new Vector3(x, y, answerRowFront.transform.position.z + -movementSpeed * Time.deltaTime);
         //answerRowBack.transform.position = new Vector3(x, y, answerRowBack.transform.position.z + -movementSpeed * Time.deltaTime);
@@ -95,6 +97,10 @@ public class WorldMovement : MonoBehaviour, IScore {
 		// If a row is not visible anymore, respawn it at the appearing position.
         if (answerRowFront.transform.position.z <= airplaneMovement.transform.position.z) {
             answerRowFront.transform.position = new Vector3(x, y, appearPositionZ);
+
+            airplaneMovement.disableMovement = false;
+            airplaneMovement.SetSideMovementSpeed(30f);
+            movementSpeed = 20f;
 
             Color a = new Color(1f / 255 * 231, 1f / 255 * 155, 1f / 255 * 19);
 
@@ -225,7 +231,6 @@ public class WorldMovement : MonoBehaviour, IScore {
 	public void AnswerCollision(Transform answer) {
         givenAnswer = answer;
 		currentState = WorldMovement.State.CheckAnswer;
-        airplaneMovement.disableMovement = false;
 	}
 
     public void ShowScoreScreen() 
