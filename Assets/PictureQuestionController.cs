@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PictureQuestionController : MonoBehaviour {
-    public string subject = "y u no pick subject?"; // Chosen subject
+    public string subject = ""; // Chosen subject
     public int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
     dbController dbControl; // Database contoller
@@ -12,7 +12,7 @@ public class PictureQuestionController : MonoBehaviour {
     public GameObject pictureAnswer;
     public SubmitAnswers submit;
 
-    List<int> questionsList = new List<int>();
+    List<int> questionsListID = new List<int>();
 
     PictureQuestionController(string subject)
     {
@@ -22,19 +22,11 @@ public class PictureQuestionController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         dbControl = new dbController();
-<<<<<<< HEAD
-        subjectID = dbControl.getSubject(subject);
+        subjectID = dbControl.getSubjectID(subject);
         //subjectID = 1;
 
         questionsListID = dbControl.getQuestionIDs(subjectID);
         amountOfQuestions = questionsListID.Count;
-
-=======
-        //amountOfQuestions = dbControl.getAmountOfQuestions(1);
-        //subjectID = dbControl.
-        //amountOfQuestions = dbControl.getAmountOfQuestions(1);
-        generateQuestionsList();
->>>>>>> e691c061939eae8b55fb20ad94c0ef8716e7f61d
         spawnQuestion();
 	}
 	
@@ -46,20 +38,20 @@ public class PictureQuestionController : MonoBehaviour {
     // Almost not ugly method for generating a question list needed to get "random" questions just once
     void generateQuestionsList()
     {
-        questionsList = new List<int>();
+        questionsListID = new List<int>();
         for(int i = 0; i < amountOfQuestions; i++){
-            questionsList.Add(i);
+            questionsListID.Add(i);
         }
     }
 
     public int findRandomNextQuestion()
     {
         int question = -1;
-        if (questionsList.Count > 0)
+        if (questionsListID.Count > 0)
         {
-            int index = Random.Range(0, questionsList.Count);
-            question = questionsList[index];
-            questionsList.Remove(index);
+            int index = Random.Range(0, questionsListID.Count);
+            question = questionsListID[index];
+            questionsListID.Remove(index);
         }
         return question;
     }
