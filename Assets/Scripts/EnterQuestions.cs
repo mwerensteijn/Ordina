@@ -158,7 +158,7 @@ public class EnterQuestions : MonoBehaviour {
                         Debug.Log(Subject);
                     }
 
-                    GUI.Label(new Rect(10f, (index * 25), dropDownRect.height, 25f), list[index]);
+                    GUI.Label(new Rect(10f, (index * 25), 150f, 25f), list[index]);
 
                 }
 
