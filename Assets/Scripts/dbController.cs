@@ -5,27 +5,17 @@ using System.IO;
 using System.Data;
 using System.Collections.Generic;
 
-public class dbController : MonoBehaviour {
-	protected SqliteConnection dbconn;
+public class dbController : MonoBehaviour
+{
+    protected SqliteConnection dbconn;
     public Texture2D texture;
     //public GameObject plane;
     public byte[] imgByteArr;
 
-    public struct fullRect
+    void Awake()
     {
-        public Rect rekt;
-        public int rectID;
-    }
-
-    public struct fullImg
-    {
-        public Texture2D tex;
-        public int imgID;
-    }
-	
-	void Awake () {
         //testshit();
-	}
+    }
 
     public void testshit()
     {
@@ -49,22 +39,22 @@ public class dbController : MonoBehaviour {
             Debug.Log(lsss[i]);
         }
 
-            // List<Texture2D> test = getPictures(getSubject("Wiskunde"));
+        // List<Texture2D> test = getPictures(getSubject("Wiskunde"));
 
-            //tex = test[0];
+        //tex = test[0];
 
-            //MeshRenderer rend = plane.GetComponent<MeshRenderer>();
-            //rend.material.SetTexture(1, tex);
+        //MeshRenderer rend = plane.GetComponent<MeshRenderer>();
+        //rend.material.SetTexture(1, tex);
 
-            //Debug things
-            //insertSubject("Wiskunde");
-            //int Subbbbje = getSubject("Wiskunde");
-            //insertQuestion("Wat is 1+1?", Subbbbje);
-            //List<int> lstr = getQuestionIDs(Subbbbje);
-            //Debug.Log(lstr[0]);
-            //insertAnswer("1+1 = 2", Convert.ToInt32(lstr[0]));
+        //Debug things
+        //insertSubject("Wiskunde");
+        //int Subbbbje = getSubject("Wiskunde");
+        //insertQuestion("Wat is 1+1?", Subbbbje);
+        //List<int> lstr = getQuestionIDs(Subbbbje);
+        //Debug.Log(lstr[0]);
+        //insertAnswer("1+1 = 2", Convert.ToInt32(lstr[0]));
 
-            dbconn.Close();
+        dbconn.Close();
     }
 
     public void insertPicture(Texture2D pic)
@@ -129,7 +119,7 @@ public class dbController : MonoBehaviour {
         cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding, Onderwerp Onderwerp WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
-        while (reader.Read()) 
+        while (reader.Read())
         {
             byte[] data = (byte[])reader[0];
 
@@ -206,41 +196,6 @@ public class dbController : MonoBehaviour {
         return picID;
     }
 
-    public List<fullImg> getPicturesAndIDs(int subjectID)
-    {
-        List<fullImg> pics = new List<fullImg>();
-        Texture2D tex = new Texture2D(2, 2);
-        fullImg fImg = new fullImg();
-
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
-        dbconn.Open();
-
-        SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT * FROM Vraag Vraag, Afbeelding Afbeelding, Onderwerp Onderwerp WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
-        SqliteDataReader reader = cmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            byte[] data = (byte[])reader[1];
-            fImg.imgID = Convert.ToInt32(reader[0]);
-            if (data != null)
-            {
-                tex.LoadImage(data);
-                fImg.tex = tex;
-                pics.Add(fImg);
-                Debug.Log("Entry is gevonden!");
-            }
-            else
-            {
-                Debug.Log("Entry in tabel met gegeven ID nummer NIET gevonden...");
-            }
-        }
-
-        dbconn.Close();
-
-        return pics;
-    }
-
     public void insertRect(Rect rect)
     {
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
@@ -253,13 +208,13 @@ public class dbController : MonoBehaviour {
         Debug.Log(lastRowID);
 
         cmd.CommandText = "INSERT INTO Rechthoek(AfbeeldingID, XCoordinaat, YCoordinaat, Breedte, Hoogte) VALUES(@lastRowID, @x, @y, @width, @height)";
-        
+
         cmd.Parameters.Add(new SqliteParameter("@lastRowID", lastRowID));
         cmd.Parameters.Add(new SqliteParameter("@x", rect.x));
         cmd.Parameters.Add(new SqliteParameter("@y", rect.y));
         cmd.Parameters.Add(new SqliteParameter("@width", rect.width));
         cmd.Parameters.Add(new SqliteParameter("@height", rect.height));
-        
+
         cmd.ExecuteNonQuery();
 
         dbconn.Close();
@@ -268,8 +223,8 @@ public class dbController : MonoBehaviour {
     public List<Rect> getRect(int imgID)
     {
         List<Rect> lrect = new List<Rect>();
-        Rect rect = new Rect(0,0,0,0);
-        
+        Rect rect = new Rect(0, 0, 0, 0);
+
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
@@ -281,42 +236,13 @@ public class dbController : MonoBehaviour {
 
         while (reader.Read())
         {
-            rect.x = Convert.ToSingle(reader[2] + ""); rect.y = Convert.ToSingle(reader[3]+"");
+            rect.x = Convert.ToSingle(reader[2] + ""); rect.y = Convert.ToSingle(reader[3] + "");
             rect.width = Convert.ToSingle(reader[4] + ""); rect.height = Convert.ToSingle(reader[5] + "");
             lrect.Add(rect);
         }
 
         dbconn.Close();
         return lrect;
-    }
-
-    public List<fullRect> getFullRects(int imgID)
-    {
-        List<fullRect> rects = new List<fullRect>();
-        Rect rekt = new Rect(0,0,0,0);
-        fullRect frekt = new fullRect();
-
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
-        dbconn.Open();
-
-        SqliteCommand cmd = new SqliteCommand();
-
-        cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT * FROM Rechthoek WHERE AfbeeldingID=" + imgID;
-        SqliteDataReader reader = cmd.ExecuteReader();
-
-        while (reader.Read())
-        {
-            rekt.x = Convert.ToSingle(reader[2] + ""); rekt.y = Convert.ToSingle(reader[3] + "");
-            rekt.width = Convert.ToSingle(reader[4] + ""); rekt.height = Convert.ToSingle(reader[5] + "");
-            frekt.rekt = rekt;
-            frekt.rectID = Convert.ToInt32(reader[0]);
-            rects.Add(frekt);
-        }
-
-        dbconn.Close();
-
-        return rects;
     }
 
     public void insertQuestion(string question, int subjectID)
@@ -354,7 +280,7 @@ public class dbController : MonoBehaviour {
         //int index = 0;
         while (reader.Read())
         {
-            lstr.Add(Convert.ToInt32(reader[0]+""));
+            lstr.Add(Convert.ToInt32(reader[0] + ""));
             //index++;
         }
 
@@ -493,9 +419,56 @@ public class dbController : MonoBehaviour {
         return answers;
     }
 
+    public List<int> getAnswerIDs(int questionId)
+    {
+        List<int> answers = new List<int>();
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT * FROM Antwoord WHERE VraagID=" + questionId;
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            answers.Add(Convert.ToInt32(reader[0]));
+        }
+
+        dbconn.Close();
+
+        return answers;
+    }
+
+    public string getAnswer(int answerId)
+    {
+        string answer = "";
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT * FROM Antwoord WHERE AntwoordID=" + answerId;
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        while (reader.Read())
+        {
+            answer = (string)reader[1];
+        }
+
+        dbconn.Close();
+
+        return answer;
+    }
+
     public bool getAnswerCorrect(int answerID)
     {
         bool answer = false;
+        int answerINT = 0;
 
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
@@ -504,7 +477,10 @@ public class dbController : MonoBehaviour {
 
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT Correct FROM Antwoord WHERE AntwoordID=" + answerID;
-        answer = (bool)cmd.ExecuteScalar();
+        answerINT = Convert.ToInt32(cmd.ExecuteScalar());
+
+        if (answerINT > 0)
+            answer = true;
 
         dbconn.Close();
 
@@ -590,7 +566,7 @@ public class dbController : MonoBehaviour {
         SqliteCommand cmd = new SqliteCommand();
         Debug.Log(subject);
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Subject ='"+ subject+ "'";
+        cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Subject ='" + subject + "'";
         bryanisboos = cmd.ExecuteScalar() + "";
         answerID = Convert.ToInt32(bryanisboos);
         dbconn.Close();
@@ -750,5 +726,4 @@ public class dbController : MonoBehaviour {
 
         return player;
     }
-
 }
