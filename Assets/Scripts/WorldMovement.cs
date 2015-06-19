@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using Assets.Scripts.HighScore;
+using System.Collections.Generic;
 
 public class WorldMovement : MonoBehaviour, IScore {
 	// The states available in this MultipleChoice game.
@@ -17,6 +18,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     private DigitalClock gameTimer;
     private ProgressBar progressBar;
+    private dbController _dbController;
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
@@ -35,10 +37,12 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// The answer, given by the player.
 	private Transform givenAnswer;
 
-    private Question[] questions;
     private int currentQuestion = 0;
 
     private TextMesh questionText;
+    
+    //alle vragen bijhouden
+    private List<Question> _questions = new List<Question>();
 
     private bool minigameFinshed = false;
 
@@ -52,11 +56,10 @@ public class WorldMovement : MonoBehaviour, IScore {
     private int totalCorrectQuestions = 0;
     public int TotalCorrectQuestions { get { return totalCorrectQuestions; } set { totalCorrectQuestions = value; } }
 
-
 	// Initialization
 	void Start () {
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answer1"));
-		
+        _dbController = GetComponentInParent<dbController>();
         // Set the appear position.
         appearPositionZ = answerRowFront.transform.position.z;
         currentState = WorldMovement.State.Init;
@@ -141,44 +144,83 @@ public class WorldMovement : MonoBehaviour, IScore {
 		}
 	}
 
-    private void LoadQuestionsFromFile(string fileLocation) {
+    private void LoadQuestionsFromFile(string fileLocation)
+    {
         // Load all text from file.
         string text = System.IO.File.ReadAllText(fileLocation);
         // Split the string by new lines.
         string[] data = data = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-        
-        int amountOfQuestions = data.Length / 4;
-        questions = new Question[amountOfQuestions];
 
-        for (int i = 0; i < amountOfQuestions; i++) {
-            questions[i] = new Question();
-            questions[i].question = data[i * 4];
-            questions[i].answers[0] = data[i * 4 + 1];
-            questions[i].answers[1] = data[i * 4 + 2];
-            questions[i].answers[2] = data[i * 4 + 3];
-            questions[i].correctAnswer = questions[i].answers[0];
-            Question.Randomize(questions[i].answers);
+        int amountOfQuestions = data.Length / 4;
+        
+        for (int i = 0; i < amountOfQuestions; i++)
+        {
+            Question question = new Question();
+            _questions.Add(question);
+            _questions[i].question = data[i * 4];
+            _questions[i].answers[0] = data[i * 4 + 1];
+            _questions[i].answers[1] = data[i * 4 + 2];
+            _questions[i].answers[2] = data[i * 4 + 3];
+            _questions[i].correctAnswer = _questions[i].answers[0];
+            Question.Randomize(_questions[i].answers);
         }
+    }
+
+    private void LoadQuestionsFromDB() 
+    {
+        //TODO
+        //onderwerpId = getonderwip of iets..
+        List<int> dbvragenIds = _dbController.getQuestionIDs(68);
+        //questions = new Question[dbvragenIds.Count];
+        //int vraagCount = 0;
+        foreach (int vraagid in dbvragenIds) 
+        {
+            Question question = new Question();
+
+            string vraagString = _dbController.getQuestion(vraagid);
+            question.question = vraagString;
+            Debug.Log("vraag id " + vraagid);
+            List<int> dbvraagAntwoordIds = _dbController.getAnswerIDs(vraagid);
+            Debug.Log("dbvraagAntwoordIds length " + dbvraagAntwoordIds.Count);
+            if (dbvraagAntwoordIds.Count >= 3) {
+                for (int i = 0; i < 2; i++)
+                {
+                    string antwoordString = _dbController.getAnswer(dbvraagAntwoordIds[i]);
+                    bool correctAnswer = _dbController.getAnswerCorrect(dbvraagAntwoordIds[i]);
+
+                    question.answers[i] = antwoordString;
+                    if (correctAnswer) { question.correctAnswer = antwoordString; }
+                    Question.Randomize(question.answers);
+                }
+            }
+            _questions.Add(question);
+            //questions[vraagCount] = question;
+            //vraagCount++;
+        }     
     }
 
 	private void Init() {
 		// load questions
-        LoadQuestionsFromFile("Assets\\data.txt");
+        if (_dbController != null) { LoadQuestionsFromDB(); }
+        else
+        {
+            LoadQuestionsFromFile("Assets\\data.txt");
+        }
 
         // Set question and answer text
-        questionText.text = questions[currentQuestion].question;
-        answerRowFront.A = questions[currentQuestion].answers[0];
-        answerRowFront.B = questions[currentQuestion].answers[1];
-        answerRowFront.C = questions[currentQuestion].answers[2];
+        questionText.text = _questions[currentQuestion].question;
+        answerRowFront.A = _questions[currentQuestion].answers[0];
+        answerRowFront.B = _questions[currentQuestion].answers[1];
+        answerRowFront.C = _questions[currentQuestion].answers[2];
 
         currentState = WorldMovement.State.Idle;
-        Debug.Log("questions ammount: " + questions.Length);
-        progressBar.SetMaxAwnsers(questions.Length);
+        //Debug.Log("questions ammount: " + questions.Length);
+        progressBar.SetMaxAwnsers(_questions.Count);
 	}
 
     private void CheckAnswer()
     {
-        if (givenAnswer.FindChild("Answer").GetComponent<TextMesh>().text.Equals(questions[currentQuestion].correctAnswer))
+        if (givenAnswer.FindChild("Answer").GetComponent<TextMesh>().text.Equals(_questions[currentQuestion].correctAnswer))
         {
             givenAnswer.GetComponent<MeshRenderer>().material.color = Color.green;
             totalCorrectQuestions += 1;
@@ -189,9 +231,9 @@ public class WorldMovement : MonoBehaviour, IScore {
         }
         totalAskedQuestions += 1;
         progressBar.UpdateProgressBar(totalAskedQuestions);
-        Debug.Log("aantal vragen: " + questions.Length + " + gestelde vragen: " + totalAskedQuestions);
+        Debug.Log("aantal vragen: " + _questions.Count + " + gestelde vragen: " + totalAskedQuestions);
 
-        if (questions.Length == totalAskedQuestions)
+        if (_questions.Count == totalAskedQuestions)
         {
             currentState = WorldMovement.State.FinishMiniGame;
             return;
@@ -202,13 +244,13 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     private void ChangeQuestion()
     {
-        if (currentQuestion < questions.Length)
+        if (currentQuestion < _questions.Count)
         {
-            questionText.text = questions[++currentQuestion].question;
-
-            answerRowFront.A = questions[currentQuestion].answers[0];
-            answerRowFront.B = questions[currentQuestion].answers[1];
-            answerRowFront.C = questions[currentQuestion].answers[2];
+            ++currentQuestion;
+            questionText.text = _questions[currentQuestion].question;
+            answerRowFront.A = _questions[currentQuestion].answers[0];
+            answerRowFront.B = _questions[currentQuestion].answers[1];
+            answerRowFront.C = _questions[currentQuestion].answers[2];
 
             currentState = WorldMovement.State.Idle;
         }
@@ -244,6 +286,12 @@ public class WorldMovement : MonoBehaviour, IScore {
     public void SaveScore(int totalScore, int totalTimeSeconds)
     {
         //database connectie en opslag nodig.
+        //TODO parameters moeten er nog aangepast worden.spelid, ondwererp spel naak
+        try
+        {
+            _dbController.insertScore(0, "VliegtuigSpel", 0, totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
+        }
+        catch (Exception e) { Debug.Log("foutmelding: " + e.Message);} 
         Debug.Log("total score: " + totalScore);
         Debug.Log("total time in seconds: " + totalTimeSeconds);
     }
