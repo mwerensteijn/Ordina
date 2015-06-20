@@ -79,40 +79,26 @@ public class PictureQuestionController : MonoBehaviour {
             string answer = ""+subImage;
 
             // Spawn pictureQuestion object
-            GameObject pictureQuestionGO = Instantiate(pictureQuestion, new Vector3(4, 3, calculatePosition(amountOfSubImages, subImage, -5, 10)), new Quaternion(0, 0, 0, 0)) as GameObject;
-            pictureQuestionGO.GetComponent<PictureQuestion>().answerDescription = answer;
-            // 100 is a bad guess for now
-            pictureQuestionGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height/100, rects[subImage].width/100);
-            
-
-            // Spawn answer object
-            GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(90,0,0)) as GameObject;
-            answerGO.GetComponent<Answer>().answerDescription = answer;
-            // 100 is a bad guess for now
-            answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
-            questionTexture = dbControl.getPicture(question);
-            //questionTexture.height is 1 (100%)
-            //questionTexture.width is 1 (100%)
-
             int tHeight = questionTexture.height;
             int tWidth = questionTexture.width;
-            float rectHeight = rects[subImage].height;
-            float rectWidth = rects[subImage].width;
-            float xOffset = rects[subImage].x / tWidth;
-            float yOffset = rects[subImage].y / tHeight;
 
-            // Used to scale the texture on the answer QUAD
-            Vector2[] newUV = new Vector2[]{
-                new Vector2(xOffset,  yOffset),  // left bottom
-                new Vector2(xOffset + rectWidth/tWidth, yOffset + rectHeight/tHeight),   // right top
-                new Vector2(xOffset + rectWidth/tWidth,  yOffset), // right bottom
-                new Vector2(xOffset, yOffset + rectHeight/tHeight), //  left Top
-           };
-            answerGO.GetComponent<MeshFilter>().mesh.uv = newUV;
-            pictureQuestionGO.GetComponent<MeshFilter>().mesh.uv = newUV;
+            float newZPosition = transform.localScale.x / tWidth * (rects[subImage].x + rects[subImage].width / 2) - transform.localScale.x / 2 + transform.position.z;
+            float newYPosition = transform.position.y + transform.localScale.y / 2 - transform.localScale.y / tHeight * (rects[subImage].y + rects[subImage].height / 2);
 
-            answerGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
-            pictureQuestionGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
+         
+            GameObject pictureQuestionGO = Instantiate(pictureQuestion, new Vector3(mainPictureQuestion.transform.position.x + 0.01f, newYPosition, newZPosition), Quaternion.Euler(0,270,0)) as GameObject;
+            submit.addQuestion(pictureQuestionGO.GetComponent<PictureQuestion>()); 
+            pictureQuestionGO.GetComponent<PictureQuestion>().answerDescription = answer;
+            pictureQuestionGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
+            
+            // Spawn answer object
+            GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(0,180,0)) as GameObject;
+            answerGO.GetComponent<Answer>().answerDescription = answer;
+            //answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
+            answerGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
+            questionTexture = dbControl.getPicture(question);
+         
+            changeUV(answerGO, questionTexture, rects[subImage]);
         }
     }
 
@@ -148,5 +134,34 @@ public class PictureQuestionController : MonoBehaviour {
         }
 
         mainPictureQuestion.transform.localScale = new Vector3(width, height, 1f);
+    }
+
+    public void changeUV(GameObject gObject, Texture2D texture, Rect test)
+    {
+        if (texture != null)
+        {
+
+            int tHeight = texture.height;
+            int tWidth = texture.width;
+            float rectHeight = test.height;
+            float rectWidth = test.width;
+            float yOffset = test.y / tHeight;
+
+            float leftX = test.x / tWidth;
+            float rightX = leftX + rectWidth / tWidth;
+            float topY = (1 - test.y / texture.height);
+            float bottomY = 1 - (test.y + test.height) / texture.height;
+
+            Vector2[] newUV = new Vector2[]{
+            // quad
+                new Vector2(leftX,  bottomY),  // left bottom
+                new Vector2(rightX, topY),   // right top
+                 new Vector2(rightX,  bottomY), // right bottom
+                new Vector2(leftX, topY), //  left Top */
+            };
+
+            gObject.GetComponent<MeshFilter>().mesh.uv = newUV;
+            gObject.GetComponent<Renderer>().material.mainTexture = texture;
+        }
     }
 }

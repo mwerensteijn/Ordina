@@ -52,11 +52,13 @@ public class Bullet : MonoBehaviour {
 
                 hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
                 hit.collider.GetComponent<Renderer>().material = answer.GetComponent<Renderer>().material;
-                testUV hitUV = hit.collider.GetComponent<testUV>();
-                testUV answerUV = answer.GetComponent<testUV>();
-                hitUV.test = answerUV.test;
+                //Vector2[] hitUV = hit.collider.GetComponent<MeshFilter>().mesh.uv;
+                Vector2[] answerUV = answer.GetComponent<MeshFilter>().mesh.uv;
+                hit.collider.GetComponent<MeshFilter>().mesh.uv = answerUV;
+                
+                /*hitUV.test = answerUV.test;
                 hitUV.texture = answerUV.texture;
-                hitUV.UpdateUVs(); 
+                hitUV.UpdateUVs(); */
             }
             else
             {
@@ -88,7 +90,7 @@ public class Bullet : MonoBehaviour {
         ImpactList.Add(impactA);
         //Debug.Log(ImpactList.Count);
 
-        // Destory bullet
+        // Destroy bullet
         Destroy(this.gameObject);
     }
 
