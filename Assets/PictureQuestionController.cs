@@ -4,16 +4,23 @@ using System.Collections.Generic;
 
 public class PictureQuestionController : MonoBehaviour {
     public string subject = ""; // Chosen subject
-    public int subjectID = -1;
+    private int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
     dbController dbControl; // Database contoller
 
     public GameObject pictureQuestion;
     public GameObject pictureAnswer;
-    public GameObject backgroundImage;
+    public GameObject mainPictureQuestion;
     public SubmitAnswers submit;
 
     List<int> questionsListID = new List<int>();
+
+
+    public Texture2D texture;
+
+
+
+
     PictureQuestionController(string subject)
     {
         this.subject = subject;
@@ -23,10 +30,11 @@ public class PictureQuestionController : MonoBehaviour {
 	void Start () {
         dbControl = new dbController();
         subjectID = dbControl.getSubjectID(subject);
-        //subjectID = 1;
+        //subjectID = 101;
 
         questionsListID = dbControl.getQuestionIDs(subjectID);
         amountOfQuestions = questionsListID.Count;
+        Debug.Log("Total amount of questions found: " + amountOfQuestions);
         spawnQuestion();
 	}
 	
@@ -38,11 +46,12 @@ public class PictureQuestionController : MonoBehaviour {
 
     public int findRandomNextQuestion()
     {
+        Debug.Log("RandomQuestions: " + questionsListID.Count);
         int question = -1;
         if (questionsListID.Count > 0){
             int index = Random.Range(0, questionsListID.Count);
             question = questionsListID[index];
-            questionsListID.Remove(index);
+            questionsListID.Remove(question);
         }
         return question;
     }
@@ -53,14 +62,17 @@ public class PictureQuestionController : MonoBehaviour {
         int question = findRandomNextQuestion();
         if (question <= -1)
         {
+            Debug.Log("NO NEW QUESTIONS FOUND!");
             return;
         }
-        List<Rect> rects = dbControl.getRect(question);
+        // Werkt niet, want db.
+        questionTexture = dbControl.getPicture(question);
+        int pictureID = dbControl.getPictureID(questionTexture);
+        //int pictureID = 264;
+        List<Rect> rects = dbControl.getRect(pictureID);
         int amountOfSubImages = rects.Count;
-
-        Debug.Log(amountOfQuestions);
-        Debug.Log(question);
-        Debug.Log(amountOfSubImages);
+        Debug.Log("Spawn question with id: " + question);
+        Debug.Log("The question needs "+ amountOfSubImages + " answers");
 
         // Max amount of subimages
         // if(amountOfSubImages > 5){ amountOfSubImages = 5; }
@@ -91,38 +103,15 @@ public class PictureQuestionController : MonoBehaviour {
             float rectHeight = rects[subImage].height;
             float rectWidth = rects[subImage].width;
             float xOffset = rects[subImage].x / tWidth;
-            float yOffset = rects[subImage].y/tHeight;
+            float yOffset = rects[subImage].y / tHeight;
+
+            // Used to scale the texture on the answer QUAD
             Vector2[] newUV = new Vector2[]{
-                 new Vector2(xOffset,  yOffset),  // left bottom
+                new Vector2(xOffset,  yOffset),  // left bottom
                 new Vector2(xOffset + rectWidth/tWidth, yOffset + rectHeight/tHeight),   // right top
-                 new Vector2(xOffset + rectWidth/tWidth,  yOffset), // right bottom
+                new Vector2(xOffset + rectWidth/tWidth,  yOffset), // right bottom
                 new Vector2(xOffset, yOffset + rectHeight/tHeight), //  left Top
-                
-                 new Vector2(0.0f,  0.0f),  // left bottom
-                new Vector2(1.0f, 1.0f),   // right top
-                 new Vector2(1.0f,  0.0f), // right bottom
-                new Vector2(0.0f, 1.0f), //  left Top
-
-                  new Vector2(0.0f,  0.0f),  // left bottom
-                new Vector2(1.0f, 1.0f),   // right top
-                 new Vector2(1.0f,  0.0f), // right bottom
-                new Vector2(0.0f, 1.0f), //  left Top
-
-                  new Vector2(0.0f,  0.0f),  // left bottom
-                new Vector2(1.0f, 1.0f),   // right top
-                 new Vector2(1.0f,  0.0f), // right bottom
-                new Vector2(0.0f, 1.0f), //  left Top
-
-                  new Vector2(0.0f,  0.0f),  // left bottom
-                new Vector2(1.0f, 1.0f),   // right top
-                 new Vector2(1.0f,  0.0f), // right bottom
-                new Vector2(0.0f, 1.0f), //  left Top
-
-                  new Vector2(0.0f,  0.0f),  // left bottom
-                new Vector2(1.0f, 1.0f),   // right top
-                 new Vector2(1.0f,  0.0f), // right bottom
-                new Vector2(0.0f, 1.0f) //  left Top 
-            };
+           };
             answerGO.GetComponent<MeshFilter>().mesh.uv = newUV;
             pictureQuestionGO.GetComponent<MeshFilter>().mesh.uv = newUV;
 
@@ -130,8 +119,11 @@ public class PictureQuestionController : MonoBehaviour {
             pictureQuestionGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
         }
         // Disabled because DB doesn't work yet
-        //questionTexture = dbControl.getPicture(question);
-        //backgroundImage.GetComponent<Renderer>().material.mainTexture = questionTexture;
+       /* questionTexture = dbControl.getPicture(question);
+        mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = questionTexture;
+        resizeQuestionImage(questionTexture);*/
+        mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = texture;
+        resizeQuestionImage(texture);
     }
 
     private float calculatePosition(int maxQuestions, int question, float startingPosition, float width){
@@ -147,5 +139,24 @@ public class PictureQuestionController : MonoBehaviour {
 
      //   }
             return value;
+    }
+
+
+
+    private void resizeQuestionImage(Texture questionTexture)
+    {
+        float textureWidth = questionTexture.width;
+        float textureHeight = questionTexture.height;
+
+        float height = mainPictureQuestion.transform.localScale.y;
+        float maxWidth = mainPictureQuestion.transform.localScale.x;
+        float width = height * (textureWidth / textureHeight);
+
+        if (width > maxWidth) {
+            width = maxWidth;
+            height = width * (textureHeight / textureWidth);
+        }
+
+        mainPictureQuestion.transform.localScale = new Vector3(width, height, 1f);
     }
 }
