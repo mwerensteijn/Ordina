@@ -210,7 +210,7 @@ public class dbController : MonoBehaviour
         return picID;
     }
 
-    public int getPictureID(int subjectID)
+   /* public int getPictureIDs(int subjectID)
     {
         int picID = 0;
 
@@ -224,7 +224,7 @@ public class dbController : MonoBehaviour
         dbconn.Close();
 
         return picID;
-    }
+    }*/
 
     public void insertRect(Rect rect)
     {
@@ -261,6 +261,23 @@ public class dbController : MonoBehaviour
         cmd.ExecuteScalar();
 
         dbconn.Close();
+    }
+
+
+    public int getPictureID(int questionID)
+    {
+        int picID = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+        cmd.CommandText = "SELECT Vraag.AfbeeldingID FROM Vraag  WHERE Vraag.VraagID=" + questionID;
+        picID = Convert.ToInt32(cmd.ExecuteScalar());
+
+        dbconn.Close();
+
+        return picID;
     }
 
     public List<Rect> getRect(int imgID)

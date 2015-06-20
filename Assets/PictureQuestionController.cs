@@ -62,8 +62,9 @@ public class PictureQuestionController : MonoBehaviour {
         questionTexture = dbControl.getPicture(question);
         mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = questionTexture;
         Debug.Log("Texture set");
-        int pictureID = dbControl.getPictureID(questionTexture);
+        int pictureID = dbControl.getPictureID(question);
         //int pictureID = 264;
+        Debug.Log(pictureID);
         List<Rect> rects = dbControl.getRect(pictureID);
         int amountOfSubImages = rects.Count;
         Debug.Log("Spawn question with id: " + question);
