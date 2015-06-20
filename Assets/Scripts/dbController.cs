@@ -166,7 +166,7 @@ public class dbController : MonoBehaviour
 
         while (reader.Read())
         {
-            pic.LoadImage((byte[])reader[1]);
+            pic.LoadImage((byte[])reader[0]);
         }
 
         dbconn.Close();

@@ -15,12 +15,6 @@ public class PictureQuestionController : MonoBehaviour {
 
     List<int> questionsListID = new List<int>();
 
-
-    public Texture2D texture;
-
-
-
-
     PictureQuestionController(string subject)
     {
         this.subject = subject;
@@ -65,8 +59,9 @@ public class PictureQuestionController : MonoBehaviour {
             Debug.Log("NO NEW QUESTIONS FOUND!");
             return;
         }
-        // Werkt niet, want db.
         questionTexture = dbControl.getPicture(question);
+        mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = questionTexture;
+        Debug.Log("Texture set");
         int pictureID = dbControl.getPictureID(questionTexture);
         //int pictureID = 264;
         List<Rect> rects = dbControl.getRect(pictureID);
@@ -118,12 +113,6 @@ public class PictureQuestionController : MonoBehaviour {
             answerGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
             pictureQuestionGO.GetComponent<Renderer>().material.mainTexture = questionTexture;
         }
-        // Disabled because DB doesn't work yet
-       /* questionTexture = dbControl.getPicture(question);
-        mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = questionTexture;
-        resizeQuestionImage(questionTexture);*/
-        mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = texture;
-        resizeQuestionImage(texture);
     }
 
     private float calculatePosition(int maxQuestions, int question, float startingPosition, float width){
