@@ -59,12 +59,14 @@ public class PictureQuestionController : MonoBehaviour {
             Debug.Log("NO NEW QUESTIONS FOUND!");
             return;
         }
-        questionTexture = dbControl.getPicture(question);
+
+        int pictureID = dbControl.getPictureID(question);
+        Debug.Log(pictureID);
+        questionTexture = dbControl.getPicture(pictureID);
         mainPictureQuestion.GetComponent<Renderer>().material.mainTexture = questionTexture;
         Debug.Log("Texture set");
-        int pictureID = dbControl.getPictureID(question);
         //int pictureID = 264;
-        Debug.Log(pictureID);
+        
         List<Rect> rects = dbControl.getRect(pictureID);
         int amountOfSubImages = rects.Count;
         Debug.Log("Spawn question with id: " + question);
@@ -96,7 +98,6 @@ public class PictureQuestionController : MonoBehaviour {
             answerGO.GetComponent<Answer>().answerDescription = answer;
             //answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
             answerGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
-            questionTexture = dbControl.getPicture(question);
          
             changeUV(answerGO, questionTexture, rects[subImage]);
         }
