@@ -86,6 +86,19 @@ public class dbController : MonoBehaviour
         dbconn.Close();
     }
 
+    public void delelePicture(int imgID)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + imgID;
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
     public List<int> getPictureIDs(int subID)
     {
         List<int> pic = new List<int>();
@@ -172,8 +185,8 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Afbeelding Afbeelding WHERE Afbeelding.Afbeelding=" + bytes;
-        picID = (int)((Int32)cmd.ExecuteScalar());
+        cmd.CommandText = "SELECT Afbeelding.AfbeeldingID FROM Afbeelding Afbeelding WHERE Afbeelding.Afbeelding=" + bytes;
+        picID = Convert.ToInt32(cmd.ExecuteScalar());
 
         dbconn.Close();
 
@@ -188,8 +201,24 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Afbeelding Afbeelding WHERE Afbeelding.Afbeelding=" + img;
-        picID = (int)((Int32)cmd.ExecuteScalar());
+        cmd.CommandText = "SELECT Afbeelding.AfbeeldingID FROM Afbeelding Afbeelding WHERE Afbeelding.Afbeelding=" + img;
+        picID = Convert.ToInt32(cmd.ExecuteScalar());
+
+        dbconn.Close();
+
+        return picID;
+    }
+
+    public int getPictureID(int subjectID)
+    {
+        int picID = 0;
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+        cmd.CommandText = "SELECT Afbeelding.AfbeeldingID FROM Afbeelding, Vraag  WHERE Vraag.OnderwerpID=" + subjectID + " AND Vraag.AfbeeldingID = Afbeelding.AfbeeldingID";
+        picID = Convert.ToInt32(cmd.ExecuteScalar());
 
         dbconn.Close();
 
@@ -532,6 +561,32 @@ public class dbController : MonoBehaviour
 
             dbconn.Close();
         }
+    }
+
+    public void deleteSubject(string subj)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject=" + subj;
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
+    public void deleteSubject(int subjID)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Onderwerp WHERE OnderwerpID=" + subjID;
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
     }
 
     public List<string> getSubjects()
