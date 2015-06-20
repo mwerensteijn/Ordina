@@ -124,13 +124,13 @@ public class dbController : MonoBehaviour
     public List<Texture2D> getPictures(int subID)
     {
         List<Texture2D> pic = new List<Texture2D>();
-        Texture2D tex = new Texture2D(2, 2);
+        Texture2D tex;
 
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding, Onderwerp Onderwerp WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
+        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
         while (reader.Read())
@@ -139,6 +139,7 @@ public class dbController : MonoBehaviour
 
             if (data != null)
             {
+                tex = new Texture2D(2, 2);
                 tex.LoadImage(data);
                 pic.Add(tex);
                 Debug.Log("Entry is gevonden!");
