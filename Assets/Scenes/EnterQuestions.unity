@@ -255,6 +255,7 @@ MonoBehaviour:
   Answer1: 
   Answer2: 
   Answer3: 
+  Subject: 
   offset: 0
   checkBoxAlignLeft: 0
   checkBoxHeight: 0

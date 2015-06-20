@@ -248,6 +248,7 @@ MonoBehaviour:
   customSkin1: {fileID: 11400000, guid: c93e5b06d72ef6e498fad6e8012607c9, type: 2}
   customSkin2: {fileID: 11400000, guid: adc2042f369d84b4284332751eeb4425, type: 2}
   customSkin3: {fileID: 11400000, guid: 81098c9413ac7fa4393ce082107d6dfb, type: 2}
+  dropDownImage: {fileID: 2800000, guid: 693a778a9935792419b59924ad13027b, type: 3}
   offset: 0
   topBannerWidth: 0
   topBannerHeight: 0
@@ -259,6 +260,12 @@ MonoBehaviour:
   bottomBannerWidth: 0
   bottomBannerHeight: 0
   bottomBannerPos: 0
+  dropDownRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
 --- !u!114 &1419134809
 MonoBehaviour:
   m_ObjectHideFlags: 0
