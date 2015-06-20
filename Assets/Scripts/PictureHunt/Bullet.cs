@@ -52,6 +52,11 @@ public class Bullet : MonoBehaviour {
 
                 hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
                 hit.collider.GetComponent<Renderer>().material = answer.GetComponent<Renderer>().material;
+                testUV hitUV = hit.collider.GetComponent<testUV>();
+                testUV answerUV = answer.GetComponent<testUV>();
+                hitUV.test = answerUV.test;
+                hitUV.texture = answerUV.texture;
+                hitUV.UpdateUVs(); 
             }
             else
             {
@@ -63,7 +68,6 @@ public class Bullet : MonoBehaviour {
         // Check if the bullet did hit an answer
         if (hit.collider.tag == "Answer")
         {
-            Debug.Log("Answer");
             answer = hit.collider.gameObject;
             answer.SetActive(false);
         }

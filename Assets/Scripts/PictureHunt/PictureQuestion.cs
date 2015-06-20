@@ -62,8 +62,7 @@ public class PictureQuestion : MonoBehaviour
         return givenAnswer != null;
     }
 
-    public void reset()
-    {
+    public void reset() {
         if (givenAnswer != null)
         {
             givenAnswer.reset();
