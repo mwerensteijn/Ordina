@@ -12,7 +12,7 @@ public class ImageOverview : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        List<Texture2D> textures = GetComponent<dbController>().getPictures(9);
+        List<dbController.Picture> textures = GetComponent<dbController>().getPictures(9);
         imagesAmount = textures.Count;
 
         if (imagesAmount > 9) {
@@ -24,14 +24,14 @@ public class ImageOverview : MonoBehaviour {
 
         for (int i = 0; i < imagesAmount; i++) {
             g[i] = new GameObject();
-            g[i].AddComponent<ImageOverviewImage>();
+            g[i].AddComponent<ImageOverviewImage>().pictureID = textures[i].pictureID;
             Image r = g[i].AddComponent<Image>();
             r.preserveAspect = true;
 
             // WWW file = new WWW("file:///C:/b.jpg");
             //yield return file;
 
-            Texture2D tex = textures[i];
+            Texture2D tex = textures[i].texture;
             Rect rec = new Rect(0, 0, tex.width, tex.height);
             Vector2 pivot = new Vector2(0.5f, 0.5f);
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);

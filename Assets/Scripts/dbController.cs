@@ -12,6 +12,11 @@ public class dbController : MonoBehaviour
     //public GameObject plane;
     public byte[] imgByteArr;
 
+    public struct Picture {
+        public int pictureID;
+        public Texture2D texture;
+    }
+
     void Awake()
     {
         //testshit();
@@ -121,27 +126,29 @@ public class dbController : MonoBehaviour
         return pic;
     }
 
-    public List<Texture2D> getPictures(int subID)
+    public List<Picture> getPictures(int subID)
     {
-        List<Texture2D> pic = new List<Texture2D>();
-        Texture2D tex;
+        List<Picture> picList = new List<Picture>();
+        Picture pic;
 
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
+        cmd.CommandText = "SELECT Afbeelding.AfbeeldingID, Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
         while (reader.Read())
         {
-            byte[] data = (byte[])reader[0];
+            pic = new Picture();
+            pic.pictureID = Convert.ToInt32(reader[0]);
+            byte[] data = (byte[])reader[1];
 
             if (data != null)
             {
-                tex = new Texture2D(2, 2);
-                tex.LoadImage(data);
-                pic.Add(tex);
+                pic.texture = new Texture2D(2, 2);
+                pic.texture.LoadImage(data);
+                picList.Add(pic);
                 Debug.Log("Entry is gevonden!");
             }
             else
@@ -152,10 +159,10 @@ public class dbController : MonoBehaviour
 
         dbconn.Close();
 
-        return pic;
+        return picList;
     }
 
-    public Texture2D getPicture(int questionID)
+    public Texture2D getPicture(int pictureID)
     {
         Texture2D pic = new Texture2D(2, 2);
 
@@ -163,7 +170,7 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.VraagID = " + questionID;
+        cmd.CommandText = "SELECT Afbeelding.Afbeelding FROM Afbeelding Afbeelding WHERE Afbeelding.AfbeeldingID = " + pictureID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
         while (reader.Read())
