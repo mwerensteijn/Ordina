@@ -83,7 +83,17 @@ public class CropSprite : MonoBehaviour
     }
 
 	IEnumerator Start () {
-        if (FileBrowser.selectedFile != "") {
+        if (FileBrowser.selectedPictureID != -1) {
+            Debug.Log(FileBrowser.selectedPictureID);
+            dbController db = GetComponent<dbController>();
+
+            Texture2D tex = db.getPicture(FileBrowser.selectedPictureID);
+            Rect rec = new Rect(0, 0, tex.width, tex.height);
+            Vector2 pivot = new Vector2(0.5f, 0.5f);
+            Sprite newPlanet = Sprite.Create(tex, rec, pivot);
+
+            spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+        } else if (FileBrowser.selectedFile != "") {
             WWW file = new WWW("file://" + FileBrowser.selectedFile);
             yield return file;
 

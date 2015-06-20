@@ -13,6 +13,7 @@ public class FileBrowser : MonoBehaviour {
     private int selectedFileEntry = -1;
 
     public static string selectedFile = "";
+    public static int selectedPictureID = -1;
 
 	// Use this for initialization
 	void Start () {
@@ -105,6 +106,7 @@ public class FileBrowser : MonoBehaviour {
         if (GUI.Button(new Rect(360, 310, 120, 20), "Select image")) {
             if (selectedFileEntry >= 0) {
                 selectedFile = path + fileEntries[selectedFileEntry];
+                selectedPictureID = -1;
 
                 Application.LoadLevel("CMS");
             }
