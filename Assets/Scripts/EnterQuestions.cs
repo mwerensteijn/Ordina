@@ -127,7 +127,7 @@ public class EnterQuestions : MonoBehaviour {
                 Application.LoadLevel("GUI");
             }
 
-            if (GUI.Button(new Rect(dropDownRect.x, dropDownRect.y, dropDownRect.width, 25f), ""))
+            if (GUI.Button(new Rect(dropDownRect.x, dropDownRect.y, dropDownRect.width, 25f), "hh"))
             {
                 if (!show)
                 {
