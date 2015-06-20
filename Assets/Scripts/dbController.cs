@@ -683,7 +683,7 @@ public class dbController : MonoBehaviour
             deleteQuestion(lint[i]);
         }
         
-        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject=" + subj;
+        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject='" + subj + "'";
         cmd.ExecuteScalar();
 
         dbconn.Close();
