@@ -93,6 +93,7 @@ public class dbController : MonoBehaviour
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
+        deleteRects(imgID);
         cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + imgID;
         cmd.ExecuteScalar();
 
@@ -249,6 +250,19 @@ public class dbController : MonoBehaviour
         dbconn.Close();
     }
 
+    public void deleteRects(int imgID)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Rechthoek WHERE AfbeeldingID=" + imgID;
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
     public List<Rect> getRect(int imgID)
     {
         List<Rect> lrect = new List<Rect>();
@@ -289,6 +303,34 @@ public class dbController : MonoBehaviour
         cmd.Parameters.Add(new SqliteParameter("@vraag", question));
         cmd.Parameters.Add(new SqliteParameter("@subject", subjectID));
         cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void deleteQuestion(string question)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        deleteAnswer(getQuestionID(question));
+        cmd.CommandText = "DELETE FROM Vraag WHERE Vraag='" + question + "'";
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
+    public void deleteQuestion(int questionID)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        deleteAnswer(questionID);
+        cmd.CommandText = "DELETE FROM Vraag WHERE VraagID=" + questionID;
+        cmd.ExecuteScalar();
 
         dbconn.Close();
     }
@@ -396,6 +438,19 @@ public class dbController : MonoBehaviour
         cmd.Parameters.Add(new SqliteParameter("@vraagID", questionID));
         cmd.Parameters.Add(new SqliteParameter("@correct", correct));
         cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void deleteAnswer(int questionID)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Antwoord WHERE VraagID=" + questionID;
+        cmd.ExecuteScalar();
 
         dbconn.Close();
     }
@@ -742,6 +797,32 @@ public class dbController : MonoBehaviour
 
         cmd.Parameters.Add(new SqliteParameter("@player", playerName));
         cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void deletePlayer(string playerName)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Gebruiker WHERE Naam='" + playerName + "'";
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
+    public void deletePlayer(int playerID)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "DELETE FROM Gebruiker WHERE Geb_ID=" + playerID;
+        cmd.ExecuteScalar();
 
         dbconn.Close();
     }
