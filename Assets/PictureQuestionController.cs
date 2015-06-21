@@ -67,6 +67,7 @@ public class PictureQuestionController : MonoBehaviour {
     {
         Texture2D questionTexture;
         int question = findRandomNextQuestion();
+        resetPosition();
         if (question <= -1)
         {
             Debug.Log("NO NEW QUESTIONS FOUND!");
@@ -135,7 +136,11 @@ public class PictureQuestionController : MonoBehaviour {
 
         return new Vector3(lastPositionWidth - width, lastPositionHeight, defaultZPosition);
     }
-        
+    private void resetPosition()
+    {
+        lastPositionHeight = startingPositionHeight;
+        lastPositionWidth = startingPositionWidth;
+    }
 
 
 

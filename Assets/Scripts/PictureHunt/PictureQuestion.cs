@@ -71,4 +71,10 @@ public class PictureQuestion : MonoBehaviour
         renderer.material = defaultMaterial;
     }
 
+    public void removeFromScene()
+    {
+        Destroy(givenAnswer);
+        Destroy(this);
+    }
+
 }
