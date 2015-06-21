@@ -345,10 +345,11 @@ public class CropSprite : MonoBehaviour
         yield return new WaitForEndOfFrame();
         
         dbController db = GetComponent<dbController>();
-
+        Debug.Log(answers.Count);
         for (int i = 0; i < answers.Count; i++) {
             answers[i].rectID = db.insertRect(answers[i].rect, FileBrowser.selectedPictureID);
-            answers.RemoveAt(i);
         }
+
+        answers.Clear();
     }
 }
