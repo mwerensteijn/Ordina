@@ -73,8 +73,8 @@ public class PictureQuestion : MonoBehaviour
 
     public void removeFromScene()
     {
-        Destroy(givenAnswer);
-        Destroy(this);
+        Destroy(givenAnswer.gameObject);
+        Destroy(gameObject);
     }
 
 }
