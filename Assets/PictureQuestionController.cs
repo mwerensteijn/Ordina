@@ -90,6 +90,8 @@ public class PictureQuestionController : MonoBehaviour {
 
         for (int subImage = 0; subImage < amountOfSubImages; subImage++)
         {
+            Rect r = rects[subImage].rect;
+            r.y = questionTexture.height - r.y - r.height;
 
             string answer = ""+subImage;
 
@@ -97,25 +99,25 @@ public class PictureQuestionController : MonoBehaviour {
             int tHeight = questionTexture.height;
             int tWidth = questionTexture.width;
 
-            float newZPosition = transform.localScale.x / tWidth * (rects[subImage].rect.x + rects[subImage].rect.width / 2) - transform.localScale.x / 2 + transform.position.z;
-            float newYPosition = transform.position.y + transform.localScale.y / 2 - transform.localScale.y / tHeight * (rects[subImage].rect.y + rects[subImage].rect.height / 2);
+            float newZPosition = transform.localScale.x / tWidth * (r.x + r.width / 2) - transform.localScale.x / 2 + transform.position.z;
+            float newYPosition = transform.position.y + transform.localScale.y / 2 - transform.localScale.y / tHeight * (r.y + r.height / 2);
 
          
             GameObject pictureQuestionGO = Instantiate(pictureQuestion, new Vector3(mainPictureQuestion.transform.position.x + 0.01f, newYPosition, newZPosition), Quaternion.Euler(0,270,0)) as GameObject;
             submit.addQuestion(pictureQuestionGO.GetComponent<PictureQuestion>()); 
             pictureQuestionGO.GetComponent<PictureQuestion>().answerDescription = answer;
-            pictureQuestionGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].rect.width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].rect.height, 1);
+            pictureQuestionGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * r.width, mainPictureQuestion.transform.localScale.y / questionTexture.height * r.height, 1);
             
             // Spawn answer object
 //GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(0,180,0)) as GameObject;
-            float answerWidth = mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].rect.width;
-            float answerHeight = mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].rect.height;
+            float answerWidth = mainPictureQuestion.transform.localScale.x / questionTexture.width * r.width;
+            float answerHeight = mainPictureQuestion.transform.localScale.y / questionTexture.height * r.height;
             GameObject answerGO = Instantiate(pictureAnswer, calculatePostionAnswers(answerWidth, answerHeight), Quaternion.Euler(0, 180, 0)) as GameObject;
             answerGO.GetComponent<Answer>().answerDescription = answer;
             //answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
             //answerGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
             answerGO.transform.localScale = new Vector3(answerWidth, answerHeight, 1f);
-            changeUV(answerGO, questionTexture, rects[subImage].rect);
+            changeUV(answerGO, questionTexture, r);
         }
     }
 
