@@ -91,18 +91,44 @@ public class dbController : MonoBehaviour
         dbconn.Close();
     }
 
-    public void delelePicture(int imgID)
+    public void delelePicture(int imgID = 0, int questionID = 0)
     {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
-        dbconn.Open();
+        if (imgID != 0)
+        {
+            dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+            dbconn.Open();
 
-        SqliteCommand cmd = new SqliteCommand(dbconn);
+            SqliteCommand cmd = new SqliteCommand(dbconn);
 
-        deleteRects(imgID);
-        cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + imgID;
-        cmd.ExecuteScalar();
+            deleteRects(imgID);
+            cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + imgID;
+            cmd.ExecuteScalar();
 
-        dbconn.Close();
+            dbconn.Close();
+        }
+        else if (questionID != 0)
+        {
+            dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+            dbconn.Open();
+
+            SqliteCommand cmd = new SqliteCommand(dbconn);
+            cmd.CommandText = "SELECT * FROM Vraag WHERE VraagID=" + questionID;
+            SqliteDataReader reader = cmd.ExecuteReader();
+            try
+            {
+                deleteRects(Convert.ToInt32(reader[1]));
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Exception thrown: " + e.Message);
+            }
+
+            reader.Close();
+            cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + Convert.ToInt32(reader[1]);
+            cmd.ExecuteScalar();
+
+            dbconn.Close();
+        }
     }
 
     public List<int> getPictureIDs(int subID)
@@ -339,6 +365,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
         deleteAnswer(getQuestionID(question));
+        delelePicture(questionID:getQuestionID(question));
         cmd.CommandText = "DELETE FROM Vraag WHERE Vraag='" + question + "'";
         cmd.ExecuteScalar();
 
@@ -353,6 +380,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
         deleteAnswer(questionID);
+        delelePicture(questionID:questionID);
         cmd.CommandText = "DELETE FROM Vraag WHERE VraagID=" + questionID;
         cmd.ExecuteScalar();
 
@@ -649,7 +677,13 @@ public class dbController : MonoBehaviour
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
-        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject=" + subj;
+        List<int> lint = getQuestionIDs(getSubjectID(subj));
+        for (int i = 0; i < lint.Count; i++)
+        {
+            deleteQuestion(lint[i]);
+        }
+        
+        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject='" + subj + "'";
         cmd.ExecuteScalar();
 
         dbconn.Close();
@@ -661,6 +695,12 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        List<int> lint = getQuestionIDs(subjID);
+        for (int i = 0; i < lint.Count; i++)
+        {
+            deleteQuestion(lint[i]);
+        }
 
         cmd.CommandText = "DELETE FROM Onderwerp WHERE OnderwerpID=" + subjID;
         cmd.ExecuteScalar();

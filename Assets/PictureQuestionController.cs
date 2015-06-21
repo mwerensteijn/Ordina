@@ -13,6 +13,16 @@ public class PictureQuestionController : MonoBehaviour {
     public GameObject mainPictureQuestion;
     public SubmitAnswers submit;
 
+    public float startingPositionWidth = 10;
+    public float startingPositionHeight = 2;
+    public float maxWidthAnswer = 14;
+    public float defaultZPosition = -6;
+
+    private float lastPositionWidth;
+    private float lastPositionHeight;
+
+    
+
     List<int> questionsListID = new List<int>();
 
     PictureQuestionController(string subject)
@@ -23,6 +33,9 @@ public class PictureQuestionController : MonoBehaviour {
     // Use this for initialization
 	void Start () {
         dbControl = new dbController();
+
+        lastPositionWidth = startingPositionWidth;
+        lastPositionHeight = startingPositionHeight;
         subjectID = dbControl.getSubjectID(subject);
         //subjectID = 101;
 
@@ -94,29 +107,35 @@ public class PictureQuestionController : MonoBehaviour {
             pictureQuestionGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
             
             // Spawn answer object
-            GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(0,180,0)) as GameObject;
+//GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(0,180,0)) as GameObject;
+            float answerWidth = mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width;
+            float answerHeight = mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height;
+            GameObject answerGO = Instantiate(pictureAnswer, calculatePostionAnswers(answerWidth, answerHeight), Quaternion.Euler(0, 180, 0)) as GameObject;
             answerGO.GetComponent<Answer>().answerDescription = answer;
             //answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
-            answerGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
-         
+            //answerGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
+            answerGO.transform.localScale = new Vector3(answerWidth, answerHeight, 1f);
             changeUV(answerGO, questionTexture, rects[subImage]);
         }
     }
 
     private float calculatePosition(int maxQuestions, int question, float startingPosition, float width){
-       /* if (maxQuestions % 2 == 0)
-        {
-            // even number
-            
-        }
-        else
-        {*/
-            // odd number
             float value = width / maxQuestions * question + startingPosition;
-
-     //   }
             return value;
     }
+
+    private Vector3 calculatePostionAnswers(float width, float height ){
+        Debug.Log("Calc pos: " + lastPositionWidth);
+        lastPositionWidth += width;
+        if(lastPositionWidth > maxWidthAnswer){
+            // + width because return - width
+            lastPositionWidth = startingPositionWidth + width;
+            lastPositionHeight += height;
+        }
+
+        return new Vector3(lastPositionWidth - width, lastPositionHeight, defaultZPosition);
+    }
+        
 
 
 
