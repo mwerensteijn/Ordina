@@ -64,8 +64,7 @@ public class CropSprite : MonoBehaviour
         return tex;
     }
 
-    public void saveTexture()
-    {
+    public void saveTexture() {
         GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture);
         StartCoroutine(generateTexturesFromList(answers));
     }
@@ -84,7 +83,6 @@ public class CropSprite : MonoBehaviour
 
 	IEnumerator Start () {
         if (FileBrowser.selectedPictureID != -1) {
-            Debug.Log(FileBrowser.selectedPictureID);
             dbController db = GetComponent<dbController>();
 
             Texture2D tex = db.getPicture(FileBrowser.selectedPictureID);
@@ -93,6 +91,8 @@ public class CropSprite : MonoBehaviour
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+            ResizeTexture();
+            LoadRects();
         } else if (FileBrowser.selectedFile != "") {
             WWW file = new WWW("file://" + FileBrowser.selectedFile);
             yield return file;
@@ -103,9 +103,9 @@ public class CropSprite : MonoBehaviour
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
-        }
 
-        ResizeTexture();
+            ResizeTexture();
+        }
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
@@ -129,10 +129,46 @@ public class CropSprite : MonoBehaviour
 		return line;
 	}
 
+    public void LoadRects() {
+        dbController db = GetComponent<dbController>();
+        List<Rect> rects = db.getRect(FileBrowser.selectedPictureID);
+
+        SpriteRenderer spriteRenderer = spriteToCrop.GetComponent<SpriteRenderer>();
+
+        for (int i = 0; i < rects.Count; i++) {
+            leftLine = createAndGetLine("LeftLine");
+		    rightLine = createAndGetLine("RightLine");
+		    topLine = createAndGetLine("TopLine");
+		    bottomLine = createAndGetLine("BottomLine");
+            
+            float xStart = (spriteRenderer.sprite.bounds.center.x - (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / 2f)) + (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / spriteRenderer.sprite.texture.width * rects[i].x);
+            float yStart = (spriteRenderer.sprite.bounds.center.y - (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / 2f)) + (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / spriteRenderer.sprite.texture.height * rects[i].y);
+            float xEnd = (spriteRenderer.sprite.bounds.center.x - (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / 2f)) + (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / spriteRenderer.sprite.texture.width * (rects[i].x + rects[i].width));
+            float yEnd = (spriteRenderer.sprite.bounds.center.y - (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / 2f)) + (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / spriteRenderer.sprite.texture.height * (rects[i].y + rects[i].height));
+
+            startPoint = new Vector3(xStart, yStart, 0);
+            endPoint = new Vector3(xEnd, yEnd, 0);
+
+            leftLine.SetPosition(0, new Vector3(startPoint.x, endPoint.y, 0));
+		    leftLine.SetPosition(1, new Vector3(startPoint.x, startPoint.y, 0));
+
+		    rightLine.SetPosition(0, new Vector3(endPoint.x, endPoint.y, 0));
+		    rightLine.SetPosition(1, new Vector3(endPoint.x, startPoint.y, 0));
+
+		    topLine.SetPosition(0, new Vector3(startPoint.x, startPoint.y, 0));
+		    topLine.SetPosition(1, new Vector3(endPoint.x, startPoint.y, 0));
+
+		    bottomLine.SetPosition(0, new Vector3(startPoint.x, endPoint.y, 0));
+		    bottomLine.SetPosition(1, new Vector3(endPoint.x, endPoint.y, 0));
+            
+        }
+    }
+
 	void Update () {
 		if(Input.GetMouseButtonDown(0) && isSpriteTouched(spriteToCrop)) {
-			isMousePressed = true;
+			isMousePressed = true; 
 			startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(startPoint);
 		} else if(Input.GetMouseButtonUp(0)) {
             if (isMousePressed)
                 StartCoroutine(cropSprite());
