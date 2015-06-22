@@ -170,38 +170,34 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         //TODO
         //onderwerpId = getonderwip of iets..
-        List<int> dbvragenIds = _dbController.getQuestionIDs(68);
-        //questions = new Question[dbvragenIds.Count];
-        //int vraagCount = 0;
+        List<int> dbvragenIds = _dbController.getQuestionIDs(102);
         foreach (int vraagid in dbvragenIds) 
         {
             Question question = new Question();
 
             string vraagString = _dbController.getQuestion(vraagid);
             question.question = vraagString;
-            Debug.Log("vraag id " + vraagid);
             List<int> dbvraagAntwoordIds = _dbController.getAnswerIDs(vraagid);
-            Debug.Log("dbvraagAntwoordIds length " + dbvraagAntwoordIds.Count);
             if (dbvraagAntwoordIds.Count >= 3) {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     string antwoordString = _dbController.getAnswer(dbvraagAntwoordIds[i]);
                     bool correctAnswer = _dbController.getAnswerCorrect(dbvraagAntwoordIds[i]);
 
                     question.answers[i] = antwoordString;
                     if (correctAnswer) { question.correctAnswer = antwoordString; }
-                    Question.Randomize(question.answers);
+                    
                 }
+                Question.Randomize(question.answers);
             }
             _questions.Add(question);
-            //questions[vraagCount] = question;
-            //vraagCount++;
         }     
     }
 
 	private void Init() {
 		// load questions
-        if (_dbController != null) { LoadQuestionsFromDB(); }
+        if (_dbController != null) { LoadQuestionsFromDB();
+        }
         else
         {
             LoadQuestionsFromFile("Assets\\data.txt");

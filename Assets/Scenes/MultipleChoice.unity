@@ -441,43 +441,43 @@ Prefab:
     m_Modifications:
     - target: {fileID: 22465032, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22465032, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22441878, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22441878, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22441878, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22427460, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22427460, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22459724, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22459724, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22459724, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22492144, guid: 66eb2dce377114b41a6572cf51216ce3, type: 2}
       propertyPath: m_LocalPosition.x
@@ -952,6 +952,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1576086562}
   - 114: {fileID: 1576086563}
+  - 114: {fileID: 1576086564}
   m_Layer: 0
   m_Name: World
   m_TagString: WorldMovement
@@ -988,7 +989,19 @@ MonoBehaviour:
   airplaneMovement: {fileID: 0}
   disappearPositionZ: 0
   answerScoreWeigth: 10
-  timeScoreWeigth: 0
+--- !u!114 &1576086564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1576086561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44ea5f8d8dca44b48bb0d72b34eb813a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texture: {fileID: 0}
+  imgByteArr: 
 --- !u!1 &1583385811 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100034, guid: 41fadbebf94826d4f9678e6c8f18ca53, type: 3}
