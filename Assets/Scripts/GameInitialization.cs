@@ -7,11 +7,10 @@ public class GameInitialization : MonoBehaviour
     dbController database;
 
     public static int selectedSubjectID;
-    public static string _userName;
+    public static int _userID;
+    private string _userName;
 
-    public GUISkin customSkin1;
     public GUISkin customSkin2;
-    public GUISkin customSkin3;
 
     public Texture2D dropDownImage;
 
@@ -51,7 +50,6 @@ public class GameInitialization : MonoBehaviour
     private bool executeOnce;
 
     private Vector2 scrollViewVector = Vector2.zero;
-    public Rect dropDownRect = new Rect(Screen.width / 3, 0f, 50f, 50f);
     public static List<string> list = new List<string>();
 
     int indexNumber = 0;
@@ -198,20 +196,11 @@ public class GameInitialization : MonoBehaviour
                 if (_userName != "")
                 {
                     selectedSubjectID = database.getSubjectID(list[indexNumber]);
+                    _userID = database.getPlayerID(_userName);
                     Application.LoadLevel("MainMenu");
                 }
                 else
                     NoUserSelected = true;
-                //if (list.Count > 0)
-                //{
-                //    _subjectChosen = true;
-                //    NoUserSelected = false;
-                //    selectedSubjectID = database.getSubjectID(list[indexNumber]);
-                //}
-                //else
-                //{
-                //    NoUserSelected = true;
-                //}
             }
         }
     }
@@ -223,7 +212,5 @@ public class GameInitialization : MonoBehaviour
         {
             NoUserSelected = false;
         }
-        //GUI.FocusWindow(0);
-        //GUI.DragWindow();
     }
 }

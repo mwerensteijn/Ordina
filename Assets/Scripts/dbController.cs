@@ -956,7 +956,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "INSERT INTO Speler(SpelerNaam) VALUES(@player)";
+        cmd.CommandText = "INSERT INTO Gebruiker(Naam) VALUES(@player)";
 
         cmd.Parameters.Add(new SqliteParameter("@player", playerName));
         cmd.ExecuteNonQuery();
@@ -998,7 +998,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT SpelerNaam FROM Speler WHERE SpelerID='" + playerID + "'";
+        cmd.CommandText = "SELECT Naam FROM Gebruiker WHERE Geb_ID=" + playerID;
         player = cmd.ExecuteScalar() + "";
 
         dbconn.Close();
@@ -1016,8 +1016,8 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT SpelerID FROM Speler WHERE SpelerNaam='" + playerName + "'";
-        player = Convert.ToInt32(cmd.ExecuteScalar() + "");
+        cmd.CommandText = "SELECT Geb_ID FROM Gebruiker WHERE Naam='" + playerName + "'";
+        player = Convert.ToInt32(cmd.ExecuteScalar());
 
         dbconn.Close();
 
