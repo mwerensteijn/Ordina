@@ -44,21 +44,11 @@ public class Bullet : MonoBehaviour {
             // If a question is hit the answer should be on the position of the question
             if (hit.collider.tag == "Question")
             {
-                /*answer.transform.position = hit.collider.gameObject.transform.position;
-                answer.transform.rotation = hit.collider.gameObject.transform.rotation;
-                answer.transform.localScale = hit.collider.gameObject.transform.localScale;
-                answer.tag = "AnswerGiven";
-                answer.GetComponent<Answer>().setQuestion(hit.collider.gameObject);*/
-
                 hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
                 hit.collider.GetComponent<Renderer>().material = answer.GetComponent<Renderer>().material;
-                //Vector2[] hitUV = hit.collider.GetComponent<MeshFilter>().mesh.uv;
+
                 Vector2[] answerUV = answer.GetComponent<MeshFilter>().mesh.uv;
                 hit.collider.GetComponent<MeshFilter>().mesh.uv = answerUV;
-                
-                /*hitUV.test = answerUV.test;
-                hitUV.texture = answerUV.texture;
-                hitUV.UpdateUVs(); */
             }
             else
             {
@@ -72,6 +62,9 @@ public class Bullet : MonoBehaviour {
         {
             answer = hit.collider.gameObject;
             answer.SetActive(false);
+            // Destroy bullet
+            Destroy(this.gameObject);
+            return;
         }
 
         if (ImpactList.Count > 50)
@@ -86,7 +79,7 @@ public class Bullet : MonoBehaviour {
 
         // Spawn impact
         GameObject impactA = Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, hit.normal)) as GameObject;
-        //GameObject impactA = Instantiate(impact, new Vector3(contact.point.x + xOffset, contact.point.y + yOffset, contact.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject;
+
         impactA.transform.parent = hit.collider.gameObject.transform;
         ImpactList.Add(impactA);
         //Debug.Log(ImpactList.Count);
@@ -95,6 +88,7 @@ public class Bullet : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
+    // Offset is needed for impact because otherwise impact will get stuck in the object.
     private void calculateOffset(Vector3 normal)
     {
         if (normal.x > 0)

@@ -18,7 +18,7 @@ public class CropSprite : MonoBehaviour
     private int cropCounter = 0;
     private static List<ImageAnswer> answers = new List<ImageAnswer>();
     private static List<ImageAnswer> removeFromDatabase = new List<ImageAnswer>();
-
+    
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
@@ -74,18 +74,6 @@ public class CropSprite : MonoBehaviour
         }
            
         StartCoroutine(generateTexturesFromList(answers));
-        StartCoroutine(RemoveFromDatabase());
-    }
-
-    public IEnumerator RemoveFromDatabase() {
-        yield return new WaitForEndOfFrame();
-
-        dbController db = GetComponent<dbController>();
-
-        for (int i = 0; i < removeFromDatabase.Count; i++) {
-            db.deleteRect(removeFromDatabase[i].rectID);
-            //db.insertRect(answers[i].rect, FileBrowser.selectedPictureID);
-        }
     }
 
     public void SetPlane() {
@@ -351,5 +339,11 @@ public class CropSprite : MonoBehaviour
         }
 
         answers.Clear();
+
+        for (int i = 0; i < removeFromDatabase.Count; i++) {
+            db.deleteRect(removeFromDatabase[i].rectID);
+        }
+
+        Application.LoadLevel("ImageOverview");
     }
 }

@@ -29,4 +29,12 @@ public class Answer: MonoBehaviour{
     {
         return answerDescription;
     }
+
+    public void removeImpacts()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 }
