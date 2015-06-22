@@ -52,11 +52,13 @@ public class Bullet : MonoBehaviour {
 
                 hit.collider.GetComponent<PictureQuestion>().setAnswer(answer.GetComponent<Answer>());
                 hit.collider.GetComponent<Renderer>().material = answer.GetComponent<Renderer>().material;
-                testUV hitUV = hit.collider.GetComponent<testUV>();
-                testUV answerUV = answer.GetComponent<testUV>();
-                hitUV.test = answerUV.test;
+                //Vector2[] hitUV = hit.collider.GetComponent<MeshFilter>().mesh.uv;
+                Vector2[] answerUV = answer.GetComponent<MeshFilter>().mesh.uv;
+                hit.collider.GetComponent<MeshFilter>().mesh.uv = answerUV;
+                
+                /*hitUV.test = answerUV.test;
                 hitUV.texture = answerUV.texture;
-                hitUV.UpdateUVs(); 
+                hitUV.UpdateUVs(); */
             }
             else
             {
@@ -80,15 +82,16 @@ public class Bullet : MonoBehaviour {
         }
 
         // Offset is needed so the impact won't get stuck in an object
-        calculateOffset(contact.normal);
+        calculateOffset(hit.normal);
 
         // Spawn impact
-        GameObject impactA = Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject;
+        GameObject impactA = Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, hit.normal)) as GameObject;
+        //GameObject impactA = Instantiate(impact, new Vector3(contact.point.x + xOffset, contact.point.y + yOffset, contact.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, contact.normal)) as GameObject;
         impactA.transform.parent = hit.collider.gameObject.transform;
         ImpactList.Add(impactA);
         //Debug.Log(ImpactList.Count);
 
-        // Destory bullet
+        // Destroy bullet
         Destroy(this.gameObject);
     }
 

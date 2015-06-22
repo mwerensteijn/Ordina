@@ -6,7 +6,6 @@ using System.IO;
 
 public class CropSprite : MonoBehaviour 
 {
-
 //	Reference for sprite which will be cropped and it has BoxCollider or BoxCollider2D
 	public GameObject spriteToCrop;
     public GameObject plane;
@@ -18,11 +17,16 @@ public class CropSprite : MonoBehaviour
 	private bool isMousePressed;
     private int cropCounter = 0;
     private static List<ImageAnswer> answers = new List<ImageAnswer>();
-    //private List<Rect> croppedRects = new List<Rect>();
+    private static List<ImageAnswer> removeFromDatabase = new List<ImageAnswer>();
+
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
     public static void RemoveAnswer(ImageAnswer i) {
+        if (i.SavedInDatabase) {
+            removeFromDatabase.Add(i);
+        }
+
         answers.Remove(i);
     }
 
@@ -64,10 +68,24 @@ public class CropSprite : MonoBehaviour
         return tex;
     }
 
-    public void saveTexture()
-    {
-        GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture);
+    public void saveTexture() {
+        if (FileBrowser.selectedPictureID == -1) {
+            FileBrowser.selectedPictureID = GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture, 9);
+        }
+           
         StartCoroutine(generateTexturesFromList(answers));
+        StartCoroutine(RemoveFromDatabase());
+    }
+
+    public IEnumerator RemoveFromDatabase() {
+        yield return new WaitForEndOfFrame();
+
+        dbController db = GetComponent<dbController>();
+
+        for (int i = 0; i < removeFromDatabase.Count; i++) {
+            db.deleteRect(removeFromDatabase[i].rectID);
+            //db.insertRect(answers[i].rect, FileBrowser.selectedPictureID);
+        }
     }
 
     public void SetPlane() {
@@ -83,7 +101,18 @@ public class CropSprite : MonoBehaviour
     }
 
 	IEnumerator Start () {
-        if (FileBrowser.selectedFile != "") {
+        if (FileBrowser.selectedPictureID != -1) {
+            dbController db = GetComponent<dbController>();
+
+            Texture2D tex = db.getPicture(FileBrowser.selectedPictureID);
+            Rect rec = new Rect(0, 0, tex.width, tex.height);
+            Vector2 pivot = new Vector2(0.5f, 0.5f);
+            Sprite newPlanet = Sprite.Create(tex, rec, pivot);
+
+            spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
+            ResizeTexture();
+            LoadRects();
+        } else if (FileBrowser.selectedFile != "") {
             WWW file = new WWW("file://" + FileBrowser.selectedFile);
             yield return file;
 
@@ -93,9 +122,9 @@ public class CropSprite : MonoBehaviour
             Sprite newPlanet = Sprite.Create(tex, rec, pivot);
 
             spriteToCrop.GetComponent<SpriteRenderer>().sprite = newPlanet;
-        }
 
-        ResizeTexture();
+            ResizeTexture();
+        }
 
         SetPlane();
         spriteToCrop.AddComponent<BoxCollider2D>();
@@ -119,9 +148,48 @@ public class CropSprite : MonoBehaviour
 		return line;
 	}
 
+    public void LoadRects() {
+        dbController db = GetComponent<dbController>();
+        List<dbController.Rectangle> rects = db.getRect(FileBrowser.selectedPictureID);
+
+        SpriteRenderer spriteRenderer = spriteToCrop.GetComponent<SpriteRenderer>();
+
+        for (int i = 0; i < rects.Count; i++) {
+            leftLine = createAndGetLine("LeftLine");
+		    rightLine = createAndGetLine("RightLine");
+		    topLine = createAndGetLine("TopLine");
+		    bottomLine = createAndGetLine("BottomLine");
+            
+            float xStart = (spriteRenderer.sprite.bounds.center.x - (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / 2f)) + (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / spriteRenderer.sprite.texture.width * rects[i].rect.x);
+            float yStart = (spriteRenderer.sprite.bounds.center.y - (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / 2f)) + (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / spriteRenderer.sprite.texture.height * rects[i].rect.y);
+            float xEnd = (spriteRenderer.sprite.bounds.center.x - (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / 2f)) + (spriteRenderer.transform.localScale.x * spriteRenderer.sprite.bounds.size.x / spriteRenderer.sprite.texture.width * (rects[i].rect.x + rects[i].rect.width));
+            float yEnd = (spriteRenderer.sprite.bounds.center.y - (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / 2f)) + (spriteRenderer.transform.localScale.y * spriteRenderer.sprite.bounds.size.y / spriteRenderer.sprite.texture.height * (rects[i].rect.y + rects[i].rect.height));
+
+            startPoint = new Vector3(xStart, yStart, 0);
+            endPoint = new Vector3(xEnd, yEnd, 0);
+
+            drawRectangle();
+
+            GameObject g = new GameObject("Question");
+            BoxCollider2D b = g.AddComponent<BoxCollider2D>();
+            b.size = new Vector2(endPoint.x - startPoint.x, endPoint.y - startPoint.y);
+            Vector3 pos = startPoint - ((startPoint - endPoint) / 2);
+            g.transform.position = new Vector3(pos.x, pos.y, 0);
+            ImageAnswer ia = g.AddComponent<ImageAnswer>();
+            ia.leftLine = leftLine;
+            ia.topLine = topLine;
+            ia.rightLine = rightLine;
+            ia.bottomLine = bottomLine;
+
+            ia.rect = rects[i].rect;
+            ia.SavedInDatabase = true;
+            ia.rectID = rects[i].rectID;
+        }
+    }
+
 	void Update () {
 		if(Input.GetMouseButtonDown(0) && isSpriteTouched(spriteToCrop)) {
-			isMousePressed = true;
+			isMousePressed = true; 
 			startPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		} else if(Input.GetMouseButtonUp(0)) {
             if (isMousePressed)
@@ -277,10 +345,11 @@ public class CropSprite : MonoBehaviour
         yield return new WaitForEndOfFrame();
         
         dbController db = GetComponent<dbController>();
-
+        Debug.Log(answers.Count);
         for (int i = 0; i < answers.Count; i++) {
-
-            db.insertRect(answers[i].rect);
+            answers[i].rectID = db.insertRect(answers[i].rect, FileBrowser.selectedPictureID);
         }
+
+        answers.Clear();
     }
 }

@@ -60,8 +60,12 @@ public class SubmitAnswers : MonoBehaviour
         {
             Debug.Log("Well done");
         }
+        
 
-        //questionController.removeQuestion();
+        foreach(PictureQuestion question in m_Questions){
+            question.removeFromScene();
+        }
+        m_Questions = new List<PictureQuestion>();
         questionController.spawnQuestion();
     }
 }
