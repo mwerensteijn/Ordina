@@ -454,7 +454,7 @@ public class dbController : MonoBehaviour
         dbconn.Close();
     }
 
-    public List<int> getQuestionIDs(int subjectID)
+    public List<int> getQuestionIDs(int subjectID, bool isImageQuestion)
     {
         List<int> lstr = new List<int>();
 
@@ -465,12 +465,42 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subjectID;
+        if (isImageQuestion) {
+            cmd.CommandText = "SELECT * FROM Vraag WHERE Vraag IS NULL AND OnderwerpID=" + subjectID;
+        } else {
+            cmd.CommandText = "SELECT * FROM Vraag WHERE AfbeeldingID IS NULL AND OnderwerpID=" + subjectID;
+        
+        }
         SqliteDataReader reader = cmd.ExecuteReader();
 
         //int index = 0;
         while (reader.Read())
         {
+            lstr.Add(Convert.ToInt32(reader[0] + ""));
+            //index++;
+        }
+
+        dbconn.Close();
+
+        return lstr;
+    }
+
+    public List<int> getQuestionIDs(int subjectID) {
+        List<int> lstr = new List<int>();
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subjectID;
+ 
+        SqliteDataReader reader = cmd.ExecuteReader();
+
+        //int index = 0;
+        while (reader.Read()) {
             lstr.Add(Convert.ToInt32(reader[0] + ""));
             //index++;
         }
@@ -684,7 +714,14 @@ public class dbController : MonoBehaviour
 
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT Correct FROM Antwoord WHERE AntwoordID=" + answerID;
-        answerINT = Convert.ToInt32(cmd.ExecuteScalar());
+        object result = cmd.ExecuteScalar();
+       
+        if (result == DBNull.Value) {
+            answerINT = 0;
+        } else {
+            answerINT = Convert.ToInt32(result);
+        }
+        
         if (answerINT > 0)
             answer = true;
 
@@ -813,7 +850,7 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
-        Debug.Log(subject);
+
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Subject ='" + subject + "'";
         bryanisboos = cmd.ExecuteScalar() + "";

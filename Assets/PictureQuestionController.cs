@@ -39,7 +39,7 @@ public class PictureQuestionController : MonoBehaviour {
         subjectID = dbControl.getSubjectID(subject);
         //subjectID = 101;
 
-        questionsListID = dbControl.getQuestionIDs(subjectID);
+        questionsListID = dbControl.getQuestionIDs(subjectID, true);
         amountOfQuestions = questionsListID.Count;
         Debug.Log("Total amount of questions found: " + amountOfQuestions);
         spawnQuestion();

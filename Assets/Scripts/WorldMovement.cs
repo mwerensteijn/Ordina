@@ -59,7 +59,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// Initialization
 	void Start () {
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answer1"));
-        _dbController = GetComponentInParent<dbController>();
+        _dbController = GetComponent<dbController>();
         // Set the appear position.
         appearPositionZ = answerRowFront.transform.position.z;
         currentState = WorldMovement.State.Init;
@@ -170,7 +170,8 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         //TODO
         //onderwerpId = getonderwip of iets..
-        List<int> dbvragenIds = _dbController.getQuestionIDs(105);
+        List<int> dbvragenIds = _dbController.getQuestionIDs(106, false);
+
         foreach (int vraagid in dbvragenIds) 
         {
             Question question = new Question();
@@ -195,13 +196,14 @@ public class WorldMovement : MonoBehaviour, IScore {
 
 	private void Init() {
 		// load questions
-        if (_dbController != null) { LoadQuestionsFromDB();
-        }
-        else
-        {
+        if (_dbController != null) { 
+            LoadQuestionsFromDB();
+        } else {
             LoadQuestionsFromFile("Assets\\data.txt");
         }
 
+        Debug.Log(_questions.Count);
+        Debug.Log(currentQuestion);
         // Set question and answer text
         questionText.text = _questions[currentQuestion].question;
         answerRowFront.A = _questions[currentQuestion].answers[0];

@@ -193,14 +193,13 @@ public class GameInitialization : MonoBehaviour
             // Textarea for adding new subject on position rect _inputArea
             //
             // The text will be saved in variable called _newSubject which is a string variable
-            _userName = GUI.TextArea(_inPutArea, _userName);
+            //_userName = GUI.TextArea(_inPutArea, _userName);
 
             // Checks if button "Doorgaan" is pressed. 
             //
             // If this button is pressed a bool will be set to true and the main menu window will be openend
             if (GUI.Button(new Rect(_subjectWindow.width / 3, _subjectWindow.height - (_subjectWindow.height / 5f), _subjectWindow.width / 3, _subjectWindow.height / 10), "Doorgaan"))
             {
-                if()
                 //if (list.Count > 0)
                 //{
                 //    _subjectChosen = true;
