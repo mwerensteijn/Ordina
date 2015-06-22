@@ -107,10 +107,11 @@ public class dbController : MonoBehaviour
         return (int) lastRowID;
     }
 
-    public void delelePicture(int imgID = 0, int questionID = 0)
+    public void deletePicture(int imgID = 0, int questionID = 0)
     {
         if (imgID != 0)
         {
+
             dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
             dbconn.Open();
 
@@ -130,17 +131,20 @@ public class dbController : MonoBehaviour
             SqliteCommand cmd = new SqliteCommand(dbconn);
             cmd.CommandText = "SELECT * FROM Vraag WHERE VraagID=" + questionID;
             SqliteDataReader reader = cmd.ExecuteReader();
+
+            int imgID2 = Convert.ToInt32(reader[1]);
+            reader.Close();
             try
             {
-                deleteRects(Convert.ToInt32(reader[1]));
+                deleteRects(imgID2);
             }
             catch (Exception e)
             {
                 Debug.Log("Exception thrown: " + e.Message);
             }
 
-            reader.Close();
-            cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + Convert.ToInt32(reader[1]);
+            
+            cmd.CommandText = "DELETE FROM Afbeelding WHERE AfbeeldingID=" + imgID2;
             cmd.ExecuteScalar();
 
             dbconn.Close();
@@ -408,7 +412,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
         deleteAnswer(getQuestionID(question));
-        delelePicture(questionID:getQuestionID(question));
+        deletePicture(questionID:getQuestionID(question));
         cmd.CommandText = "DELETE FROM Vraag WHERE Vraag='" + question + "'";
         cmd.ExecuteScalar();
 
@@ -423,7 +427,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
         deleteAnswer(questionID);
-        delelePicture(questionID:questionID);
+        deletePicture(questionID:questionID);
         cmd.CommandText = "DELETE FROM Vraag WHERE VraagID=" + questionID;
         cmd.ExecuteScalar();
 
