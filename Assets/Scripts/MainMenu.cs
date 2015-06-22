@@ -6,6 +6,8 @@ public class MainMenu : MonoBehaviour
 {
     dbController database;
 
+    public static int selectedSubjectID;
+
     public GUISkin customSkin1;
     public GUISkin customSkin2;
     public GUISkin customSkin3;
@@ -253,11 +255,23 @@ public class MainMenu : MonoBehaviour
                 //list.Add(_newSubject);
                 if (_newSubject != "")
                 {
-                    database.insertSubject(_newSubject);
-                    list.Add(_newSubject);
-                    indexNumber = list.Count-1;
-                    Subject = "Huidig onderwerp: " + list[indexNumber];
-                    _newSubject = "";
+                    bool alreadyExist = false;
+                    for (int i = 0; i < list.Count; i++ )
+                    {
+                        if (_newSubject == list[i])
+                        {
+                            alreadyExist = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyExist)
+                    {
+                        database.insertSubject(_newSubject);
+                        list.Add(_newSubject);
+                        indexNumber = list.Count - 1;
+                        Subject = "Huidig onderwerp: " + list[indexNumber];
+                        _newSubject = "";
+                    }    
                 }
                 show = false;
             }
@@ -271,6 +285,7 @@ public class MainMenu : MonoBehaviour
                 {
                     _subjectChosen = true;
                     NoSubject = false;
+                    selectedSubjectID = database.getSubjectID(list[indexNumber]);
                 }
                 else
                 {
