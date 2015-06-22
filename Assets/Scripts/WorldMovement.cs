@@ -183,7 +183,6 @@ public class WorldMovement : MonoBehaviour, IScore {
                 {
                     string antwoordString = _dbController.getAnswer(dbvraagAntwoordIds[i]);
                     bool correctAnswer = _dbController.getAnswerCorrect(dbvraagAntwoordIds[i]);
-
                     question.answers[i] = antwoordString;
                     if (correctAnswer) { question.correctAnswer = antwoordString; }
                     
@@ -210,7 +209,6 @@ public class WorldMovement : MonoBehaviour, IScore {
         answerRowFront.C = _questions[currentQuestion].answers[2];
 
         currentState = WorldMovement.State.Idle;
-        //Debug.Log("questions ammount: " + questions.Length);
         progressBar.SetMaxAwnsers(_questions.Count);
 	}
 
@@ -227,7 +225,6 @@ public class WorldMovement : MonoBehaviour, IScore {
         }
         totalAskedQuestions += 1;
         progressBar.UpdateProgressBar(totalAskedQuestions);
-        Debug.Log("aantal vragen: " + _questions.Count + " + gestelde vragen: " + totalAskedQuestions);
 
         if (_questions.Count == totalAskedQuestions)
         {

@@ -556,7 +556,10 @@ public class dbController : MonoBehaviour
 
         cmd.Parameters.Add(new SqliteParameter("@antwoord", answer));
         cmd.Parameters.Add(new SqliteParameter("@vraagID", questionID));
-        cmd.Parameters.Add(new SqliteParameter("@correct", correct));
+        if (correct == true) 
+            cmd.Parameters.Add(new SqliteParameter("@correct", 1));
+        else
+            cmd.Parameters.Add(new SqliteParameter("@correct", 0));
         cmd.ExecuteNonQuery();
 
         dbconn.Close();
@@ -682,7 +685,7 @@ public class dbController : MonoBehaviour
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT Correct FROM Antwoord WHERE AntwoordID=" + answerID;
         answerINT = Convert.ToInt32(cmd.ExecuteScalar());
-
+        Debug.Log("hello is it me you are looking for: " + answerINT);
         if (answerINT > 0)
             answer = true;
 
@@ -694,6 +697,7 @@ public class dbController : MonoBehaviour
     public bool getAnswerCorrect(string answerStr)
     {
         bool answer = false;
+        int answerINT = 0;
 
         dbconn = new SqliteConnection(database);
         dbconn.Open();
@@ -702,7 +706,10 @@ public class dbController : MonoBehaviour
 
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT Correct FROM Antwoord WHERE Antwoord=" + answerStr;
-        answer = (bool)cmd.ExecuteScalar();
+        answerINT = Convert.ToInt32(cmd.ExecuteScalar());
+
+        if (answerINT > 0)
+            answer = true;
 
         dbconn.Close();
 
