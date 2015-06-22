@@ -53,6 +53,7 @@ public class EnterQuestions : MonoBehaviour {
         list = database.getSubjects();
         if (list.Count >= 0)
             Subject = database.getSubject(MainMenu.selectedSubjectID);
+        Debug.Log("Subject is: " + Subject);
         Question = "";
         Answer1 = "";
         Answer2 = "";
@@ -272,7 +273,6 @@ public class EnterQuestions : MonoBehaviour {
         if (show)
         {
             scrollViewVector = GUI.BeginScrollView(new Rect(_QuestionsListPos.x, _QuestionsListPos.y + _QuestionsListPos.height, _QuestionsListPos.width, _QuestionsListPos.height * 3), scrollViewVector, new Rect(0, 0, 0, Mathf.Max(_QuestionsListPos.height, ((_questionsPerSubject.Count) * _QuestionsListPos.height))));
-            Debug.Log(_questionsPerSubject.Count);
             if (_questionsPerSubject.Count == 0)
                 show = false;
 
@@ -298,12 +298,24 @@ public class EnterQuestions : MonoBehaviour {
     {
         bool changed = true;
         Question = database.getQuestion(database.getQuestionID(selectedQuestion));
-        Answer1 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[0]);
+        Debug.Log(Question);
+
+        List<int> answers = database.getAnswerIDs(selectedQuestion);
+
+        Debug.Log("Answers count: " + answers.Count);
+
+        Answer1 = database.getAnswer(answers[0]);
+        //Debug.Log(Answer1);
         Answer2 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[1]);
+        //Debug.Log(Answer2);
         Answer3 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[2]);
+        //Debug.Log(Answer3);
         answer1IsRight = database.getAnswerCorrect(Answer1);
+        //Debug.Log(answer1IsRight);
         answer2IsRight = database.getAnswerCorrect(Answer2);
+        //Debug.Log(answer2IsRight);
         answer3IsRight = database.getAnswerCorrect(Answer3);
+        //Debug.Log(answer3IsRight);
         _CheckSelectedCheckbox(changed);
         _UserInsertQuestions();
 
