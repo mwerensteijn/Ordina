@@ -459,7 +459,7 @@ public class dbController : MonoBehaviour
 
     public void updateQuestion(int questionID, string question)
     {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -624,14 +624,14 @@ public class dbController : MonoBehaviour
 
     public void updateAnswer(int answerID, string answer, bool correct)
     {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
         if (correct)
             cmd.CommandText = "UPDATE Antwoord SET Antwoord='" + answer + "', Correct=1 WHERE AntwoordID=" + answerID;
         else
-            cmd.CommandText = "UPDATE Antwoord SET Antwoord='" + answer + "', Correct=0 WHERE AntwoordID=" + answerID;
+            cmd.CommandText = "UPDATE Antwoord SET Antwoord='" + answer + "', Correct=-1 WHERE AntwoordID=" + answerID;
 
         cmd.ExecuteScalar();
 

@@ -8,19 +8,20 @@ public class EnterQuestions : MonoBehaviour {
     public Texture2D dropDownImage;
     public GUISkin CustomSkin;
 
-    dbController database; 
+    dbController database;
 
-    public bool emptyTextArea, checkBox, popupWindowOpened, succesFullySend = false;
+    public bool emptyTextArea, checkBox, popupWindowOpened, succesFullySend, changed, succesFullyUpdated = false;
+
 
     GUIContent checkBox1 = new GUIContent();
     GUIContent checkBox2 = new GUIContent();
     GUIContent checkBox3 = new GUIContent();
 
     Rect checkBoxRect1, checkBoxRect2, checkBoxRect3, _QuestionsWindow, _QuestionsListPos;
-    
-    bool answer1IsRight, answer2IsRight, answer3IsRight;
 
-    public string Question, Answer1, Answer2, Answer3, Subject;
+    bool answer1IsRight, answer2IsRight, answer3IsRight, oldAnswer1IsRight, oldAnswer2IsRight, oldAnswer3IsRight;
+
+    public string Question, Answer1, Answer2, Answer3, Subject, oldQuestion, oldAnswer1, oldAnswer2, oldAnswer3;
 
     public float offset, checkBoxAlignLeft, checkBoxHeight;
     public float checkBoxWidth, checkBox1Pos, checkBox2Pos, checkBox3Pos;
@@ -126,15 +127,14 @@ public class EnterQuestions : MonoBehaviour {
                 {
                     emptyTextArea = true;
                 }
-                else if ( (answer1IsRight || answer2IsRight || answer3IsRight) == false)
+                else if ((answer1IsRight || answer2IsRight || answer3IsRight) == false)
                     checkBox = true;
-                else
+                else if (!changed)
                 {
-                    // BRYANS GEKKE METHODE OM TE VERSTUREN NAAR DATABASE
-
                     succesFullySend = true;
-                    
                 }
+                else if (changed)
+                    succesFullyUpdated = true;
             }
             if (GUI.Button(new Rect(backAlignLeft, checkBox3Pos + (backButtonHeight * 2), backButtonWidth, backButtonHeight), "Back"))
             {
@@ -156,6 +156,11 @@ public class EnterQuestions : MonoBehaviour {
             popupWindowOpened = true;
             windowRect = GUI.Window(1, windowRect, ShowSuccesFullySend, "Gelukt. De vraag staat nu in de database");
         }
+        if(succesFullyUpdated)
+        {
+            popupWindowOpened = true;
+            windowRect = GUI.Window(2, windowRect, ShowSuccesFullyUpdated, "Gelukt. De geupdate vraag staat nu in de database");
+        }
     }
 
     private void ShowSuccesFullySend(int windowID)
@@ -173,6 +178,31 @@ public class EnterQuestions : MonoBehaviour {
 
         }
         GUI.FocusWindow(1);
+        GUI.DragWindow();
+    }
+
+    private void ShowSuccesFullyUpdated(int windowID)
+    {
+        if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 2), windowRect.width / 3, windowRect.height / 3), "Doorgaan"))
+        {
+            emptyTextArea = checkBox = popupWindowOpened = succesFullyUpdated = false;
+            Debug.Log("Vraag is nu: " + Question);
+
+            List<int> lint = database.getAnswerIDs(oldQuestion);
+
+            database.updateQuestion(database.getQuestionID(oldQuestion), Question);
+            database.updateAnswer(lint[0], Answer1, answer1IsRight);
+            database.updateAnswer(lint[1], Answer2, answer2IsRight);
+            database.updateAnswer(lint[2], Answer3, answer3IsRight);
+            //database.insertQuestion(Question, database.getSubjectID(Subject)); //TODO - De string moet ingevuld worden met de string!
+            //database.insertAnswer(Answer1, database.getQuestionID(Question), answer1IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
+            //database.insertAnswer(Answer2, database.getQuestionID(Question), answer2IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
+            //database.insertAnswer(Answer3, database.getQuestionID(Question), answer3IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
+
+            Application.LoadLevel("EnterQuestions");
+
+        }
+        GUI.FocusWindow(2);
         GUI.DragWindow();
     }
 
@@ -251,7 +281,6 @@ public class EnterQuestions : MonoBehaviour {
             checkBox3.image = texture;
             checkBox1.image = checkBox2.image = null;
         }
-        changed = false;
     }
 
     private void _ReadQuestionsFromDatabase()
@@ -296,26 +325,29 @@ public class EnterQuestions : MonoBehaviour {
 
     private void changeQuestion(string selectedQuestion)
     {
-        bool changed = true;
+        changed = true;
         Question = database.getQuestion(database.getQuestionID(selectedQuestion));
-        Debug.Log(Question);
+        Debug.Log("Vraag is: " + Question);
 
         List<int> answers = database.getAnswerIDs(selectedQuestion);
 
-        Debug.Log("Answers count: " + answers.Count);
-
         Answer1 = database.getAnswer(answers[0]);
-        //Debug.Log(Answer1);
-        Answer2 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[1]);
-        //Debug.Log(Answer2);
-        Answer3 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[2]);
-        //Debug.Log(Answer3);
+        Answer2 = database.getAnswer(answers[1]);
+        Answer3 = database.getAnswer(answers[2]);
+
         answer1IsRight = database.getAnswerCorrect(Answer1);
-        //Debug.Log(answer1IsRight);
         answer2IsRight = database.getAnswerCorrect(Answer2);
-        //Debug.Log(answer2IsRight);
         answer3IsRight = database.getAnswerCorrect(Answer3);
-        //Debug.Log(answer3IsRight);
+
+        oldQuestion = Question;
+        oldAnswer1 = Answer1;
+        oldAnswer2 = Answer2;
+        oldAnswer3 = Answer3;
+
+        oldAnswer1IsRight = answer1IsRight;
+        oldAnswer2IsRight = answer2IsRight;
+        oldAnswer3IsRight = answer3IsRight;
+
         _CheckSelectedCheckbox(changed);
         _UserInsertQuestions();
 
