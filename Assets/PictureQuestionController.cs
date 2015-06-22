@@ -38,8 +38,9 @@ public class PictureQuestionController : MonoBehaviour {
         lastPositionWidth = startingPositionWidth;
         lastPositionHeight = startingPositionHeight;
         subjectID = dbControl.getSubjectID(subject);
-        //subjectID = 101;
+        subjectID = 103;
 
+        
         questionsListID = dbControl.getQuestionIDs(subjectID, true);
         amountOfQuestions = questionsListID.Count;
         Debug.Log("Total amount of questions found: " + amountOfQuestions);
@@ -141,6 +142,7 @@ public class PictureQuestionController : MonoBehaviour {
 
         return new Vector3(lastPositionWidth - width, lastPositionHeight, defaultZPosition);
     }
+
     private void resetPosition()
     {
         lastPositionHeight = startingPositionHeight;
