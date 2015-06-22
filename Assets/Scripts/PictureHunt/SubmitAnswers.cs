@@ -12,7 +12,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
     private DigitalClock gameTimer;
     private int elapsedTime = 0;
 
-    public GameManager gameManager;
+    //public GameManager gameManager;
 
     public PictureQuestionController questionController;
 
@@ -98,7 +98,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
         //database connectie en opslag nodig.
         try
         {
-            db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
+            //db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
         }
         catch (Exception e) { Debug.Log("foutmelding: " + e.Message); }
         Debug.Log("total score: " + totalScore);
