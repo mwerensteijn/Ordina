@@ -448,6 +448,19 @@ public class dbController : MonoBehaviour
         dbconn.Close();
     }
 
+    public void updateQuestion(int questionID, string question)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+
+        cmd.CommandText = "UPDATE Vraag SET Vraag='" + question + "' WHERE VraagID=" + questionID;
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
     public List<int> getQuestionIDs(int subjectID, bool isImageQuestion)
     {
         List<int> lstr = new List<int>();
@@ -595,6 +608,22 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand(dbconn);
 
         cmd.CommandText = "DELETE FROM Antwoord WHERE VraagID=" + questionID;
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
+    public void updateAnswer(int answerID, string answer, bool correct)
+    {
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+        if (correct)
+            cmd.CommandText = "UPDATE Antwoord SET Antwoord='" + answer + "', Correct=1 WHERE AntwoordID=" + answerID;
+        else
+            cmd.CommandText = "UPDATE Antwoord SET Antwoord='" + answer + "', Correct=0 WHERE AntwoordID=" + answerID;
+
         cmd.ExecuteScalar();
 
         dbconn.Close();
@@ -833,7 +862,6 @@ public class dbController : MonoBehaviour
     public int getSubjectID(string subject)
     {
         int answerID = -1;
-        string bryanisboos;
 
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
         dbconn.Open();
@@ -842,8 +870,7 @@ public class dbController : MonoBehaviour
 
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT OnderwerpID FROM Onderwerp WHERE Subject ='" + subject + "'";
-        bryanisboos = cmd.ExecuteScalar() + "";
-        answerID = Convert.ToInt32(bryanisboos);
+        answerID = Convert.ToInt32(cmd.ExecuteScalar());
         dbconn.Close();
         return answerID;
     }
