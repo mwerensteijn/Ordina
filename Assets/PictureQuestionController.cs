@@ -6,7 +6,8 @@ public class PictureQuestionController : MonoBehaviour {
     public string subject = ""; // Chosen subject
     private int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
-    dbController dbControl; // Database contoller
+    private dbController dbControl; // Database contoller
+    public ProgressBar progressBar;
 
     public GameObject pictureQuestion;
     public GameObject pictureAnswer;
@@ -43,6 +44,7 @@ public class PictureQuestionController : MonoBehaviour {
         amountOfQuestions = questionsListID.Count;
         Debug.Log("Total amount of questions found: " + amountOfQuestions);
         spawnQuestion();
+        progressBar.SetMaxAwnsers(amountOfQuestions);
 	}
 	
 	// Update is called once per frame
@@ -66,6 +68,7 @@ public class PictureQuestionController : MonoBehaviour {
     public void spawnQuestion()
     {
         Texture2D questionTexture;
+        progressBar.UpdateProgressBar(getAmountOfQuestionsAnswered());
         int question = findRandomNextQuestion();
         resetPosition();
         if (question <= -1)
@@ -190,5 +193,15 @@ public class PictureQuestionController : MonoBehaviour {
             gObject.GetComponent<MeshFilter>().mesh.uv = newUV;
             gObject.GetComponent<Renderer>().material.mainTexture = texture;
         }
+    }
+
+    public int getTotalAmountOfQuestions()
+    {
+        return amountOfQuestions;
+    }
+
+    public int getAmountOfQuestionsAnswered()
+    {
+        return amountOfQuestions - questionsListID.Count;
     }
 }
