@@ -7,6 +7,7 @@ public class GameInitialization : MonoBehaviour
     dbController database;
 
     public static int selectedSubjectID;
+    public static string _userName;
 
     public GUISkin customSkin1;
     public GUISkin customSkin2;
@@ -46,7 +47,7 @@ public class GameInitialization : MonoBehaviour
     private Rect _inPutArea;
     private Rect _addNewSubjectButtonPos;
 
-    private string Subject, _newSubject;
+    private string Subject;
     private bool executeOnce;
 
     private Vector2 scrollViewVector = Vector2.zero;
@@ -60,7 +61,7 @@ public class GameInitialization : MonoBehaviour
     {
         NoUserSelected = false;
 
-        _newSubject = "";
+        _userName = "";
         Subject = "";
 
         executeOnce = false;
@@ -109,7 +110,9 @@ public class GameInitialization : MonoBehaviour
     {
         GUI.skin = customSkin2;
 
-        if (!_subjectChosen)
+        if (NoUserSelected)
+            GUI.Window(2, windowRect, ShowPopup, "Vul een gebruikersnaam in a.u.b."); 
+        else if (!_subjectChosen)
         {
             GUI.skin = customSkin2;
             GUI.Window(0, _subjectWindow, chooseSubjectAndUser, "Kies een onderwerp en vul een gebruikersnaam in");
@@ -131,23 +134,15 @@ public class GameInitialization : MonoBehaviour
             // Label with the current subject displayed as text
             GUI.Label(_currentSubjectPos, Subject);
 
-            // Button with the current subject displayed on it
-            //
-            // If the database contains more than zero subjects
-            // a boolean called show will be set to true
-            // and a drop down menu will be displayed with all the subject
-            // in the database
             if (GUI.Button(_subjectButtonPos, ""))
             {
                 if (!show)
                 {
                     show = true;
-                    Debug.Log("pressed");
                 }
                 else
                 {
                     show = false;
-                    Debug.Log("pressed");
                 }
             }
 
@@ -200,7 +195,13 @@ public class GameInitialization : MonoBehaviour
             // If this button is pressed a bool will be set to true and the main menu window will be openend
             if (GUI.Button(new Rect(_subjectWindow.width / 3, _subjectWindow.height - (_subjectWindow.height / 5f), _subjectWindow.width / 3, _subjectWindow.height / 10), "Doorgaan"))
             {
-                if()
+                if (_userName != "")
+                {
+                    selectedSubjectID = database.getSubjectID(list[indexNumber]);
+                    Application.LoadLevel("MainMenu");
+                }
+                else
+                    NoUserSelected = true;
                 //if (list.Count > 0)
                 //{
                 //    _subjectChosen = true;
@@ -217,7 +218,7 @@ public class GameInitialization : MonoBehaviour
 
     private void ShowPopup(int windowID)
     {
-        GUI.FocusWindow(1);
+        GUI.FocusWindow(2);
         if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 2), windowRect.width / 3, windowRect.height / 3), "Doorgaan"))
         {
             NoUserSelected = false;
