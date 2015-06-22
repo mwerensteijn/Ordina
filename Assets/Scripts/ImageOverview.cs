@@ -46,6 +46,10 @@ public class ImageOverview : MonoBehaviour {
         }
 	}
 
+    public void Exit() {
+        Application.LoadLevel("GUI");
+    }
+
     public void AddImage() {
         Application.LoadLevel("FileBrowser");
     }

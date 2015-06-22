@@ -84,8 +84,12 @@ public class CropSprite : MonoBehaviour
         plane.transform.position = new Vector3(0, 0, 9);
     }
 
-    public void NewImage() {
-        Application.LoadLevel("FileBrowser");
+    public void DeleteImage() {
+        if (FileBrowser.selectedPictureID != -1) {
+            dbController db = GetComponent<dbController>();
+            db.deletePicture(FileBrowser.selectedPictureID);
+        }
+        Application.LoadLevel("ImageOverview");
     }
 
 	IEnumerator Start () {
