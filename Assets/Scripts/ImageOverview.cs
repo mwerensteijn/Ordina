@@ -12,7 +12,7 @@ public class ImageOverview : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        List<dbController.Picture> textures = GetComponent<dbController>().getPictures(9);
+        List<dbController.Picture> textures = GetComponent<dbController>().getPictures(MainMenu.selectedSubjectID);
         imagesAmount = textures.Count;
 
         if (imagesAmount > 9) {

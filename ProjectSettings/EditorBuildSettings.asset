@@ -19,3 +19,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
   - enabled: 1
     path: Assets/Scenes/EnterQuestions.unity
+  - enabled: 1
+    path: Assets/Scenes/ImageOverview.unity

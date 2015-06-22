@@ -70,7 +70,7 @@ public class CropSprite : MonoBehaviour
 
     public void saveTexture() {
         if (FileBrowser.selectedPictureID == -1) {
-            FileBrowser.selectedPictureID = GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture, 9);
+            FileBrowser.selectedPictureID = GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture, MainMenu.selectedSubjectID);
         }
            
         StartCoroutine(generateTexturesFromList(answers));

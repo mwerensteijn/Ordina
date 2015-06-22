@@ -127,7 +127,7 @@ public class MainMenu : MonoBehaviour
 
             if (GUI.Button(new Rect(offset, buttonPos2, buttonSizeWidth, buttonSizeHeight), "Foto's bewerken"))
             {
-                Application.LoadLevel("CMS");
+                Application.LoadLevel("ImageOverview");
             }
             if (GUI.Button(new Rect(offset, buttonPos3, buttonSizeWidth, buttonSizeHeight), "Onderwerp veranderen"))
             {
