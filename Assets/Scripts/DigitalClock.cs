@@ -13,7 +13,6 @@ public class DigitalClock : MonoBehaviour {
 		timer = this.GetComponent<Text>();
 		secondsTimer = 0;
 		minutesTimer = 0;
-		Debug.Log (timer.text);
 		timer.text = minutesTimer.ToString("00") + ":" + secondsTimer.ToString("00");
 	}
 	

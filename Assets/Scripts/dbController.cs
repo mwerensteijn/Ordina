@@ -20,7 +20,7 @@ public class dbController : MonoBehaviour
     //public GameObject plane;
     public byte[] imgByteArr;
 
-    string database = "URI=file:" + Application.dataPath + "/database/Database.s3db";
+    string database;
 
     public struct Picture {
         public int pictureID;
@@ -34,6 +34,7 @@ public class dbController : MonoBehaviour
 
     void Awake()
     {
+        database = "URI=file:" + Application.dataPath + "/database/Database.s3db";
         //testshit();
     }
 
@@ -460,6 +461,7 @@ public class dbController : MonoBehaviour
         List<int> lstr = new List<int>();
 
         dbconn = new SqliteConnection(database);
+
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -685,7 +687,6 @@ public class dbController : MonoBehaviour
         cmd.Connection = dbconn;
         cmd.CommandText = "SELECT Correct FROM Antwoord WHERE AntwoordID=" + answerID;
         answerINT = Convert.ToInt32(cmd.ExecuteScalar());
-        Debug.Log("hello is it me you are looking for: " + answerINT);
         if (answerINT > 0)
             answer = true;
 
