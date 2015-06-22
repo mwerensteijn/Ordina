@@ -15,25 +15,25 @@ MonoBehaviour:
   m_box:
     m_Name: box
     m_Normal:
-      m_Background: {fileID: 11001, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .799999952, g: .799999952, b: .799999952, a: 1}
+      m_Background: {fileID: 2800000, guid: 5e9809b3d22df394abf08a9715c49cac, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Active:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 2800000, guid: d08747c566afb5b43b682cfbee077468, type: 3}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Focused:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnNormal:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 2800000, guid: 27b0cc2d19f484049986a504db8219c1, type: 3}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnHover:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnActive:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 2800000, guid: d08747c566afb5b43b682cfbee077468, type: 3}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnFocused:
       m_Background: {fileID: 0}
@@ -74,26 +74,26 @@ MonoBehaviour:
   m_button:
     m_Name: button
     m_Normal:
-      m_Background: {fileID: 11006, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .899999976, g: .899999976, b: .899999976, a: 1}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
-      m_Background: {fileID: 2800000, guid: 244d08afea1f194419197b93279bf6e7, type: 3}
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
+      m_Background: {fileID: 2800000, guid: 603dc3e0425300542a24453272e6e565, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Active:
-      m_Background: {fileID: 11002, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .899999976, g: .899999976, b: .899999976, a: 1}
+      m_Background: {fileID: 2800000, guid: 6f4784b5e4ae1354bb1e3e66628b87d7, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Focused:
       m_Background: {fileID: 0}
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
+      m_TextColor: {r: .607843161, g: .607843161, b: .607843161, a: 1}
     m_OnNormal:
-      m_Background: {fileID: 11005, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .90196079, g: .90196079, b: .90196079, a: 1}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnHover:
-      m_Background: {fileID: 11004, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
+      m_Background: {fileID: 2800000, guid: 603dc3e0425300542a24453272e6e565, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnActive:
-      m_Background: {fileID: 11002, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .899999976, g: .899999976, b: .899999976, a: 1}
+      m_Background: {fileID: 2800000, guid: 6f4784b5e4ae1354bb1e3e66628b87d7, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnFocused:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
@@ -193,7 +193,7 @@ MonoBehaviour:
     m_Name: label
     m_Normal:
       m_Background: {fileID: 0}
-      m_TextColor: {r: 1, g: .556862772, b: 0, a: 1}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
@@ -205,7 +205,7 @@ MonoBehaviour:
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnNormal:
       m_Background: {fileID: 0}
-      m_TextColor: {r: 1, g: .556862772, b: 0, a: 1}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnHover:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
@@ -310,25 +310,25 @@ MonoBehaviour:
   m_textArea:
     m_Name: textarea
     m_Normal:
-      m_Background: {fileID: 11024, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .90196079, g: .90196079, b: .90196079, a: 1}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
-      m_Background: {fileID: 11026, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: .799999952, g: .799999952, b: .799999952, a: 1}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Active:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Focused:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnNormal:
-      m_Background: {fileID: 11025, guid: 0000000000000000e000000000000000, type: 0}
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnHover:
       m_Background: {fileID: 0}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnActive:
-      m_Background: {fileID: 0}
+      m_Background: {fileID: 2800000, guid: 0fc8397b8a949d44d8e50c89aed45c7e, type: 3}
       m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_OnFocused:
       m_Background: {fileID: 0}
@@ -369,7 +369,7 @@ MonoBehaviour:
   m_window:
     m_Name: window
     m_Normal:
-      m_Background: {fileID: 10910, guid: 0000000000000000f000000000000000, type: 0}
+      m_Background: {fileID: 0}
       m_TextColor: {r: 1, g: .558620691, b: 0, a: 1}
     m_Hover:
       m_Background: {fileID: 0}
@@ -1256,4 +1256,4 @@ MonoBehaviour:
     m_TripleClickSelectsLine: 1
     m_CursorColor: {r: 1, g: 1, b: 1, a: 1}
     m_CursorFlashSpeed: -1
-    m_SelectionColor: {r: 1, g: .384039074, b: 0, a: .699999988}
+    m_SelectionColor: {r: 1, g: 1, b: 1, a: .699999988}

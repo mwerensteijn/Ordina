@@ -126,48 +126,6 @@ public class EnterQuestions : MonoBehaviour {
             {
                 Application.LoadLevel("GUI");
             }
-
-            if (GUI.Button(new Rect(dropDownRect.x, dropDownRect.y, dropDownRect.width, 25f), "hh"))
-            {
-                if (!show)
-                {
-                    show = true;
-                }
-                else
-                {
-                    show = false;
-                }
-            }
-
-            if (show)
-            {
-                scrollViewVector = GUI.BeginScrollView(new Rect(dropDownRect.x, dropDownRect.y + 25, dropDownRect.width, 125), scrollViewVector, new Rect(0, 0,0, Mathf.Max(topicHeight, ((list.Count) * 25f))));
-
-                GUI.Box(new Rect(0, 0, dropDownRect.width, Mathf.Max(300, ((list.Count-1) * 25f))), "");
-               
-
-                for (int index = 0; index < list.Count; index++)
-                {
-
-                    if (GUI.Button(new Rect(0, (index * 25), questionWidth, 25f), ""))
-                    {
-                        GUI.BringWindowToFront(0);
-                        show = false;
-                        indexNumber = index;
-                        Subject = list[index];
-                        Debug.Log(Subject);
-                    }
-
-                    GUI.Label(new Rect(10f, (index * 25), dropDownRect.height + 50f, 25f), list[index]);
-
-                }
-
-                GUI.EndScrollView();
-            }
-            else
-            {
-                GUI.Label(new Rect(dropDownRect.x + 10f, dropDownRect.y, dropDownRect.width, 25f), list[indexNumber]);
-            }
        }
 
         if (emptyTextArea)
@@ -265,8 +223,6 @@ public class EnterQuestions : MonoBehaviour {
 
     private void _UserInsertQuestions()
     {
-        GUI.Label(new Rect(labelAlignLeft, topicAreaPos - (topicHeight * 5), topicWidth, topicHeight), "Onderwerp");
-
         GUI.Label(new Rect(labelAlignLeft, checkBox1Pos - (checkBoxHeight * 2), labelWidth, labelHeight), "Vraag");
         Question = GUI.TextArea(new Rect(answerAlignLeft, questionAreaPos, questionWidth, questionHeight), Question);
 

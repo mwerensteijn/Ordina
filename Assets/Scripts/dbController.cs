@@ -569,9 +569,8 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-
-        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject=" + subj;
-        cmd.ExecuteScalar();
+        cmd.CommandText = "DELETE FROM Onderwerp WHERE Subject='" + subj + "'";
+        cmd.ExecuteNonQuery();
 
         dbconn.Close();
     }
@@ -582,9 +581,9 @@ public class dbController : MonoBehaviour
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
-
+        Debug.Log(subjID);
         cmd.CommandText = "DELETE FROM Onderwerp WHERE OnderwerpID=" + subjID;
-        cmd.ExecuteScalar();
+        cmd.ExecuteNonQuery();
 
         dbconn.Close();
     }

@@ -4,13 +4,17 @@ using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour
 {
-    dbController database; 
+    dbController database;
 
     public GUISkin customSkin1;
     public GUISkin customSkin2;
     public GUISkin customSkin3;
 
     public Texture2D dropDownImage;
+
+    public bool NoSubject;
+
+    private Rect windowRect = new Rect(Screen.width / 3, Screen.height / 3, Screen.width / 3, Screen.height / 8);
 
     public float offset;
 
@@ -23,6 +27,7 @@ public class MainMenu : MonoBehaviour
     public float buttonPos1;
     public float buttonPos2;
     public float buttonPos3;
+    public float buttonPos4;
 
     public float bottomBannerWidth;
     public float bottomBannerHeight;
@@ -46,18 +51,19 @@ public class MainMenu : MonoBehaviour
     public Rect dropDownRect = new Rect(Screen.width/3, 0f, 50f, 50f);
     public static List<string> list = new List<string>();
 
-    int indexNumber;
+    int indexNumber = 0;
     bool show = false;
 
     void Awake()
     {
         _newSubject = "";
+        Subject = "";
 
         executeOnce = false;
         database = Camera.main.GetComponent<dbController>();
 
         list = database.getSubjects();
-        if (list.Count >= 0)
+        if (list.Count > 0)
             Subject = list[0];
 
         _subjectWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
@@ -68,6 +74,7 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
+        Screen.fullScreen = true;
         _subjectWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
         _subjectButtonPos = new Rect(_subjectWindow.x / 10, _subjectWindow.height / 5, _subjectWindow.width / 2, _subjectWindow.height / 15);
 
@@ -88,6 +95,7 @@ public class MainMenu : MonoBehaviour
         buttonPos1 = topBannerHeight + buttonSizeHeight* 2;
         buttonPos2 = topBannerHeight + buttonSizeHeight * 3;
         buttonPos3 = topBannerHeight + (buttonSizeHeight * 4);
+        buttonPos4 = topBannerHeight + (buttonSizeHeight * 5);
 
         bottomBannerHeight = Screen.height;
         bottomBannerWidth = offset;
@@ -95,12 +103,14 @@ public class MainMenu : MonoBehaviour
     }
     void OnGUI()
     {
-        GUI.skin = customSkin1;
-
+        GUI.skin = customSkin2;
+        if(NoSubject)
+            GUI.Window(1, windowRect, ShowPopup, "Voeg een onderwerp toe a.u.b.");
         if (!_subjectChosen)
         {
             GUI.skin = customSkin2;
-            GUI.Window(0, _subjectWindow, chooseSubject, "Kies onderwerp");
+            if(!NoSubject)
+                GUI.Window(0, _subjectWindow, chooseSubject, "Kies onderwerp");
         }
         else
         {
@@ -110,17 +120,18 @@ public class MainMenu : MonoBehaviour
 
             if (GUI.Button(new Rect(offset, buttonPos1, buttonSizeWidth, buttonSizeHeight), "Meerkeuze vragen invoeren"))
             {
-                Debug.Log("Meerkeuze button ingedrukt");
                 Application.LoadLevel("EnterQuestions");
             }
 
             if (GUI.Button(new Rect(offset, buttonPos2, buttonSizeWidth, buttonSizeHeight), "Foto's bewerken"))
             {
-                Debug.Log("Foto's knippen button ingedrukt");
                 Application.LoadLevel("CMS");
             }
-
-            if (GUI.Button(new Rect(offset, buttonPos3, buttonSizeWidth, buttonSizeHeight), "Exit"))
+            if (GUI.Button(new Rect(offset, buttonPos3, buttonSizeWidth, buttonSizeHeight), "Onderwerp veranderen"))
+            {
+                _subjectChosen = false;
+            }
+            if (GUI.Button(new Rect(offset, buttonPos4, buttonSizeWidth, buttonSizeHeight), "Exit"))
             {
                 Application.Quit();
             }
@@ -132,88 +143,151 @@ public class MainMenu : MonoBehaviour
 
     private void chooseSubject(int windowID)
     {
-        GUI.skin = customSkin2;
-        if (!executeOnce)
-        {
-            Subject = "Huidig onderwerp: " + Subject;
-            executeOnce = true;
-        }
-        GUI.Label(_currentSubjectPos, Subject);
-        GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.9f), _subjectButtonPos.y, _subjectButtonPos.width, _subjectButtonPos.height), dropDownImage);
-        if (GUI.Button(_subjectButtonPos, ""))
-        {
-            if (!show)
+        if (!NoSubject)
+        { 
+            GUI.FocusWindow(0);
+            GUI.skin = customSkin2;
+            if (!executeOnce)
             {
-                show = true;
+                Subject = "Huidig onderwerp: " + Subject;
+                executeOnce = true;
+            }
+
+            // Label with the current subject displayed as text
+            GUI.Label(_currentSubjectPos, Subject);
+        
+            // Button with the current subject displayed on it
+            //
+            // If the database contains more than zero subjects
+            // a boolean called show will be set to true
+            // and a drop down menu will be displayed with all the subject
+            // in the database
+            if (GUI.Button(_subjectButtonPos, ""))
+            {
+                if (!show)
+                {
+                    show = true;
+                }
+                else
+                {
+                    show = false;
+                }
+            }
+
+            // texture dropDownImage is displayed on this label on the position of the subject button
+            GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.92f), _subjectButtonPos.y, _subjectButtonPos.width * 0.2f, _subjectButtonPos.height * 0.9f), dropDownImage);
+
+            // This part takes care of the drop down menu
+            //
+            // A box with a verticall scrollbar will show up and the user can select a subject
+            if (show)
+            {
+                scrollViewVector = GUI.BeginScrollView(new Rect(_subjectButtonPos.x, _subjectButtonPos.y + _subjectButtonPos.height, _subjectButtonPos.width, _subjectButtonPos.height * 3), scrollViewVector, new Rect(0, 0, 0, Mathf.Max(_subjectButtonPos.height, ((list.Count) * _subjectButtonPos.height))));
+           
+                if (list.Count == 0)
+                    show = false;
+            
+                for (int index = 0; index < list.Count; index++)
+                {
+                    if (GUI.Button(new Rect(0, (index * _subjectButtonPos.height), _subjectButtonPos.width, _subjectButtonPos.height), ""))
+                    {
+                        show = false;
+                        indexNumber = index;
+                        Subject = "Huidig onderwerp: " + list[index];
+                    }
+
+                    GUI.Label(new Rect(10f, (index * _subjectButtonPos.height), _subjectButtonPos.width, _subjectButtonPos.height), list[index]);
+
+                }
+           
+                GUI.EndScrollView();
             }
             else
             {
+                if (list.Count != 0)
+                    GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y, _subjectButtonPos.width, _subjectButtonPos.height), list[indexNumber]);
+                else
+                    GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y, _subjectButtonPos.width, _subjectButtonPos.height), "");
+            }
+
+            // Button to remove a subjet from the database
+            //
+            // If this button is pressed the selected subject will be deleted from
+            // the database and the list with all the subjects will be updated automatically
+            if (GUI.Button(_deleteCurrentSubjectButtonPos, "Huidig onderwerp verwijderen"))
+            {
+                if (list.Count > 0)
+                {
+                    database.deleteSubject(list[indexNumber]);
+                    list.Remove(list[indexNumber]);
+                    if (list.Count != 0)
+                    {
+                        if (list.Count == indexNumber)
+                            Subject = "Huidig onderwerp: " + list[indexNumber - 1];
+                        else
+                            Subject = "Huidig onderwerp: " + list[indexNumber];
+                    }
+                    else
+                    {
+                        Subject = "Huidige onderwerp: ";
+                    }
+                    if (list.Count == indexNumber)
+                        indexNumber--;
+                }
+            }
+
+            // Label with some text on position rect _newSubjectPos
+            GUI.Label(_newSubjectPos, "Nieuw onderwerp toevoegen:");
+
+            // Textarea for adding new subject on position rect _inputArea
+            //
+            // The text will be saved in variable called _newSubject which is a string variable
+            _newSubject = GUI.TextArea(_inPutArea, _newSubject);
+
+            // Button for adding new subject
+            //
+            // If this button is pressed the new subject will be add to the database
+            // and the list with subjects will be updated  with the new subject
+             if (GUI.Button(_addNewSubjectButtonPos, "Voeg toe"))
+            {
+                //list.Add(_newSubject);
+                if (_newSubject != "")
+                {
+                    database.insertSubject(_newSubject);
+                    list.Add(_newSubject);
+                    indexNumber = list.Count-1;
+                    Subject = "Huidig onderwerp: " + list[indexNumber];
+                    _newSubject = "";
+                }
                 show = false;
             }
-        }
 
-        if (show)
-        {
-            //Debug.Log("SHOWWWW");
-            scrollViewVector = GUI.BeginScrollView(new Rect(_subjectButtonPos.x, _subjectButtonPos.y + _subjectButtonPos.height, _subjectButtonPos.width, _subjectButtonPos.height * 3), scrollViewVector, new Rect(0, 0, 0, Mathf.Max(_subjectButtonPos.height, ((list.Count) * _subjectButtonPos.height))));
-           
-            Debug.Log(list.Count);
-            //GUI.Box(new Rect(_subjectButtonPos.x, _subjectButtonPos.y + _subjectButtonPos.height, _subjectButtonPos.width, Mathf.Max(300, ((list.Count - 1) * _subjectButtonPos.height))), "");
-
-            
-            for (int index = 0; index < list.Count; index++)
+            // Checks if button "Doorgaan" is pressed. 
+            //
+            // If this button is pressed a bool will be set to true and the main menu window will be openend
+            if (GUI.Button(new Rect(_subjectWindow.width / 3, _subjectWindow.height - (_subjectWindow.height /5f), _subjectWindow.width / 3, _subjectWindow.height / 10), "Doorgaan"))
             {
-
-                if (GUI.Button(new Rect(0, (index * _subjectButtonPos.height), _subjectButtonPos.width, _subjectButtonPos.height), ""))
+                if (list.Count > 0)
                 {
-                    show = false;
-                    indexNumber = index;
-                    Subject = "Huidig onderwerp: " + list[index];
-                    Debug.Log(Subject);
+                    _subjectChosen = true;
+                    NoSubject = false;
                 }
-
-                GUI.Label(new Rect(10f, (index * _subjectButtonPos.height), _subjectButtonPos.width, _subjectButtonPos.height), list[index]);
-
+                else
+                {
+                    NoSubject = true;
+                } 
+            }   
             }
-            
-            GUI.EndScrollView();
-        }
-        else
+    }
+
+    private void ShowPopup(int windowID)
+    {
+        GUI.FocusWindow(1);
+        if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 2), windowRect.width / 3, windowRect.height / 3), "Doorgaan"))
         {
-            GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y, _subjectButtonPos.width, _subjectButtonPos.height), list[indexNumber]);
+            NoSubject = false;
         }
-
-        if(GUI.Button(_deleteCurrentSubjectButtonPos, "Huidig onderwerp verwijderen"))
-        {
-            Debug.Log("VERWIJDER ONDERWERP");
-        }
-
-        GUI.Label(_newSubjectPos, "Nieuw onderwerp toevoegen:");
-
-        // Area for adding new subject
-        _newSubject = GUI.TextArea(_inPutArea, _newSubject);
-
-        // Button for adding new subject
-        //
-        // If this button is pressed the new subject will be add to the database
-         if (GUI.Button(_addNewSubjectButtonPos, "Voeg toe"))
-        {
-            //list.Add(_newSubject);
-            if (_newSubject != "")
-            {
-                database.insertSubject(_newSubject);
-                list.Add(_newSubject);
-                indexNumber = list.Count-1;
-                Subject = "Huidig onderwerp: " + list[indexNumber];
-            }
-        }
-
-        // Checks if button "Doorgaan" is pressed. 
-        //
-        // If this button is pressed a bool will be set to true and the main menu window will be openend
-        if (GUI.Button(new Rect(_subjectWindow.width / 3, _subjectWindow.height - (_subjectWindow.height /5f), _subjectWindow.width / 3, _subjectWindow.height / 10), "Doorgaan"))
-        {
-            _subjectChosen = true;
-        }
+        //GUI.FocusWindow(0);
+        //GUI.DragWindow();
     }
 }
