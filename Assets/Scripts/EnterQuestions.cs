@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class EnterQuestions : MonoBehaviour {
 
     public Texture2D texture;
+    public Texture2D dropDownImage;
     public GUISkin CustomSkin;
 
     dbController database; 
@@ -14,8 +15,8 @@ public class EnterQuestions : MonoBehaviour {
     GUIContent checkBox1 = new GUIContent();
     GUIContent checkBox2 = new GUIContent();
     GUIContent checkBox3 = new GUIContent();
-    
-    Rect checkBoxRect1, checkBoxRect2, checkBoxRect3;
+
+    Rect checkBoxRect1, checkBoxRect2, checkBoxRect3, _QuestionsWindow, _QuestionsListPos;
     
     bool answer1IsRight, answer2IsRight, answer3IsRight;
 
@@ -37,6 +38,9 @@ public class EnterQuestions : MonoBehaviour {
     public Rect dropDownRect;
     public static List<string> list = new List<string>();
 
+    private List<string> _questionsPerSubject;
+    private string _selectedSubject;
+
     int indexNumber;
     bool show = false;
 
@@ -47,8 +51,8 @@ public class EnterQuestions : MonoBehaviour {
         database = Camera.main.GetComponent<dbController>();
 
         list = database.getSubjects();
-        if(list.Count >= 0)
-            Subject = list[0];
+        if (list.Count >= 0)
+            Subject = database.getSubject(MainMenu.selectedSubjectID);
         Question = "";
         Answer1 = "";
         Answer2 = "";
@@ -96,13 +100,22 @@ public class EnterQuestions : MonoBehaviour {
         dropDownRect = new Rect(answerAlignLeft, questionAreaPos - (topicHeight * 6), topicWidth, 30f);
     }
 
+    void Update()
+    {
+        _QuestionsWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
+        _QuestionsListPos = new Rect(_QuestionsWindow.x / 10, _QuestionsWindow.height / 5, _QuestionsWindow.width / 2, _QuestionsWindow.height / 15);
+
+        _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
+    }
+
 
     void OnGUI()
     {
-        
+        _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
         if (!popupWindowOpened)
         {
             GUI.skin = CustomSkin;
+            _ReadQuestionsFromDatabase();
             _CheckSelectedCheckbox();
             _UserInsertQuestions();
           
@@ -126,7 +139,7 @@ public class EnterQuestions : MonoBehaviour {
             {
                 Application.LoadLevel("GUI");
             }
-       }
+        }
 
         if (emptyTextArea)
         {
@@ -149,7 +162,6 @@ public class EnterQuestions : MonoBehaviour {
         if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 2), windowRect.width / 3, windowRect.height / 3), "Doorgaan"))
         {
             emptyTextArea = checkBox = popupWindowOpened = succesFullySend = false;
-
 
             database.insertQuestion(Question, database.getSubjectID(Subject)); //TODO - De string moet ingevuld worden met de string!
             database.insertAnswer(Answer1, database.getQuestionID(Question), answer1IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
@@ -219,6 +231,82 @@ public class EnterQuestions : MonoBehaviour {
                 checkBox3.image = null;
             }
         }
+    }
+
+    private void _CheckSelectedCheckbox(bool changed)
+    {
+        if(answer1IsRight)
+        {
+            checkBox1.image = texture;
+            checkBox2.image = checkBox3.image = null;
+        }
+        else if (answer2IsRight)
+        {
+            checkBox2.image = texture;
+            checkBox1.image = checkBox3.image = null;
+        }
+        else if (answer3IsRight)
+        {
+            checkBox3.image = texture;
+            checkBox1.image = checkBox2.image = null;
+        }
+        changed = false;
+    }
+
+    private void _ReadQuestionsFromDatabase()
+    {
+        if (GUI.Button(_QuestionsListPos, ""))
+        {
+            if (!show)
+            {
+                show = true;
+            }
+            else
+            {
+                show = false;
+            }
+        }
+        // texture dropDownImage is displayed on this label on the position of the subject button
+        GUI.Label(new Rect(_QuestionsListPos.x + (_QuestionsListPos.width * 0.92f), _QuestionsListPos.y, _QuestionsListPos.width * 0.2f, _QuestionsListPos.height * 0.9f), dropDownImage);
+
+        if (show)
+        {
+            scrollViewVector = GUI.BeginScrollView(new Rect(_QuestionsListPos.x, _QuestionsListPos.y + _QuestionsListPos.height, _QuestionsListPos.width, _QuestionsListPos.height * 3), scrollViewVector, new Rect(0, 0, 0, Mathf.Max(_QuestionsListPos.height, ((_questionsPerSubject.Count) * _QuestionsListPos.height))));
+            Debug.Log(_questionsPerSubject.Count);
+            if (_questionsPerSubject.Count == 0)
+                show = false;
+
+            for (int index = 0; index < _questionsPerSubject.Count; index++)
+            {
+                if (GUI.Button(new Rect(0, (index * _QuestionsListPos.height), _QuestionsListPos.width, _QuestionsListPos.height), ""))
+                {
+                    show = false;
+                    indexNumber = index;
+                    _selectedSubject = _questionsPerSubject[index];
+                    changeQuestion(_selectedSubject);
+                }
+
+                GUI.Label(new Rect(10f, (index * _QuestionsListPos.height), _QuestionsListPos.width, _QuestionsListPos.height), _questionsPerSubject[index]);
+
+            }
+
+            GUI.EndScrollView();
+        }
+    }
+
+    private void changeQuestion(string selectedQuestion)
+    {
+        bool changed = true;
+        Question = database.getQuestion(database.getQuestionID(selectedQuestion));
+        Answer1 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[0]);
+        Answer2 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[1]);
+        Answer3 = database.getAnswer(database.getAnswerIDs(selectedQuestion)[2]);
+        answer1IsRight = database.getAnswerCorrect(Answer1);
+        answer2IsRight = database.getAnswerCorrect(Answer2);
+        answer3IsRight = database.getAnswerCorrect(Answer3);
+        _CheckSelectedCheckbox(changed);
+        _UserInsertQuestions();
+
     }
 
     private void _UserInsertQuestions()
