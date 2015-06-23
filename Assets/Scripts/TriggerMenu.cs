@@ -25,7 +25,7 @@ public class TriggerMenu : MonoBehaviour {
                 }
                 else if (selectedButton.name == "Hoofdmenu") 
                 {
-                    Application.LoadLevel(5);
+                    Application.LoadLevel(6);
                 }
 			}
 		}

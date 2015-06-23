@@ -19,6 +19,7 @@ public class AirplaneMovement : MonoBehaviour {
 	private float sideMovementSpeed = 30f;
 
     public AnswerRow answerRowFront;
+    public ParticleAnimator airplaneEngineParticleBeam;
 
 	// Initialization
 	void Start () {

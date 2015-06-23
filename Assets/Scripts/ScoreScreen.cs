@@ -8,6 +8,7 @@ public class ScoreScreen : MonoBehaviour {
     //public WorldMovement worldMovement;
     public Text TotalScore;
     public Text TotalTime;
+    public AirplaneMovement airPlane;
 
 	// Use this for initialization
 	void Start () 
@@ -18,6 +19,9 @@ public class ScoreScreen : MonoBehaviour {
 
     public void ShowScoreScreen(int totalTimeInSeconds, string formatedTime) 
     {
+        Vector3 scoreScreenPosition = airPlane.transform.position;
+        scoreScreenPosition.z += 1;
+        _ScoreScreen.transform.position = scoreScreenPosition;
         _ScoreScreen.enabled = true;
         TotalScore.text = "Score: " + totalTimeInSeconds;
         TotalTime.text =  "Time:  " +formatedTime;

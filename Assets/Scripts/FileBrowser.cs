@@ -6,6 +6,9 @@ public class FileBrowser : MonoBehaviour {
     public GUISkin skin;
     private Vector2 scrollPosition = Vector2.zero;
 
+    public Texture2D _dropDownImage;
+    public Texture2D _backButtonImage;
+
     private string path = "C:\\";
     private string[] fileEntries;
     private string[] directoryEntries;
@@ -50,10 +53,15 @@ public class FileBrowser : MonoBehaviour {
         GUI.skin = skin;
 
         GUI.Box(new Rect(0, 0, 500, 340), "Open file");
-        GUI.Button(new Rect(477, 3, 21, 21), "X");
+        
+        if(GUI.Button(new Rect(477, 3, 21, 21), _backButtonImage))
+        {
+            Application.LoadLevel("ImageOverview");
+        }
+
         GUI.Label(new Rect(20, 50, 100, 20), "Look in:");
         path = GUI.TextField(new Rect(120, 50, 200, 20), path);
-        if (GUI.Button(new Rect(330, 50, 20, 20), "↑")) {
+        if (GUI.Button(new Rect(330, 50, 20, 20), _dropDownImage)) {
             int index = path.LastIndexOf('\\', path.Length - 2, path.Length - 2);
 
             if (index > 0) {
@@ -73,8 +81,7 @@ public class FileBrowser : MonoBehaviour {
                     break;
             }
         }
-
-        int scrollBarHeight = 20 * entries;
+        int scrollBarHeight = 22 * entries;
         if (scrollBarHeight < 200) {
             scrollBarHeight = 200;
         }
