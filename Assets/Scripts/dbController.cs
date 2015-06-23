@@ -20,8 +20,6 @@ public class dbController : MonoBehaviour
     //public GameObject plane;
     public byte[] imgByteArr;
 
-    private string dbLoc;
-
     public struct Picture {
         public int pictureID;
         public Texture2D texture;
@@ -34,12 +32,35 @@ public class dbController : MonoBehaviour
 
     void Awake()
     {
-        dbLoc = "URI=file:" + Application.dataPath + "/database/Database.s3db";
-        //testshit();
+        if (Application.platform == RuntimePlatform.Android) {
+            // check if file exists in Application.persistentDataPath
+
+            string filepath = Application.persistentDataPath + "/Database.s3db";
+            if (!File.Exists(filepath)) {
+                // if it doesn't ->
+                // open StreamingAssets directory and load the db ->
+                WWW loadDB = new WWW("jar:file://" + Application.dataPath + "!/assets/Database.s3db");  // this is the path to your StreamingAssets in android
+
+                while (!loadDB.isDone) {
+                }  // CAREFUL here, for safety reasons you shouldn't let this while loop unattended, place a timer and error check
+
+                // then save to Application.persistentDataPath
+
+                File.WriteAllBytes(filepath, loadDB.bytes);
+            }
+
+            //open db connection
+
+            sqliteConnection = "URI=file:" + filepath;
+        } else {
+            sqliteConnection = "URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db";
+        }
     }
 
+    private static string sqliteConnection;
+
     public void testshit() {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         //FileStream fs = new FileStream(Application.dataPath + "/database/DOGGOE.png", FileMode.Open, FileAccess.Read);
@@ -87,7 +108,7 @@ public class dbController : MonoBehaviour
 
         bytes = pic.EncodeToPNG();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
 
         dbconn.Open();
 
@@ -128,7 +149,7 @@ public class dbController : MonoBehaviour
         if (imgID != 0)
         {
 
-            dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+            dbconn = new SqliteConnection(sqliteConnection);
             dbconn.Open();
 
             SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -183,7 +204,7 @@ public class dbController : MonoBehaviour
     {
         List<int> pic = new List<int>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -205,10 +226,10 @@ public class dbController : MonoBehaviour
         List<Picture> picList = new List<Picture>();
         Picture pic;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
-        SqliteCommand cmd = new SqliteCommand(dbconn);
+        SqliteCommand cmd = new SqliteCommand(dbconn); 
         cmd.CommandText = "SELECT Afbeelding.AfbeeldingID, Afbeelding.Afbeelding FROM Vraag Vraag, Afbeelding Afbeelding WHERE Vraag.AfbeeldingID = Afbeelding.AfbeeldingID AND Vraag.OnderwerpID = " + subID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
@@ -240,7 +261,7 @@ public class dbController : MonoBehaviour
     {
         Texture2D pic = new Texture2D(2, 2);
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -264,7 +285,7 @@ public class dbController : MonoBehaviour
 
         bytes = img.EncodeToPNG();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -280,7 +301,7 @@ public class dbController : MonoBehaviour
     {
         int picID = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -312,7 +333,7 @@ public class dbController : MonoBehaviour
     {
         int picID = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -325,7 +346,7 @@ public class dbController : MonoBehaviour
     }
 
     public int insertRect(Rect rect, int pictureID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -357,7 +378,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteRect(int rectID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -369,7 +390,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteRects(int imgID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -385,7 +406,7 @@ public class dbController : MonoBehaviour
         List<dbController.Rectangle> lrect = new List<dbController.Rectangle>();
         Rect rect = new Rect(0, 0, 0, 0);
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -412,7 +433,7 @@ public class dbController : MonoBehaviour
     }
 
     public void insertQuestion(string question, int subjectID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -430,7 +451,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteQuestion(string question) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -444,7 +465,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteQuestion(int questionID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -459,7 +480,7 @@ public class dbController : MonoBehaviour
 
     public void updateQuestion(int questionID, string question)
     {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -474,7 +495,7 @@ public class dbController : MonoBehaviour
     {
         List<int> lstr = new List<int>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
 
         dbconn.Open();
 
@@ -504,7 +525,7 @@ public class dbController : MonoBehaviour
     public List<int> getQuestionIDs(int subjectID) {
         List<int> lstr = new List<int>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
 
         dbconn.Open();
 
@@ -530,7 +551,7 @@ public class dbController : MonoBehaviour
     {
         List<string> lstr = new List<string>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -555,7 +576,7 @@ public class dbController : MonoBehaviour
     {
         int id = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -574,7 +595,7 @@ public class dbController : MonoBehaviour
     {
         string question = "";
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -590,7 +611,7 @@ public class dbController : MonoBehaviour
     }
 
     public void insertAnswer(string answer, int questionID, bool correct) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -611,7 +632,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteAnswer(int questionID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -624,7 +645,7 @@ public class dbController : MonoBehaviour
 
     public void updateAnswer(int answerID, string answer, bool correct)
     {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -642,7 +663,7 @@ public class dbController : MonoBehaviour
     {
         List<string> answers = new List<string>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -667,7 +688,7 @@ public class dbController : MonoBehaviour
     {
         List<int> answers = new List<int>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -698,7 +719,7 @@ public class dbController : MonoBehaviour
     {
         List<int> answers = new List<int>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -729,7 +750,7 @@ public class dbController : MonoBehaviour
     {
         string answer = "";
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -753,7 +774,7 @@ public class dbController : MonoBehaviour
         bool answer = false;
         int answerINT = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -781,7 +802,7 @@ public class dbController : MonoBehaviour
         bool answer = false;
         int answerINT = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -820,7 +841,7 @@ public class dbController : MonoBehaviour
             }
         }
         if (insert) {
-            dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+            dbconn = new SqliteConnection(sqliteConnection);
             dbconn.Open();
 
             SqliteCommand cmd = new SqliteCommand();
@@ -836,7 +857,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteSubject(string subj) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -854,7 +875,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deleteSubject(int subjID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -876,7 +897,7 @@ public class dbController : MonoBehaviour
 
         List<string> subjects = new List<string>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         Debug.Log("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
@@ -897,7 +918,7 @@ public class dbController : MonoBehaviour
     {
         int answerID = -1;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -913,7 +934,7 @@ public class dbController : MonoBehaviour
     {
         string answer = "";
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -931,7 +952,7 @@ public class dbController : MonoBehaviour
     {
         int spelerID = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -954,7 +975,7 @@ public class dbController : MonoBehaviour
     }
 
     public void insertScore(int spelerID, string onderwerp, int spelID, int score, int tijd, int aantalGesteldeVragen, int correctBeantwoorddeVragen) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -978,7 +999,7 @@ public class dbController : MonoBehaviour
     {
         int score = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -996,7 +1017,7 @@ public class dbController : MonoBehaviour
     {
         int score = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -1011,7 +1032,7 @@ public class dbController : MonoBehaviour
     }
 
     public void insertPlayerData(string playerName) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -1026,7 +1047,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deletePlayer(string playerName) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -1038,7 +1059,7 @@ public class dbController : MonoBehaviour
     }
 
     public void deletePlayer(int playerID) {
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -1053,7 +1074,7 @@ public class dbController : MonoBehaviour
     {
         string player = "";
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();
@@ -1071,7 +1092,7 @@ public class dbController : MonoBehaviour
     {
         int player = 0;
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
+        dbconn = new SqliteConnection(sqliteConnection);
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand();

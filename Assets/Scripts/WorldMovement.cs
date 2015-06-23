@@ -174,7 +174,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         //TODO
         //onderwerpId = getonderwip of iets..
-        List<int> dbvragenIds = _dbController.getQuestionIDs(106, false);
+        List<int> dbvragenIds = _dbController.getQuestionIDs(111, false);
 
         foreach (int vraagid in dbvragenIds) 
         {
@@ -206,8 +206,6 @@ public class WorldMovement : MonoBehaviour, IScore {
             LoadQuestionsFromFile("Assets\\data.txt");
         }
 
-        Debug.Log(_questions.Count);
-        Debug.Log(currentQuestion);
         // Set question and answer text
         questionText.text = _questions[currentQuestion].question;
         answerRowFront.A = _questions[currentQuestion].answers[0];
