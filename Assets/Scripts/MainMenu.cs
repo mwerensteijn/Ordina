@@ -6,6 +6,8 @@ public class MainMenu : MonoBehaviour
 {
     dbController database;
 
+    GameObject Script;
+
     public static int selectedSubjectID;
 
     public GUISkin customSkin1;
@@ -13,6 +15,8 @@ public class MainMenu : MonoBehaviour
     public GUISkin customSkin3;
 
     public Texture2D dropDownImage;
+
+    public static bool activaEnterQuestionScript = false;
 
     public bool NoSubject;
 
@@ -36,7 +40,7 @@ public class MainMenu : MonoBehaviour
     public float bottomBannerPos;
 
     private Rect _currentSubjectPos;
-    private bool _subjectChosen = false;
+    public static bool _subjectChosen = false;
     private Rect _subjectWindow;
     private Rect _subjectButtonPos;
 
@@ -56,17 +60,21 @@ public class MainMenu : MonoBehaviour
     int indexNumber = 0;
     bool show = false;
 
+    void Start()
+    {
+        database = Camera.main.GetComponent<dbController>();
+
+        list = database.getSubjects();
+        if (list.Count > 0)
+            Subject = list[0];
+    }
+
     void Awake()
     {
         _newSubject = "";
         Subject = "";
 
         executeOnce = false;
-        database = Camera.main.GetComponent<dbController>();
-
-        list = database.getSubjects();
-        if (list.Count > 0)
-            Subject = list[0];
 
         _subjectWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
         _subjectButtonPos = new Rect(_subjectWindow.x / 10, _subjectWindow.height / 5, _subjectWindow.width / 3, _subjectWindow.height / 15);
@@ -105,6 +113,7 @@ public class MainMenu : MonoBehaviour
     }
     void OnGUI()
     {
+        Screen.fullScreen = true;
         GUI.skin = customSkin2;
         if(NoSubject)
             GUI.Window(1, windowRect, ShowPopup, "Voeg een onderwerp toe a.u.b.");
@@ -139,7 +148,7 @@ public class MainMenu : MonoBehaviour
             }
 
             GUI.skin = customSkin3;
-            GUI.Box(new Rect(0, Screen.height - (Screen.height / 20), bottomBannerWidth, buttonSizeHeight), "Ordina the Game 1.0 made by MJ");
+            GUI.Box(new Rect(0, Screen.height - (Screen.height / 20), bottomBannerWidth, buttonSizeHeight), "Ordina the Game 1.0 made by Hogeschool Utrecht");
         }
     }
 
@@ -207,9 +216,9 @@ public class MainMenu : MonoBehaviour
             else
             {
                 if (list.Count != 0)
-                    GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y, _subjectButtonPos.width, _subjectButtonPos.height), list[indexNumber]);
+                    GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y + (_subjectButtonPos.height * 0.01f), _subjectButtonPos.width, _subjectButtonPos.height), list[indexNumber]);
                 else
-                    GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y, _subjectButtonPos.width, _subjectButtonPos.height), "");
+                    GUI.Label(new Rect(_subjectButtonPos.x + (_subjectButtonPos.width * 0.01f), _subjectButtonPos.y + (_subjectButtonPos.height * 0.01f), _subjectButtonPos.width, _subjectButtonPos.height), "");
             }
 
             // Button to remove a subjet from the database
