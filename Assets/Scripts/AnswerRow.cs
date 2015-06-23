@@ -7,6 +7,7 @@ public class AnswerRow {
     public string C { set { answerCText.text = value; } }
 
     private TextMesh answerAText;
+    private Plane answerAPlane;
     private TextMesh answerBText;
     private TextMesh answerCText;
 
@@ -15,11 +16,12 @@ public class AnswerRow {
     public Material answerC;
 
     public Transform transform;
+    public GameObject row;
 
 	// Use this for initialization
 	public AnswerRow(GameObject row) {
         transform = row.transform;
-
+        this.row = row;
         answerAText = row.transform.FindChild("A").FindChild("Answer").GetComponent<TextMesh>();
         answerBText = row.transform.FindChild("B").FindChild("Answer").GetComponent<TextMesh>();
         answerCText = row.transform.FindChild("C").FindChild("Answer").GetComponent<TextMesh>();
@@ -28,6 +30,13 @@ public class AnswerRow {
         answerB = row.transform.FindChild("B").GetComponent<MeshRenderer>().material;
         answerC = row.transform.FindChild("C").GetComponent<MeshRenderer>().material;
 	}
+
+    public void SizePlane() 
+    {        
+        row.transform.FindChild("A").FindChild("Answer").GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
+        row.transform.FindChild("B").FindChild("Answer").GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
+        row.transform.FindChild("C").FindChild("Answer").GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
+    }
 
     public void HideAnswersText() 
     {
