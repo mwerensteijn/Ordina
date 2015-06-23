@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-    class MainMenuController: MonoBehaviour
+    public class MainMenuController: MonoBehaviour
     {
         private GameObject lastPanel;
         public GameObject mainMenuPanel;

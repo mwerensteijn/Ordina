@@ -1841,6 +1841,7 @@ GameObject:
   - 224: {fileID: 1042566834}
   - 222: {fileID: 1042566836}
   - 114: {fileID: 1042566835}
+  - 114: {fileID: 1042566837}
   m_Layer: 5
   m_Name: playerName
   m_TagString: Untagged
@@ -1896,6 +1897,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1042566833}
+--- !u!114 &1042566837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1042566833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b551236b826d345b62af9f5e25400e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 397969337}
+  playerName: {fileID: 146761589}
+  gameManager: {fileID: 2011604855}
 --- !u!1 &1043058658
 GameObject:
   m_ObjectHideFlags: 0
@@ -3285,8 +3300,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 397969337}
-        m_MethodName: selectSubject
+      - m_Target: {fileID: 1042566837}
+        m_MethodName: Next
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
