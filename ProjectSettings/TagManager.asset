@@ -19,6 +19,7 @@ TagManager:
   - CardBoardMain
   - ImageOverviewScrollbar
   - GameManager
+  - Submit
   layers:
   - Default
   - TransparentFX

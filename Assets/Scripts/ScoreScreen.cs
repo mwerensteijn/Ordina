@@ -14,11 +14,17 @@ public class ScoreScreen : MonoBehaviour {
         _ScoreScreen.enabled = false;
 	}
 
-    public void ShowScoreScreen(int totalTimeInSeconds, string formatedTime) 
+    public void ShowScoreScreen(int score, string formatedTime) 
     {
         _ScoreScreen.enabled = true;
-        TotalScore.text = "Score: " + totalTimeInSeconds;
+        TotalScore.text = "Score: " + score;
         TotalTime.text =  "Time:  " + formatedTime;
+    }
+
+    public void returnToMainMenu()
+    {
+        // level 0 is main menu
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().loadLevel(0);
     }
 }
 

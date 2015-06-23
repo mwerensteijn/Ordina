@@ -12,7 +12,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
     public ScoreScreen scoreScreen;
     public Canvas canvas;
     private GameManager gameManager;
-    private DigitalClock gameTimer;
+    public DigitalClock gameTimer;
     private int elapsedTime = 0;
 
     //public GameManager gameManager;
@@ -31,7 +31,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
 
     void Start()
     {
-        gameTimer = new DigitalClock();
+        //gameTimer = new DigitalClock();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
     }
@@ -49,7 +49,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
     }
 
     
-    void Submit()
+    public void Submit()
     {
        // bool check = true;
         Debug.Log("Submit");
@@ -74,14 +74,8 @@ public class SubmitAnswers : MonoBehaviour, IScore
             }
         }
 
-        // Check if all answer were right
-       /* if (check)
-        {
-            Debug.Log("Well done");
-        }*/
         int totalSeconds = gameTimer.GetTotalSeconds();
         SaveScore(CalculateScore(), totalSeconds - elapsedTime);
-        //db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), score,  totalSeconds - elapsedTime, TotalAskedQuestions, TotalCorrectQuestions);
         elapsedTime = totalSeconds;
         foreach(PictureQuestion question in m_Questions){
             question.removeFromScene();
@@ -89,7 +83,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
         m_Questions = new List<PictureQuestion>();
         if (!questionController.spawnQuestion())
         {
-            scoreScreen.ShowScoreScreen(totalSeconds, gameTimer.ToString());
+            scoreScreen.ShowScoreScreen(CalculateScore(), gameTimer.GetFormatedTime());
             canvas.gameObject.SetActive(false);
         }
     }

@@ -66,6 +66,12 @@ public class Bullet : MonoBehaviour {
             Destroy(this.gameObject);
             return;
         }
+        else if(hit.collider.tag == "Submit")
+        {
+            hit.collider.GetComponent<SubmitAnswers>().Submit();
+        }
+
+
 
         if (ImpactList.Count > 50)
         {
