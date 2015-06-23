@@ -276,7 +276,12 @@ public class WorldMovement : MonoBehaviour, IScore {
         questionText.GetComponent<MeshRenderer>().enabled = false;
         answerRowFront.HideAnswersText();
         int totalScore = CalculateScore(); 
+
+        Vector3 scoreScreenPosition = airplaneMovement.transform.position;
+        scoreScreenPosition.z += 1;
+        scoreScreen.transform.position = scoreScreenPosition;
         scoreScreen.ShowScoreScreen(totalScore, gameTimer.GetFormatedTime());
+
         SaveScore(totalScore, gameTimer.GetTotalSeconds());
         //laat score screen zien.
     }
