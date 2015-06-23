@@ -28,4 +28,11 @@ public class AnswerRow {
         answerB = row.transform.FindChild("B").GetComponent<MeshRenderer>().material;
         answerC = row.transform.FindChild("C").GetComponent<MeshRenderer>().material;
 	}
+
+    public void HideAnswersText() 
+    {
+        answerAText.GetComponent<MeshRenderer>().enabled = false;
+        answerBText.GetComponent<MeshRenderer>().enabled = false;
+        answerCText.GetComponent<MeshRenderer>().enabled = false;
+    }
 }

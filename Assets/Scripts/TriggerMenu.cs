@@ -22,7 +22,11 @@ public class TriggerMenu : MonoBehaviour {
 					Application.LoadLevel (1);
 				} else if(selectedButton.name == "Afsluiten") {
 					Application.Quit();
-				}
+                }
+                else if (selectedButton.name == "Hoofdmenu") 
+                {
+                    Application.LoadLevel(5);
+                }
 			}
 		}
 	}

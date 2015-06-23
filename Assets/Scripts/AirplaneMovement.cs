@@ -26,7 +26,7 @@ public class AirplaneMovement : MonoBehaviour {
 		leftLaneX = GameObject.FindGameObjectWithTag("LeftLane").transform.position.x;
 		middleLaneX = GameObject.FindGameObjectWithTag("MiddleLane").transform.position.x;
 		rightLaneX = GameObject.FindGameObjectWithTag("RightLane").transform.position.x;
-        answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answer1"));
+        answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answers"));
 	}
 	
 	// Update is called once per frame
