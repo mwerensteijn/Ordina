@@ -1765,6 +1765,45 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 980079080}
+--- !u!1 &1025202940
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1025202942}
+  - 114: {fileID: 1025202941}
+  m_Layer: 0
+  m_Name: PopUpWindow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1025202941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025202940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a48de32d9cb14a24a9ca34a65942dc6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1025202942
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1025202940}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11.9653606, y: 1.99739695, z: 7.56288004}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &1040548550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,10 +1944,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1042566833}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b551236b826d345b62af9f5e25400e, type: 3}
+  m_Script: {fileID: 11500000, guid: 487b67638a16b2c4db082d73e53ceeda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 397969337}
+  popUp: {fileID: 1025202941}
   playerName: {fileID: 146761589}
   gameManager: {fileID: 2011604855}
 --- !u!1 &1043058658
@@ -3218,6 +3258,7 @@ MonoBehaviour:
   gameManager: {fileID: 2011604855}
   buttonPrefab: {fileID: 122382, guid: 861dde49a3cfede4d9cb8c5101e3880b, type: 2}
   subjectButton: {fileID: 1746563612}
+  popUp: {fileID: 1025202941}
   controller: {fileID: 397969337}
 --- !u!222 &1691739046
 CanvasRenderer:

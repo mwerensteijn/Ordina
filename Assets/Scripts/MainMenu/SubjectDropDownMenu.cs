@@ -9,6 +9,7 @@ using System.Collections.Generic;
         public GameManager gameManager;
         public GameObject buttonPrefab;
         public GameObject subjectButton;
+        public PopUpWindow popUp;
 
         public MainMenuController controller;
 
@@ -76,7 +77,8 @@ using System.Collections.Generic;
             }
             else
             {
-               //Popup vul onderwerp in.
+                //Popup vul onderwerp in.
+                popUp.enablePopUp("vul onderwerp in"); 
             }
         }
     }

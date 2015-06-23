@@ -203,7 +203,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2000002, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_Enabled
@@ -1374,7 +1374,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 35a859a4af431434baff57064170d94e, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 35a859a4af431434baff57064170d94e, type: 3}
       propertyPath: m_LocalScale.x
@@ -1825,7 +1825,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 791626065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 554d7b52e03737a41ac010feb97d3d97, type: 3}
+  m_Script: {fileID: 11500000, guid: f75c5be6d3794ba4190cdb682686aa4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dbControl: {fileID: 1678788286}
@@ -1835,9 +1835,9 @@ MonoBehaviour:
   mainPictureQuestion: {fileID: 791626065}
   submit: {fileID: 1659056576}
   startingPositionWidth: 10
-  startingPositionHeight: 3
-  maxWidthAnswer: 15
-  defaultZPosition: -5
+  startingPositionHeight: 2
+  maxWidthAnswer: 16
+  defaultZPosition: -5.5
 --- !u!114 &891704002 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11400662, guid: 66eb2dce377114b41a6572cf51216ce3,
@@ -2308,6 +2308,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   answerDescription: 
+--- !u!1 &1210184957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1210184959}
+  - 114: {fileID: 1210184958}
+  m_Layer: 0
+  m_Name: PopUpWindow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1210184958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1210184957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a48de32d9cb14a24a9ca34a65942dc6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1210184959
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1210184957}
+  m_LocalRotation: {x: 0, y: -.707106829, z: 0, w: .707106709}
+  m_LocalPosition: {x: -6.13999987, y: 3.02999997, z: .430000007}
+  m_LocalScale: {x: 12.4560843, y: 6.15164852, z: 2}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
 --- !u!114 &1218207697 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11463860, guid: c32c1029d6a13194ca362501f60120ed,
@@ -2424,7 +2463,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 427038, guid: 2a621c1552c58a748a133bbe4e4b36f8, type: 2}
       propertyPath: m_RootOrder
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 148890, guid: 2a621c1552c58a748a133bbe4e4b36f8, type: 2}
       propertyPath: m_IsActive
@@ -2634,6 +2673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpawner: {fileID: 991391334}
   watershooter: {fileID: 1218207697}
+  popUp: {fileID: 1210184958}
   paintSpots: []
 --- !u!4 &1315219334
 Transform:
@@ -2950,8 +2990,9 @@ MonoBehaviour:
   scoreScreen: {fileID: 1195790031}
   canvas: {fileID: 271317218}
   gameTimer: {fileID: 1892274561}
+  popUp: {fileID: 1210184958}
   questionController: {fileID: 791626071}
-  answerScoreWeigth: 0
+  answerScoreWeigth: 10
 --- !u!1 &1675061419
 GameObject:
   m_ObjectHideFlags: 0
