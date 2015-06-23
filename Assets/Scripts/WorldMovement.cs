@@ -35,7 +35,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// If a row with answers is not visible anymore for the player, it will respawn at this Z position.
 	private float appearPositionZ;
 	// Defines at which position a row with answers will disappear.
-	public float disappearPositionZ;
+	//public float disappearPositionZ;
 
 	// The answer, given by the player.
 	private Transform givenAnswer;
@@ -211,9 +211,11 @@ public class WorldMovement : MonoBehaviour, IScore {
 
         // Set question and answer text
         questionText.text = _questions[currentQuestion].question;
+        questionText.GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
         answerRowFront.A = _questions[currentQuestion].answers[0];
         answerRowFront.B = _questions[currentQuestion].answers[1];
         answerRowFront.C = _questions[currentQuestion].answers[2];
+        answerRowFront.SizePlane();
 
         currentState = WorldMovement.State.Idle;
         progressBar.SetMaxAwnsers(_questions.Count);
@@ -248,9 +250,11 @@ public class WorldMovement : MonoBehaviour, IScore {
         {
             ++currentQuestion;
             questionText.text = _questions[currentQuestion].question;
+            questionText.GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
             answerRowFront.A = _questions[currentQuestion].answers[0];
             answerRowFront.B = _questions[currentQuestion].answers[1];
             answerRowFront.C = _questions[currentQuestion].answers[2];
+            answerRowFront.SizePlane();
 
             currentState = WorldMovement.State.Idle;
         }

@@ -18,7 +18,7 @@ public class ScoreScreen : MonoBehaviour {
     {
         _ScoreScreen.enabled = true;
         TotalScore.text = "Score: " + totalTimeInSeconds;
-        TotalTime.text =  "Time:  " +formatedTime;
+        TotalTime.text =  "Time:  " + formatedTime;
     }
 }
 

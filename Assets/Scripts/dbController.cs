@@ -171,7 +171,7 @@ public class dbController : MonoBehaviour
         else if (questionID != 0)
         {
             int imgID2 = 0;
-            dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/database/Database.s3db");
+            dbconn = new SqliteConnection(sqliteConnection);
             dbconn.Open();
 
             SqliteCommand cmd = new SqliteCommand(dbconn);
@@ -905,10 +905,7 @@ public class dbController : MonoBehaviour
 
         List<string> subjects = new List<string>();
 
-        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
-
         dbconn = new SqliteConnection(sqliteConnection);
-        Debug.Log("URI=file:" + Application.dataPath + "/database/Database.s3db");
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
