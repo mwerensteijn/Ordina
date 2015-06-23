@@ -9,6 +9,8 @@ public class SubmitAnswers : MonoBehaviour, IScore
      
     public List<PictureQuestion> m_Questions = new List<PictureQuestion>();
     public dbController db;
+    public ScoreScreen scoreScreen;
+    public Canvas canvas;
     private DigitalClock gameTimer;
     private int elapsedTime = 0;
 
@@ -83,6 +85,8 @@ public class SubmitAnswers : MonoBehaviour, IScore
             question.removeFromScene();
         }
         m_Questions = new List<PictureQuestion>();
+        scoreScreen.ShowScoreScreen(totalSeconds, gameTimer.ToString());
+        canvas.gameObject.SetActive(false);
         questionController.spawnQuestion();
     }
 
