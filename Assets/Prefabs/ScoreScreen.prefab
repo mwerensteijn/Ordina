@@ -47,7 +47,7 @@ GameObject:
   - 114: {fileID: 11473792}
   - 114: {fileID: 11449280}
   m_Layer: 5
-  m_Name: Afsluiten
+  m_Name: Hoofdmenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -479,7 +479,7 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 0, y: -.519999981}
+  m_AnchoredPosition: {x: 0, y: -.400000006}
   m_SizeDelta: {x: 61.0999985, y: 25.5}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22427028

@@ -14,24 +14,14 @@ public class ProgressBar : MonoBehaviour {
 	
 	private void Awake() {
 		slider = gameObject.GetComponent<Slider>();
-		//counter = 0;            // just for testing purposes
 	}
 	
 	private void Start() {
-		slider.wholeNumbers = true;        // I dont want 3.543 Health but 3 or 4
+		slider.wholeNumbers = true;
 		slider.minValue = 0f;
-		slider.maxValue = MaxProgress;
-		slider.value = 0;        // start with full health
+		slider.maxValue = 100f;
+		slider.value = 0;
 	}
-	
-    //private void Update() {
-    //    UpdateProgressBar(counter);        // just for testing purposes
-    //    if (counter < MaxProgress)
-    //    {
-    //        counter++;
-    //    }
-    //    //counter++;                        // just for testing purposes
-    //}
 	
 	public void UpdateProgressBar(int val) {
 		slider.value = (float)val / (float)MaxProgress * 100;
@@ -40,3 +30,4 @@ public class ProgressBar : MonoBehaviour {
 
     public void SetMaxAwnsers(int totalAwnsers) { MaxProgress = totalAwnsers;}
 }
+

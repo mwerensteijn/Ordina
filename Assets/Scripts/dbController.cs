@@ -565,7 +565,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT * FROM Vraag WHERE OnderwerpID=" + subjectID;
+        cmd.CommandText = "SELECT * FROM Vraag WHERE Vraag.AfbeeldingID IS NULL AND OnderwerpID=" + subjectID;
         SqliteDataReader reader = cmd.ExecuteReader();
 
         int index = 0;
@@ -904,6 +904,8 @@ public class dbController : MonoBehaviour
     {
 
         List<string> subjects = new List<string>();
+
+        dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
 
         dbconn = new SqliteConnection(sqliteConnection);
         Debug.Log("URI=file:" + Application.dataPath + "/database/Database.s3db");
