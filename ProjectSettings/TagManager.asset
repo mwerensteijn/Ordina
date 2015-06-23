@@ -17,6 +17,7 @@ TagManager:
   - time
   - progressbar
   - CardBoardMain
+  - ImageOverviewScrollbar
   layers:
   - Default
   - TransparentFX

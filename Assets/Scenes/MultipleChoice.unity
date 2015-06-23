@@ -729,7 +729,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95d24a9b60cf35542a664bb32764179b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hud: {fileID: 0}
 --- !u!4 &1275580876 stripped
 Transform:
   m_PrefabParentObject: {fileID: 400008, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
@@ -783,7 +782,7 @@ MonoBehaviour:
   scoreScreen: {fileID: 748798658}
   HUD: {fileID: 1415063632}
   currentState: 0
-  airplaneMovement: {fileID: 1583385815}
+  airplaneMovement: {fileID: 1754489761}
   disappearPositionZ: 0
   questionText: {fileID: 914478288}
   answerScoreWeigth: 10
@@ -816,20 +815,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 25.8795013, y: 5.96900272, z: 17.4406796}
   m_Center: {x: -2.06536841, y: 2.92844391, z: .0810441822}
---- !u!114 &1583385815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1583385811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e55284b6ae6b71e418512bd4dea8211b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lookingPosition: 1
-  lockedPosition: 1
-  disableMovement: 0
 --- !u!1 &1627681321
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,6 +992,20 @@ GameObject:
 Transform:
   m_PrefabParentObject: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
   m_PrefabInternal: {fileID: 285095332}
+--- !u!114 &1754489761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1754489759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55284b6ae6b71e418512bd4dea8211b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lookingPosition: 1
+  lockedPosition: 1
+  disableMovement: 0
 --- !u!54 &1754489763
 Rigidbody:
   m_ObjectHideFlags: 0
