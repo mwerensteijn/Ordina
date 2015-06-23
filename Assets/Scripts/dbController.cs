@@ -905,12 +905,10 @@ public class dbController : MonoBehaviour
 
         List<string> subjects = new List<string>();
 
-<<<<<<< HEAD
         dbconn = new SqliteConnection("URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db");
-=======
+
         dbconn = new SqliteConnection(sqliteConnection);
         Debug.Log("URI=file:" + Application.dataPath + "/database/Database.s3db");
->>>>>>> 73d91ebb78fba987ccee80dd70eb8e78836d2933
         dbconn.Open();
 
         SqliteCommand cmd = new SqliteCommand(dbconn);
