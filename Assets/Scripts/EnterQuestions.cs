@@ -65,7 +65,7 @@ public class EnterQuestions : MonoBehaviour {
     void Update()
     {
         _QuestionsWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
-        _QuestionsListPos = new Rect(_QuestionsWindow.x / 10, _QuestionsWindow.height / 5, _QuestionsWindow.width / 2, _QuestionsWindow.height / 15);
+        
 
         _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
 
@@ -108,6 +108,8 @@ public class EnterQuestions : MonoBehaviour {
         submitButtonWidth = 80f;
         submitButtonHeight = 30f;
 
+        _QuestionsListPos = new Rect(answerAlignLeft, checkBox1Pos - (checkBoxHeight * 6), _QuestionsWindow.width / 2, _QuestionsWindow.height / 15);
+
         dropDownRect = new Rect(answerAlignLeft, questionAreaPos - (topicHeight * 6), topicWidth, 30f);
     }
 
@@ -124,7 +126,7 @@ public class EnterQuestions : MonoBehaviour {
             _CheckSelectedCheckbox();
             _UserInsertQuestions();
           
-            if (GUI.Button(new Rect(submitAlignLeft, checkBox3Pos + (submitButtonHeight * 2), submitButtonWidth, submitButtonHeight), "Submit"))
+            if (GUI.Button(new Rect(submitAlignLeft, checkBox3Pos + (submitButtonHeight * 2), submitButtonWidth, submitButtonHeight), "Voeg toe"))
             {
                 if (Question == "" || Answer1 == "" || Answer2 == "" || Answer3 == "")
                 {
@@ -139,7 +141,7 @@ public class EnterQuestions : MonoBehaviour {
                 else if (changed)
                     succesFullyUpdated = true;
             }
-            if (GUI.Button(new Rect(backAlignLeft, checkBox3Pos + (backButtonHeight * 2), backButtonWidth, backButtonHeight), "Back"))
+            if (GUI.Button(new Rect(backAlignLeft, checkBox3Pos + (backButtonHeight * 2), backButtonWidth, backButtonHeight), "Terug"))
             {
                 MainMenu._subjectChosen = true;
                 Application.LoadLevel("GUI");
@@ -289,6 +291,7 @@ public class EnterQuestions : MonoBehaviour {
 
     private void _ReadQuestionsFromDatabase()
     {
+        GUI.Label(new Rect(labelAlignLeft, _QuestionsListPos.y, _QuestionsListPos.width, _QuestionsListPos.height), "Selecteer bestaande vraag");
         if (GUI.Button(_QuestionsListPos, ""))
         {
             if (!show)
