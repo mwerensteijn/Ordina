@@ -35,6 +35,13 @@ public class dbController : MonoBehaviour
     void Awake()
     {
         dbLoc = "URI=file:" + Application.dataPath + "/database/Database.s3db";
+        /*Debug.Log("Inserting score: ");
+        insertPlayerData("Klaas Kaas");
+        insertScore("Klaas Kaas", "Kaas", 1, 500, 150, 50, 47);
+        Debug.Log("Score inserted!");
+        Debug.Log("Klaas his score: " + getScore("Klaas Kaas"));
+        deletePlayer("Chanan");
+        Debug.Log("Deleted chanan from database!");*/
         //testshit();
     }
 
@@ -1002,7 +1009,7 @@ public class dbController : MonoBehaviour
         SqliteCommand cmd = new SqliteCommand();
 
         cmd.Connection = dbconn;
-        cmd.CommandText = "SELECT BehaaldeScore FROM Score WHERE SpelerNaam='" + player + "'";
+        cmd.CommandText = "SELECT BehaaldeScore FROM Score, Gebruiker WHERE Gebruiker.Geb_ID=Score.SpelerID AND Gebruiker.naam='" + player + "'";
         score = Convert.ToInt32(cmd.ExecuteScalar() + "");
 
         dbconn.Close();
