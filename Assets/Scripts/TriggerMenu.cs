@@ -3,13 +3,13 @@ using System.Collections;
 
 public class TriggerMenu : MonoBehaviour {
 	private GameObject selectedButton;
+    
 
 	public float selectTime;
 	private float currentTime = 0;
 
 	// Use this for initialization
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame
@@ -19,7 +19,7 @@ public class TriggerMenu : MonoBehaviour {
 
 			if(currentTime >= selectTime) {
 				if(selectedButton.name == "Start") {
-					Application.LoadLevel (1);
+                    Application.LoadLevel(1);
 				} else if(selectedButton.name == "Afsluiten") {
 					Application.Quit();
                 }
