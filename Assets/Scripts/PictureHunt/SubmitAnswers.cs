@@ -85,9 +85,11 @@ public class SubmitAnswers : MonoBehaviour, IScore
             question.removeFromScene();
         }
         m_Questions = new List<PictureQuestion>();
-        scoreScreen.ShowScoreScreen(totalSeconds, gameTimer.ToString());
-        canvas.gameObject.SetActive(false);
-        questionController.spawnQuestion();
+        if (!questionController.spawnQuestion())
+        {
+            scoreScreen.ShowScoreScreen(totalSeconds, gameTimer.ToString());
+            canvas.gameObject.SetActive(false);
+        }
     }
 
     public int CalculateScore()

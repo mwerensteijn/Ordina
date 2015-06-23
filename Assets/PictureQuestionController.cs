@@ -64,7 +64,7 @@ public class PictureQuestionController : MonoBehaviour {
         return question;
     }
 
-    public void spawnQuestion()
+    public bool spawnQuestion()
     {
         Texture2D questionTexture;
         progressBar.UpdateProgressBar(getAmountOfQuestionsAnswered());
@@ -74,7 +74,7 @@ public class PictureQuestionController : MonoBehaviour {
         if (question <= -1)
         {
             Debug.Log("NO NEW QUESTIONS FOUND!");
-            return;
+            return false;
         }
 
         int pictureID = dbControl.getPictureID(question);
@@ -123,6 +123,7 @@ public class PictureQuestionController : MonoBehaviour {
             answerGO.transform.localScale = new Vector3(answerWidth, answerHeight, 1f);
             changeUV(answerGO, questionTexture, r);
         }
+        return true;
     }
 
     private float calculatePosition(int maxQuestions, int question, float startingPosition, float width){
