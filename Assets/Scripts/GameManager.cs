@@ -3,9 +3,12 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    string playerName = "DefaultPlayerName";
-    string subject = "DefaultSubject";
-    int spelID = -1; // Default value
+    [SerializeField]
+    private string playerName = "DefaultPlayerName";
+    [SerializeField]
+    private string subject = "DefaultSubject";
+    [SerializeField]
+    private int spelID = -1; // Default value
 
     public void setPlayerName(string name)
     {
