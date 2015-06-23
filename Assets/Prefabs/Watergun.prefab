@@ -1,18 +1,18 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &136320
+--- !u!1 &122706
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 423158}
-  - 15: {fileID: 1528650}
-  - 12: {fileID: 1218864}
-  - 26: {fileID: 2655170}
-  - 76: {fileID: 7684852}
-  - 114: {fileID: 11410386}
+  - 4: {fileID: 400194}
+  - 15: {fileID: 1585146}
+  - 12: {fileID: 1239832}
+  - 26: {fileID: 2649604}
+  - 76: {fileID: 7694966}
+  - 114: {fileID: 11463860}
   m_Layer: 0
   m_Name: Watergun
   m_TagString: Untagged
@@ -20,24 +20,24 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &423158
+--- !u!4 &400194
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136320}
+  m_GameObject: {fileID: 122706}
   m_LocalRotation: {x: 0, y: -3.57627869e-07, z: 0, w: -1}
-  m_LocalPosition: {x: -3.5999999, y: -37.9000015, z: -.300000012}
-  m_LocalScale: {x: 100, y: 100, z: 1}
+  m_LocalPosition: {x: -.035999991, y: -.378999949, z: .399999589}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!12 &1218864
+--- !u!12 &1239832
 ParticleAnimator:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136320}
+  m_GameObject: {fileID: 122706}
   Does Animate Color?: 1
   colorAnimation[0]:
     serializedVersion: 2
@@ -62,21 +62,21 @@ ParticleAnimator:
   damping: .580000401
   stopSimulation: 0
   autodestruct: 0
---- !u!15 &1528650
+--- !u!15 &1585146
 EllipsoidParticleEmitter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136320}
+  m_GameObject: {fileID: 122706}
   serializedVersion: 2
   m_Enabled: 1
-  m_Emit: 1
+  m_Emit: 0
   minSize: .0470820218
   maxSize: .178242594
   minEnergy: 3
   maxEnergy: 3
-  minEmission: 100
-  maxEmission: 5000
+  minEmission: 1000
+  maxEmission: 1000
   worldVelocity: {x: 0, y: 0, z: 0}
   localVelocity: {x: 0, y: 1, z: 25}
   rndVelocity: {x: 0, y: .449999988, z: 0}
@@ -89,18 +89,18 @@ EllipsoidParticleEmitter:
   m_OneShot: 0
   m_Ellipsoid: {x: .00100000005, y: .00100000005, z: .00100000005}
   m_MinEmitterRange: .0500000007
---- !u!26 &2655170
+--- !u!26 &2649604
 ParticleRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136320}
+  m_GameObject: {fileID: 122706}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9475698742e944615b0ab2c4b4ecc1b7, type: 2}
-  - {fileID: 2100000, guid: 9475698742e944615b0ab2c4b4ecc1b7, type: 2}
+  - {fileID: 2100000, guid: ca9ac86c9ccebc442afbc000ac0d70c4, type: 2}
+  - {fileID: 2100000, guid: 8d7de9362ec9fb04488886a1a071e461, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -123,13 +123,13 @@ ParticleRenderer:
   UV Animation:
     x Tile: 1
     y Tile: 1
-    cycles: 55
---- !u!76 &7684852
+    cycles: 1
+--- !u!76 &7694966
 WorldParticleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136320}
+  m_GameObject: {fileID: 122706}
   m_BounceFactor: .5
   m_CollisionEnergyLoss: 0
   m_CollidesWith:
@@ -137,18 +137,18 @@ WorldParticleCollider:
     m_Bits: 4294967295
   m_SendCollisionMessage: 1
   m_MinKillVelocity: 0
---- !u!114 &11410386
+--- !u!114 &11463860
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 136320}
+  m_GameObject: {fileID: 122706}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49af2f79b0d01504db81b6bf9c78720a, type: 3}
+  m_Script: {fileID: 11500000, guid: 160bb935c641661449cb5406a5c5d956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waterGun: {fileID: 136320}
+  waterGun: {fileID: 122706}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -158,5 +158,5 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 136320}
+  m_RootGameObject: {fileID: 122706}
   m_IsPrefabParent: 1
