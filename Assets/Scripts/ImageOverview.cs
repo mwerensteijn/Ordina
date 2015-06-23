@@ -12,11 +12,14 @@ public class ImageOverview : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Scrollbar s = GameObject.FindGameObjectWithTag("ImageOverviewScrollbar").GetComponent<Scrollbar>();
+        s.gameObject.SetActive(false);
+
         List<dbController.Picture> textures = GetComponent<dbController>().getPictures(MainMenu.selectedSubjectID);
         imagesAmount = textures.Count;
 
         if (imagesAmount > 9) {
-            meerAfbeeldingen.SetActive(true);
+            s.gameObject.SetActive(true);
         }
 
         g = new GameObject[imagesAmount];
@@ -44,6 +47,8 @@ public class ImageOverview : MonoBehaviour {
             BoxCollider2D b = g[i].AddComponent<BoxCollider2D>();
             b.size = gridLayoutGroup.cellSize;
         }
+
+        s.value = 1;
 	}
 
     public void Exit() {
