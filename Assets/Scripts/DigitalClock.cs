@@ -32,4 +32,9 @@ public class DigitalClock : MonoBehaviour {
         int roundedMinuts = (int)Math.Round(minutesTimer, 0);
         return roundedSeconds + (roundedMinuts * 60);
     }
+
+    public string GetFormatedTime() 
+    {
+        return minutesTimer.ToString("00") + ":" + Math.Floor(secondsTimer).ToString("00");
+    }
 }
