@@ -6,7 +6,7 @@ public class PictureQuestionController : MonoBehaviour {
     public string subject = ""; // Chosen subject
     private int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
-    private dbController dbControl; // Database contoller
+    public dbController dbControl; // Database contoller
     public ProgressBar progressBar;
 
     public GameObject pictureQuestion;
@@ -21,7 +21,6 @@ public class PictureQuestionController : MonoBehaviour {
 
     private float lastPositionWidth;
     private float lastPositionHeight;
-
     
 
     List<int> questionsListID = new List<int>();
@@ -33,7 +32,7 @@ public class PictureQuestionController : MonoBehaviour {
 
     // Use this for initialization
 	void Start () {
-        dbControl = new dbController();
+     //   dbControl = new dbController();
 
         lastPositionWidth = startingPositionWidth;
         lastPositionHeight = startingPositionHeight;

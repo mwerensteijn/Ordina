@@ -8,7 +8,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
 {
      
     public List<PictureQuestion> m_Questions = new List<PictureQuestion>();
-    public dbController db = new dbController();
+    public dbController db;
     private DigitalClock gameTimer;
     private int elapsedTime = 0;
 
