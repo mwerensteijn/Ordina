@@ -38,14 +38,13 @@ public class PictureQuestionController : MonoBehaviour {
         lastPositionWidth = startingPositionWidth;
         lastPositionHeight = startingPositionHeight;
         subjectID = dbControl.getSubjectID(subject);
-        subjectID = 103;
-
         
         questionsListID = dbControl.getQuestionIDs(subjectID, true);
         amountOfQuestions = questionsListID.Count;
         Debug.Log("Total amount of questions found: " + amountOfQuestions);
-        spawnQuestion();
         progressBar.SetMaxAwnsers(amountOfQuestions);
+        spawnQuestion();
+        
 	}
 	
 	// Update is called once per frame
@@ -70,6 +69,7 @@ public class PictureQuestionController : MonoBehaviour {
     {
         Texture2D questionTexture;
         progressBar.UpdateProgressBar(getAmountOfQuestionsAnswered());
+
         int question = findRandomNextQuestion();
         resetPosition();
         if (question <= -1)

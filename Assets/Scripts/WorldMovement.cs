@@ -18,11 +18,13 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     private DigitalClock gameTimer;
     private ProgressBar progressBar;
+    public ScoreScreen scoreScreen;
+    public Canvas HUD;
     private dbController _dbController;
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
-	public static float movementSpeed = 20f;
+	public static float movementSpeed = 80f; //20
 
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
@@ -39,7 +41,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     private int currentQuestion = 0;
 
-    private TextMesh questionText;
+    public TextMesh questionText;
     
     //alle vragen bijhouden
     private List<Question> _questions = new List<Question>();
@@ -58,16 +60,18 @@ public class WorldMovement : MonoBehaviour, IScore {
 
 	// Initialization
 	void Start () {
-        answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answer1"));
-        _dbController = GetComponent<dbController>();
+        answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answers"));
+        _dbController = GetComponentInParent<dbController>();
+
         // Set the appear position.
         appearPositionZ = answerRowFront.transform.position.z;
         currentState = WorldMovement.State.Init;
-        
-        questionText = GameObject.FindGameObjectWithTag("Question").GetComponent<TextMesh>();
-        gameTimer = GameObject.FindGameObjectWithTag("time").GetComponent<DigitalClock>();
-        progressBar = GameObject.FindGameObjectWithTag("progressbar").GetComponent<ProgressBar>();
-        airplaneMovement = GameObject.FindGameObjectWithTag("CardBoardMain").GetComponent<AirplaneMovement>();
+        gameTimer = HUD.GetComponentInChildren<DigitalClock>();
+        progressBar = HUD.GetComponentInChildren<ProgressBar>();
+        //questionText = GameObject.FindGameObjectWithTag("Question").GetComponent<TextMesh>();
+        //gameTimer = GameObject.FindGameObjectWithTag("time").GetComponent<DigitalClock>();
+        //progressBar = GameObject.FindGameObjectWithTag("progressbar").GetComponent<ProgressBar>();
+        //airplaneMovement = GameObject.FindGameObjectWithTag("CardBoardMain").GetComponent<AirplaneMovement>();
 		// Start finite state machine.
 		StartCoroutine("FSM");
 	}
@@ -94,7 +98,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
             airplaneMovement.disableMovement = false;
             airplaneMovement.SetSideMovementSpeed(30f);
-            movementSpeed = 20f;
+            movementSpeed = 80f; // 20
 
             Color a = new Color(1f / 255 * 231, 1f / 255 * 155, 1f / 255 * 19);
 
@@ -170,7 +174,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         //TODO
         //onderwerpId = getonderwip of iets..
-        List<int> dbvragenIds = _dbController.getQuestionIDs(106, false);
+        List<int> dbvragenIds = _dbController.getQuestionIDs(111, false);
 
         foreach (int vraagid in dbvragenIds) 
         {
@@ -202,8 +206,6 @@ public class WorldMovement : MonoBehaviour, IScore {
             LoadQuestionsFromFile("Assets\\data.txt");
         }
 
-        Debug.Log(_questions.Count);
-        Debug.Log(currentQuestion);
         // Set question and answer text
         questionText.text = _questions[currentQuestion].question;
         answerRowFront.A = _questions[currentQuestion].answers[0];
@@ -266,7 +268,11 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     public void ShowScoreScreen() 
     {
-        int totalScore = CalculateScore();
+        HUD.enabled = false;
+        questionText.GetComponent<MeshRenderer>().enabled = false;
+        answerRowFront.HideAnswersText();
+        int totalScore = CalculateScore(); 
+        scoreScreen.ShowScoreScreen(totalScore, gameTimer.GetFormatedTime());
         SaveScore(totalScore, gameTimer.GetTotalSeconds());
         //laat score screen zien.
     }
