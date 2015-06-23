@@ -24,12 +24,13 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
-	public static float movementSpeed = 80f; //20
+	public static float movementSpeed = 20f;
 
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
 
     public AirplaneMovement airplaneMovement;
+    private ParticleAnimator airplaneEngine;
 
 	// If a row with answers is not visible anymore for the player, it will respawn at this Z position.
 	private float appearPositionZ;
@@ -61,7 +62,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// Initialization
 	void Start () {
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answers"));
-        _dbController = GetComponentInParent<dbController>();
+        _dbController = GetComponentInParent<dbController>();        
 
         // Set the appear position.
         appearPositionZ = answerRowFront.transform.position.z;
@@ -87,6 +88,7 @@ public class WorldMovement : MonoBehaviour, IScore {
             movementSpeed = 80f;
             airplaneMovement.SetSideMovementSpeed(80f);
             airplaneMovement.disableMovement = true;
+            airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.3f;
         }
         
 		// Move the rows towards the player.
@@ -97,8 +99,9 @@ public class WorldMovement : MonoBehaviour, IScore {
             answerRowFront.transform.position = new Vector3(x, y, appearPositionZ);
 
             airplaneMovement.disableMovement = false;
+            airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f;
             airplaneMovement.SetSideMovementSpeed(30f);
-            movementSpeed = 80f; // 20
+            movementSpeed = 20f;
 
             Color a = new Color(1f / 255 * 231, 1f / 255 * 155, 1f / 255 * 19);
 
@@ -263,6 +266,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         movementSpeed = 0f;
         airplaneMovement.disableMovement = true;
+        airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f    ;
         currentState = WorldMovement.State.ScoreScreen;
     }
 
