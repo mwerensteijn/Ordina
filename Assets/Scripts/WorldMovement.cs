@@ -174,7 +174,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         //TODO
         //onderwerpId = getonderwip of iets..
-        List<int> dbvragenIds = _dbController.getQuestionIDs(106, false);
+        List<int> dbvragenIds = _dbController.getQuestionIDs(111, false);
 
         foreach (int vraagid in dbvragenIds) 
         {

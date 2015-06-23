@@ -179,7 +179,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 3.63000011
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: b8b03d395f5734e98af91ccf44f9bf47, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1492,7 +1492,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554d7b52e03737a41ac010feb97d3d97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subject: Prince2
+  subject: Modellen
   progressBar: {fileID: 1427143656}
   pictureQuestion: {fileID: 148890, guid: 2a621c1552c58a748a133bbe4e4b36f8, type: 2}
   pictureAnswer: {fileID: 172738, guid: 1f5f1038121a71a4387755996ed6fe14, type: 2}
@@ -2733,7 +2733,7 @@ MonoBehaviour:
   m_Questions: []
   db: {fileID: 0}
   questionController: {fileID: 791626071}
-  answerScoreWeigth: 0
+  answerScoreWeigth: 10
 --- !u!1 &1675061419
 GameObject:
   m_ObjectHideFlags: 0

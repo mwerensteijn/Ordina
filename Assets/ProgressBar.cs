@@ -7,7 +7,7 @@ public class ProgressBar : MonoBehaviour {
 	private Slider slider;
 	//private int counter;
 	
-	public int MaxProgress = 0;
+	private int MaxProgress = 0;
 	public Image Fill;  // assign in the editor the "Fill"
 	public Color MaxHealthColor = Color.red;
 	public Color MinHealthColor = Color.green;
@@ -20,7 +20,7 @@ public class ProgressBar : MonoBehaviour {
 	private void Start() {
 		slider.wholeNumbers = true;        // I dont want 3.543 Health but 3 or 4
 		slider.minValue = 0f;
-		slider.maxValue = MaxProgress;
+		slider.maxValue = 100;
 		slider.value = 0;        // start with full health
 	}
 	
@@ -34,8 +34,9 @@ public class ProgressBar : MonoBehaviour {
     //}
 	
 	public void UpdateProgressBar(int val) {
+        Debug.Log("val: " + val + " MaxProgress: " + MaxProgress);
 		slider.value = (float)val / (float)MaxProgress * 100;
-        Fill.color = Color.Lerp(MinHealthColor, MaxHealthColor, (float)val / MaxProgress);
+        Fill.color = Color.Lerp(MinHealthColor, MaxHealthColor, (float)val / (float)MaxProgress );
 	}
 
     public void SetMaxAwnsers(int totalAwnsers) { MaxProgress = totalAwnsers;}
