@@ -921,6 +921,19 @@ public class dbController : MonoBehaviour
         return subjects;
     }
 
+    public void updateSubject(int subjectID, string newSubject) {
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand(dbconn);
+        cmd.CommandText = "UPDATE Onderwerp SET Subject='" + newSubject + "' WHERE OnderwerpID=" + subjectID;
+
+        cmd.ExecuteScalar();
+
+        dbconn.Close();
+    }
+
+
     public int getSubjectID(string subject)
     {
         int answerID = -1;
