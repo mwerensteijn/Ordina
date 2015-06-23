@@ -87,6 +87,97 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &237843456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 237843458}
+  - 114: {fileID: 237843457}
+  m_Layer: 0
+  m_Name: EnterQuestions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &237843457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 237843456}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbe00000dbe60324fb2d67b24bbba578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texture: {fileID: 2800000, guid: 093f17bc06a7fa940a41cbbe0101aec5, type: 3}
+  dropDownImage: {fileID: 2800000, guid: a1bde60bfb2576a4babd9396d0dd0eb8, type: 3}
+  CustomSkin: {fileID: 11400000, guid: adc2042f369d84b4284332751eeb4425, type: 2}
+  emptyTextArea: 0
+  checkBox: 0
+  popupWindowOpened: 0
+  succesFullySend: 0
+  changed: 0
+  succesFullyUpdated: 0
+  Question: 
+  Answer1: 
+  Answer2: 
+  Answer3: 
+  Subject: 
+  oldQuestion: 
+  oldAnswer1: 
+  oldAnswer2: 
+  oldAnswer3: 
+  offset: 0
+  checkBoxAlignLeft: 0
+  checkBoxHeight: 0
+  checkBoxWidth: 0
+  checkBox1Pos: 0
+  checkBox2Pos: 0
+  checkBox3Pos: 0
+  questionAreaPos: 0
+  questionWidth: 0
+  questionHeight: 0
+  topicAreaPos: 0
+  topicWidth: 0
+  topicHeight: 0
+  answer1AreaPos: 0
+  answer2AreaPos: 0
+  answer3AreaPos: 0
+  labelAlignLeft: 0
+  labelWidth: 0
+  labelHeight: 0
+  answerAlignLeft: 0
+  answersWidth: 0
+  answerHeight: 0
+  backAlignLeft: 0
+  backButtonWidth: 0
+  backButtonHeight: 0
+  submitAlignLeft: 0
+  submitButtonWidth: 0
+  submitButtonHeight: 0
+  dropDownRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 0
+    height: 0
+--- !u!4 &237843458
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 237843456}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .995481849, y: 3.80241251, z: 1.51752663}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
 --- !u!1 &371984703
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +331,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1419134802}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d9b38f40bdbbf440a2b3a6004f088d7, type: 3}
   m_Name: 
@@ -281,3 +372,65 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texture: {fileID: 0}
   imgByteArr: 
+--- !u!1 &1627301664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1627301666}
+  - 114: {fileID: 1627301665}
+  m_Layer: 0
+  m_Name: MainMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1627301665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1627301664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d9b38f40bdbbf440a2b3a6004f088d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customSkin1: {fileID: 11400000, guid: c93e5b06d72ef6e498fad6e8012607c9, type: 2}
+  customSkin2: {fileID: 11400000, guid: adc2042f369d84b4284332751eeb4425, type: 2}
+  customSkin3: {fileID: 11400000, guid: 81098c9413ac7fa4393ce082107d6dfb, type: 2}
+  dropDownImage: {fileID: 2800000, guid: a1bde60bfb2576a4babd9396d0dd0eb8, type: 3}
+  NoSubject: 0
+  offset: 0
+  topBannerWidth: 0
+  topBannerHeight: 0
+  buttonSizeWidth: 0
+  buttonSizeHeight: 0
+  buttonPos1: 0
+  buttonPos2: 0
+  buttonPos3: 0
+  buttonPos4: 0
+  bottomBannerWidth: 0
+  bottomBannerHeight: 0
+  bottomBannerPos: 0
+  dropDownRect:
+    serializedVersion: 2
+    x: 76
+    y: 0
+    width: 50
+    height: 50
+--- !u!4 &1627301666
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1627301664}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: .995481849, y: 3.80241251, z: 1.51752663}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2

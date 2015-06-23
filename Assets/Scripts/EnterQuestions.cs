@@ -45,20 +45,29 @@ public class EnterQuestions : MonoBehaviour {
     int indexNumber;
     bool show = false;
 
-
-
-    void Awake()
+    void Start()
     {
         database = Camera.main.GetComponent<dbController>();
 
         list = database.getSubjects();
         if (list.Count >= 0)
             Subject = database.getSubject(MainMenu.selectedSubjectID);
-        Debug.Log("Subject is: " + Subject);
+    }
+
+    void Awake()
+    {
         Question = "";
         Answer1 = "";
         Answer2 = "";
         Answer3 = "";
+    }
+
+    void Update()
+    {
+        _QuestionsWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
+        _QuestionsListPos = new Rect(_QuestionsWindow.x / 10, _QuestionsWindow.height / 5, _QuestionsWindow.width / 2, _QuestionsWindow.height / 15);
+
+        _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
 
         offset = Screen.width / 3;
         checkBoxAlignLeft = Screen.width - (Screen.width / 10);
@@ -102,18 +111,12 @@ public class EnterQuestions : MonoBehaviour {
         dropDownRect = new Rect(answerAlignLeft, questionAreaPos - (topicHeight * 6), topicWidth, 30f);
     }
 
-    void Update()
-    {
-        _QuestionsWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
-        _QuestionsListPos = new Rect(_QuestionsWindow.x / 10, _QuestionsWindow.height / 5, _QuestionsWindow.width / 2, _QuestionsWindow.height / 15);
-
-        _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
-    }
-
 
     void OnGUI()
     {
+        GUI.skin = CustomSkin;
         _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
+        Debug.Log("Aantal vragen is: " + _questionsPerSubject.Count);
         if (!popupWindowOpened)
         {
             GUI.skin = CustomSkin;
@@ -138,6 +141,7 @@ public class EnterQuestions : MonoBehaviour {
             }
             if (GUI.Button(new Rect(backAlignLeft, checkBox3Pos + (backButtonHeight * 2), backButtonWidth, backButtonHeight), "Back"))
             {
+                MainMenu._subjectChosen = true;
                 Application.LoadLevel("GUI");
             }
         }
@@ -304,7 +308,7 @@ public class EnterQuestions : MonoBehaviour {
             scrollViewVector = GUI.BeginScrollView(new Rect(_QuestionsListPos.x, _QuestionsListPos.y + _QuestionsListPos.height, _QuestionsListPos.width, _QuestionsListPos.height * 3), scrollViewVector, new Rect(0, 0, 0, Mathf.Max(_QuestionsListPos.height, ((_questionsPerSubject.Count) * _QuestionsListPos.height))));
             if (_questionsPerSubject.Count == 0)
                 show = false;
-
+            Debug.Log(_questionsPerSubject.Count);
             for (int index = 0; index < _questionsPerSubject.Count; index++)
             {
                 if (GUI.Button(new Rect(0, (index * _QuestionsListPos.height), _QuestionsListPos.width, _QuestionsListPos.height), ""))
@@ -315,7 +319,7 @@ public class EnterQuestions : MonoBehaviour {
                     changeQuestion(_selectedSubject);
                 }
 
-                GUI.Label(new Rect(10f, (index * _QuestionsListPos.height), _QuestionsListPos.width, _QuestionsListPos.height), _questionsPerSubject[index]);
+                GUI.Label(new Rect(10f, (index * _QuestionsListPos.height + (_QuestionsListPos.height * 0.01f)), _QuestionsListPos.width, _QuestionsListPos.height), _questionsPerSubject[index]);
 
             }
 
@@ -327,7 +331,6 @@ public class EnterQuestions : MonoBehaviour {
     {
         changed = true;
         Question = database.getQuestion(database.getQuestionID(selectedQuestion));
-        Debug.Log("Vraag is: " + Question);
 
         List<int> answers = database.getAnswerIDs(selectedQuestion);
 
