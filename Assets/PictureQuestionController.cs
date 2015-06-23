@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PictureQuestionController : MonoBehaviour {
-    public string subject = ""; // Chosen subject
     private int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
     public dbController dbControl; // Database contoller
     public ProgressBar progressBar;
+
+    private GameManager gameManager;
 
     public GameObject pictureQuestion;
     public GameObject pictureAnswer;
@@ -25,18 +26,14 @@ public class PictureQuestionController : MonoBehaviour {
 
     List<int> questionsListID = new List<int>();
 
-    PictureQuestionController(string subject)
-    {
-        this.subject = subject;
-    }
-
     // Use this for initialization
 	void Start () {
      //   dbControl = new dbController();
 
         lastPositionWidth = startingPositionWidth;
         lastPositionHeight = startingPositionHeight;
-        subjectID = dbControl.getSubjectID(subject);
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+        subjectID = dbControl.getSubjectID(gameManager.getSubject());
         
         questionsListID = dbControl.getQuestionIDs(subjectID, true);
         amountOfQuestions = questionsListID.Count;

@@ -9,7 +9,10 @@ public class GameManager : MonoBehaviour
     private string subject = "DefaultSubject";
     [SerializeField]
     private int spelID = -1; // Default value
-
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
     public void setPlayerName(string name)
     {
         playerName = name;
@@ -35,5 +38,10 @@ public class GameManager : MonoBehaviour
     public int getSpelID()
     {
         return spelID;
+    }
+
+    public void loadLevel(int level)
+    {
+        Application.LoadLevel(level);
     }
 }

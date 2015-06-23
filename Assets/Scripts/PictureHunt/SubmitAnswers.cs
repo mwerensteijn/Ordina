@@ -11,6 +11,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
     public dbController db;
     public ScoreScreen scoreScreen;
     public Canvas canvas;
+    private GameManager gameManager;
     private DigitalClock gameTimer;
     private int elapsedTime = 0;
 
@@ -31,6 +32,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
     void Start()
     {
         gameTimer = new DigitalClock();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -104,7 +106,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
         //database connectie en opslag nodig.
         try
         {
-            //db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
+            db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
         }
         catch (Exception e) { Debug.Log("foutmelding: " + e.Message); }
         Debug.Log("total score: " + totalScore);

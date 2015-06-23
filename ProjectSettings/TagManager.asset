@@ -18,6 +18,7 @@ TagManager:
   - progressbar
   - CardBoardMain
   - ImageOverviewScrollbar
+  - GameManager
   layers:
   - Default
   - TransparentFX
