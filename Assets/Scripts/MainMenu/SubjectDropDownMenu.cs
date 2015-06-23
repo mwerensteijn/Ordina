@@ -10,10 +10,13 @@ using System.Collections.Generic;
         public GameObject buttonPrefab;
         public GameObject subjectButton;
 
+        public MainMenuController controller;
+
         private List<string> subjects;
         private List<GameObject> buttonList;
         
         private bool isOpen = false;
+        private bool subjectPicked = false;
         void Start()
         {
             subjects = db.getSubjects();
@@ -32,10 +35,12 @@ using System.Collections.Generic;
         }
 
         private void openMenu(){
+            int offset = 0;
             for (int i = 0; i < subjects.Count; i++)
             {
                 GameObject button = Instantiate(buttonPrefab) as GameObject;
                 button.transform.SetParent(gameObject.transform);
+                button.transform.position = new Vector3( button.transform.position.x,  button.transform.position.y + offset, button.transform.position.z);
                 button.GetComponentInChildren<Text>().text = subjects[i];
                 button.GetComponent<Button>().onClick.AddListener(
                     () => { gameManager.setSubject(button.GetComponentInChildren<Text>().text);
@@ -44,15 +49,14 @@ using System.Collections.Generic;
                     }
                 );
                 buttonList.Add(button);
+                offset -= 30;
             }
             isOpen = true;
         }
 
         private void closeMenu(){
-            Debug.Log(buttonList.Count);
             foreach (GameObject button in buttonList)
             {
-                Debug.Log(button.GetComponentInChildren<Text>().text);
                 Destroy(button);
             }
             buttonList = new List<GameObject>();
@@ -60,6 +64,19 @@ using System.Collections.Generic;
         }
 
         private void setSubjectButton(string text){
+            subjectPicked = true;
             subjectButton.GetComponentInChildren<Text>().text = text;
+        }
+
+        public void next()
+        {
+            if (subjectPicked)
+            {
+                controller.selectMiniGame();
+            }
+            else
+            {
+               //Popup vul onderwerp in.
+            }
         }
     }
