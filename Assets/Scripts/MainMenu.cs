@@ -87,7 +87,7 @@ public class MainMenu : MonoBehaviour
     void Update()
     {
         Screen.fullScreen = true;
-        _subjectWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
+        _subjectWindow = new Rect(Screen.width / 3, Screen.height / 4, Screen.width / 3, Screen.height / 2);
         _subjectButtonPos = new Rect(_subjectWindow.x / 10, _subjectWindow.height / 5, _subjectWindow.width / 2, _subjectWindow.height / 15);
 
         _currentSubjectPos = new Rect(_subjectButtonPos.x, _subjectButtonPos.y - _subjectButtonPos.height, Screen.width, _subjectButtonPos.height);
