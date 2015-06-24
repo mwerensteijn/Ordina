@@ -4,8 +4,8 @@ using System.Collections;
 public class TextQuadBackGround : MonoBehaviour {
 
     public TextMesh tm;
-    public float xScaleFactor = 1.1f;
-    public float yScaleFactor = 1.03f;
+    public float xScaleFactor = 1.7f;
+    public float yScaleFactor = 1.7f;
 	// Use this for initialization
 	void Start () {
 	
