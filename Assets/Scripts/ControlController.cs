@@ -20,11 +20,11 @@ public class ControlController : MonoBehaviour {
         if (Input.GetButtonDown("Submit"))
         {
             bulletSpawner.Shoot();
-            //popUp.disablePopUp();
+            popUp.disablePopUp();
         } else if (Input.GetButtonDown("Fire1"))
         {
             watershooter.Shoot();
-            //popUp.disablePopUp();
+            popUp.disablePopUp();
         }
 	}
 }

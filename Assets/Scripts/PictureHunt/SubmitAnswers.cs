@@ -58,7 +58,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
         {
             if (!(question.isAnswered()))
             {
-                //popUp.enablePopUp("Niet alle onderdelen zijn beantwoord");
+                popUp.enablePopUp("Niet alle onderdelen zijn beantwoord");
                 Debug.Log("Not all questions are answered");
                 return;
             }
@@ -79,14 +79,14 @@ public class SubmitAnswers : MonoBehaviour, IScore
         int totalSeconds = gameTimer.GetTotalSeconds();
         SaveScore(CalculateScore(), totalSeconds - elapsedTime);
         elapsedTime = totalSeconds;
-        //popUp.enablePopUp(totalCorrectQuestions + " onderdelen goed beantwoord");
+        popUp.enablePopUp(totalCorrectQuestions + " onderdelen goed beantwoord");
         foreach(PictureQuestion question in m_Questions){
             question.removeFromScene();
         }
         m_Questions = new List<PictureQuestion>();
         if (!questionController.spawnQuestion())
         {
-           // popUp.disablePopUp();
+            popUp.disablePopUp();
             scoreScreen.ShowScoreScreen(CalculateScore(), gameTimer.GetFormatedTime());
             canvas.gameObject.SetActive(false);
         }

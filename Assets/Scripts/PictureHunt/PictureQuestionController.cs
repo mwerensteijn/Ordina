@@ -30,8 +30,6 @@ public class PictureQuestionController : MonoBehaviour {
 
     // Use this for initialization
 	void Start () {
-     //   dbControl = new dbController();
-
         lastPositionWidth = startingPositionWidth;
         lastPositionHeight = startingPositionHeight;
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
