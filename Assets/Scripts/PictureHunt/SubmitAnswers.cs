@@ -52,43 +52,41 @@ public class SubmitAnswers : MonoBehaviour, IScore
     
     public void Submit()
     {
-       // bool check = true;
-        Debug.Log("Submit");
-        foreach (PictureQuestion question in m_Questions)
-        {
-            if (!(question.isAnswered()))
-            {
-                popUp.enablePopUp("Niet alle onderdelen zijn beantwoord");
-                Debug.Log("Not all questions are answered");
-                return;
+        if (!popUp.gameObject.activeSelf) {
+            // bool check = true;
+            Debug.Log("Submit");
+            foreach (PictureQuestion question in m_Questions) {
+                if (!(question.isAnswered())) {
+                    popUp.enablePopUp("Niet alle onderdelen zijn beantwoord");
+                    Debug.Log("Not all questions are answered");
+                    return;
+                }
             }
-        }
-        TotalAskedQuestions = m_Questions.Count;
-        foreach(PictureQuestion question in m_Questions){
-            if (question.checkAnswer())
-            {
-                TotalCorrectQuestions += 1;
-                // Correct answer
-            }else{
-                // Wrong answer
-                Debug.Log("Wrong should have been: " + question.GetComponent<PictureQuestion>().getDescription());
-                //check = false;
+            TotalAskedQuestions = m_Questions.Count;
+            foreach (PictureQuestion question in m_Questions) {
+                if (question.checkAnswer()) {
+                    TotalCorrectQuestions += 1;
+                    // Correct answer
+                } else {
+                    // Wrong answer
+                    Debug.Log("Wrong should have been: " + question.GetComponent<PictureQuestion>().getDescription());
+                    //check = false;
+                }
             }
-        }
 
-        int totalSeconds = gameTimer.GetTotalSeconds();
-        SaveScore(CalculateScore(), totalSeconds - elapsedTime);
-        elapsedTime = totalSeconds;
-        popUp.enablePopUp(totalCorrectQuestions + " onderdelen goed beantwoord");
-        foreach(PictureQuestion question in m_Questions){
-            question.removeFromScene();
-        }
-        m_Questions = new List<PictureQuestion>();
-        if (!questionController.spawnQuestion())
-        {
-            popUp.disablePopUp();
-            scoreScreen.ShowScoreScreen(CalculateScore(), gameTimer.GetFormatedTime());
-            canvas.gameObject.SetActive(false);
+            int totalSeconds = gameTimer.GetTotalSeconds();
+            SaveScore(CalculateScore(), totalSeconds - elapsedTime);
+            elapsedTime = totalSeconds;
+            popUp.enablePopUp(totalCorrectQuestions + " onderdelen goed beantwoord");
+            foreach (PictureQuestion question in m_Questions) {
+                question.removeFromScene();
+            }
+            m_Questions = new List<PictureQuestion>();
+            if (!questionController.spawnQuestion()) {
+                popUp.disablePopUp();
+                scoreScreen.ShowScoreScreen(CalculateScore(), gameTimer.GetFormatedTime());
+                canvas.gameObject.SetActive(false);
+            }
         }
     }
 
