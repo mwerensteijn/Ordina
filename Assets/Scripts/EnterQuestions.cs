@@ -69,11 +69,11 @@ public class EnterQuestions : MonoBehaviour {
         
         _questionsPerSubject = database.getQuestions(MainMenu.selectedSubjectID);
 
-        _changeButtonPos = new Rect(0 + (_QuestionsWindow.width / 5), 0 + (_QuestionsWindow.height / 10), _QuestionsWindow.width / 5, _QuestionsWindow.height / 10f);
-        _newButtonPos = new Rect(_changeButtonPos.x * 3f, _changeButtonPos.y, _changeButtonPos.width, _changeButtonPos.height);
+        _changeQuestionLabelPos = new Rect(_QuestionsWindow.width / 8f, 0 + (_QuestionsWindow.height * 0.25f), _changeButtonPos.width, _changeButtonPos.height);
+        _changeQuestionButtonPos = new Rect(_changeQuestionLabelPos.x + (_QuestionsWindow.width / 5), _changeQuestionLabelPos.y, _changeQuestionLabelPos.width * 2f, _changeQuestionLabelPos.height);
 
-        _changeQuestionLabelPos = new Rect(_QuestionsWindow.width / 8f, 0 + (_QuestionsWindow.height * 0.25f), _changeButtonPos.width, _changeButtonPos.height * 0.8f);
-        _changeQuestionButtonPos = new Rect(_changeQuestionLabelPos.width * 1.5f, _changeQuestionLabelPos.y, _changeQuestionLabelPos.width * 2f, _changeQuestionLabelPos.height);
+        _changeButtonPos = new Rect(_changeQuestionLabelPos.x, 0 + (_QuestionsWindow.height / 10), _QuestionsWindow.width / 5, _QuestionsWindow.height / 10f);
+        _newButtonPos = new Rect(_changeButtonPos.x + (_changeButtonPos.width * 3f), _changeButtonPos.y, _changeButtonPos.width, _changeButtonPos.height);
 
         _labelAlignLeft = 10f;
         _labelWidth = _changeQuestionLabelPos.width;
@@ -84,14 +84,14 @@ public class EnterQuestions : MonoBehaviour {
         _answer2Pos = new Rect(_questionPos.x, _answer1Pos.y + _questionPos.height, _questionPos.width, _questionPos.height);
         _answer3Pos = new Rect(_questionPos.x, _answer2Pos.y + _questionPos.height, _questionPos.width, _questionPos.height);
 
-        _backButtonPos = new Rect(0 + (_QuestionsWindow.width / 5), _answer3Pos.y + (_answer3Pos.height * 2f), _newButtonPos.width, _newButtonPos.height);
-        _submitButtonPos = new Rect(_backButtonPos.x + (_backButtonPos.width * 2f), _backButtonPos.y, _backButtonPos.width, _backButtonPos.height);
+        _backButtonPos = new Rect(0 + _questionPos.x, _answer3Pos.y + (_answer3Pos.height * 2f), _newButtonPos.width, _newButtonPos.height);
+        _submitButtonPos = new Rect(_backButtonPos.x + (_backButtonPos.width * 3f), _backButtonPos.y, _backButtonPos.width, _backButtonPos.height);
 
-        _boxRect = new Rect(Screen.width / 4, Screen.height / 7, Screen.width / 2, Screen.height / 1.5f);
+        _boxRect = new Rect(Screen.width / 4, Screen.height / 12, Screen.width / 2, Screen.height / 1.2f);
 
-        _checkBox1Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.2f), _answer1Pos.y, _changeQuestionButtonPos.width / 10f, _changeQuestionButtonPos.height);
-        _checkBox2Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.2f), _answer2Pos.y, _changeQuestionButtonPos.width / 10f, _changeQuestionButtonPos.height);
-        _checkBox3Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.2f), _answer3Pos.y, _changeQuestionButtonPos.width / 10f, _changeQuestionButtonPos.height);
+        _checkBox1Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer1Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
+        _checkBox2Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer2Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
+        _checkBox3Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer3Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
    
     }
 
@@ -374,16 +374,16 @@ public class EnterQuestions : MonoBehaviour {
     private void _UserInsertQuestions()
     {
         GUI.Label(_questionPos, "Vraag");
-        _question = GUI.TextArea(new Rect(_changeQuestionButtonPos.x, _questionPos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _question);
+        _question = GUI.TextArea(new Rect(_questionPos.x + _questionPos.width, _questionPos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _question);
 
         GUI.Label(_answer1Pos, "Antwoord A");
-        _answer1 = GUI.TextArea(new Rect(_changeQuestionButtonPos.x, _answer1Pos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _answer1);
+        _answer1 = GUI.TextArea(new Rect(_questionPos.x + _questionPos.width, _answer1Pos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _answer1);
 
         GUI.Label(_answer2Pos, "Antwoord B");
-        _answer2 = GUI.TextArea(new Rect(_changeQuestionButtonPos.x, _answer2Pos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _answer2);
+        _answer2 = GUI.TextArea(new Rect(_questionPos.x + _questionPos.width, _answer2Pos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _answer2);
 
         GUI.Label(_answer3Pos, "Antwoord C");
-        _answer3 = GUI.TextArea(new Rect(_changeQuestionButtonPos.x, _answer3Pos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _answer3);
+        _answer3 = GUI.TextArea(new Rect(_questionPos.x + _questionPos.width, _answer3Pos.y, _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _answer3);
 
     }
 }
