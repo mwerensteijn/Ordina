@@ -63,6 +63,7 @@ public class MainMenu : MonoBehaviour
     int indexNumber = 0;
     bool show = false;
 
+    public int ScreenShotInt = 1;
     void Start()
     {
         database = Camera.main.GetComponent<dbController>();
@@ -114,6 +115,12 @@ public class MainMenu : MonoBehaviour
         bottomBannerHeight = Screen.height;
         bottomBannerWidth = offset;
         bottomBannerPos = topBannerHeight + (buttonSizeHeight * 5);
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            Application.CaptureScreenshot("Screenshot" + ScreenShotInt + ".png");
+            ScreenShotInt++;
+        }
     }
     void OnGUI()
     {

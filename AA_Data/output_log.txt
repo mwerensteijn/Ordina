@@ -22,7 +22,7 @@ Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\Mono.Data.Sq
 Loading C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\Mono.Data.Sqlite.dll into Unity Child Domain
 Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Data.dll (this message is harmless)
 Loading C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Data.dll into Unity Child Domain
-- Completed reload, in  0.056 seconds
+- Completed reload, in  0.218 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
@@ -32,69 +32,5 @@ Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.dll (
 Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Transactions.dll (this message is harmless)
 Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Xml.dll (this message is harmless)
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: b7c -> priority: 1 
-  Thread -> id: 4a8 -> priority: 1 
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.901880 ms
-
-Unloading 7 unused Assets to reduce memory usage. Loaded Objects now: 276.
-Total: 0.439180 ms (FindLiveObjects: 0.024802 ms CreateObjectMapping: 0.084671 ms MarkObjects: 0.258290 ms  DeleteObjects: 0.052598 ms)
-
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.378456 ms
-
-Unloading 4 unused Assets to reduce memory usage. Loaded Objects now: 278.
-Total: 0.241613 ms (FindLiveObjects: 0.021809 ms CreateObjectMapping: 0.015394 ms MarkObjects: 0.197566 ms  DeleteObjects: 0.005986 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.297205 ms
-
-Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 328.
-Total: 0.357074 ms (FindLiveObjects: 0.022236 ms CreateObjectMapping: 0.017532 ms MarkObjects: 0.303620 ms  DeleteObjects: 0.013256 ms)
-
-Entry is gevonden!
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entry is gevonden!
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.954096 ms
-
-Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 284.
-Total: 0.313883 ms (FindLiveObjects: 0.020098 ms CreateObjectMapping: 0.017105 ms MarkObjects: 0.265560 ms  DeleteObjects: 0.009835 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.575167 ms
-
-Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 332.
-Total: 0.443884 ms (FindLiveObjects: 0.056875 ms CreateObjectMapping: 0.014111 ms MarkObjects: 0.360495 ms  DeleteObjects: 0.011973 ms)
-
-Entry is gevonden!
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entry is gevonden!
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.454147 ms
-
-Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 284.
-Total: 0.369903 ms (FindLiveObjects: 0.021381 ms CreateObjectMapping: 0.017105 ms MarkObjects: 0.320297 ms  DeleteObjects: 0.010263 ms)
-
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.268981 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 284.
-Total: 0.340824 ms (FindLiveObjects: 0.043191 ms CreateObjectMapping: 0.016677 ms MarkObjects: 0.275396 ms  DeleteObjects: 0.005131 ms)
-
-Unloading 1 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.256580 ms
-
-Unloading 3 unused Assets to reduce memory usage. Loaded Objects now: 284.
-Total: 0.359640 ms (FindLiveObjects: 0.050460 ms CreateObjectMapping: 0.017105 ms MarkObjects: 0.285659 ms  DeleteObjects: 0.005559 ms)
-
+  Thread -> id: 198c -> priority: 1 
+  Thread -> id: 1b18 -> priority: 1 

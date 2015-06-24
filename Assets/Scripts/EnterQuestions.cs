@@ -27,6 +27,7 @@ public class EnterQuestions : MonoBehaviour {
     private Rect _boxRect, _QuestionsWindow;
     private Rect _dropDownRect;
 
+    public int ScreenShotInt2 = 1;
 
     GUIContent checkBox1 = new GUIContent();
     GUIContent checkBox2 = new GUIContent();
@@ -92,7 +93,12 @@ public class EnterQuestions : MonoBehaviour {
         _checkBox1Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer1Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
         _checkBox2Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer2Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
         _checkBox3Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer3Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
-   
+
+        if (Input.GetKeyDown(KeyCode.F2))
+        {
+            Application.CaptureScreenshot("Screenshot" + ScreenShotInt2 + ".png");
+            ScreenShotInt2++;
+        }
     }
 
 

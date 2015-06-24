@@ -297,6 +297,7 @@ MonoBehaviour:
     y: 0
     width: 50
     height: 50
+  ScreenShotInt: 1
 --- !u!4 &1627301666
 Transform:
   m_ObjectHideFlags: 0
