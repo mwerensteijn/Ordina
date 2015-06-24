@@ -499,19 +499,6 @@ public class dbController : MonoBehaviour
         dbconn.Close();
     }
 
-    public void updateSubject(int subjectID, string newSubject)
-    {
-        dbconn = new SqliteConnection(sqliteConnection);
-        dbconn.Open();
-
-        SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "UPDATE Onderwerp SET Subject='" + newSubject + "' WHERE OnderwerpID=" + subjectID;
-
-        cmd.ExecuteScalar();
-
-        dbconn.Close();
-    }
-
     public List<int> getQuestionIDs(int subjectID, bool isImageQuestion)
     {
         List<int> lstr = new List<int>();
