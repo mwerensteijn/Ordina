@@ -24,6 +24,8 @@ public class PictureQuestionController : MonoBehaviour {
     private float lastPositionHeight;
     private float maxHeight = 0;
 
+    public float offset = 0.2f;
+
     List<int> questionsListID = new List<int>();
 
     // Use this for initialization
@@ -124,8 +126,13 @@ public class PictureQuestionController : MonoBehaviour {
     }
 
     private Vector3 calculatePostionAnswers(float width, float height ){
-        Debug.Log("Calc pos: " + lastPositionWidth);
-        lastPositionWidth += width;
+        bool first = false;
+        if (lastPositionWidth == startingPositionWidth)
+        {
+            //first
+            first = true;
+        }
+        lastPositionWidth += (width + offset);
         if (height > maxHeight)
         {
             maxHeight = height;
@@ -133,11 +140,15 @@ public class PictureQuestionController : MonoBehaviour {
         if(lastPositionWidth > maxWidthAnswer){
             // + width because return - width
             lastPositionWidth = startingPositionWidth + width;
-            lastPositionHeight += maxHeight;
+            lastPositionHeight += maxHeight += offset;
             maxHeight = 0;
         }
+        if (first)
+        {
+            lastPositionWidth -= offset;
+        }
 
-        return new Vector3(lastPositionWidth, lastPositionHeight, defaultZPosition);
+        return new Vector3(lastPositionWidth - width, lastPositionHeight, defaultZPosition);
     }
 
     private void resetPosition()

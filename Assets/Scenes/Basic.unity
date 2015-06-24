@@ -1834,10 +1834,11 @@ MonoBehaviour:
   pictureAnswer: {fileID: 172738, guid: 1f5f1038121a71a4387755996ed6fe14, type: 2}
   mainPictureQuestion: {fileID: 791626065}
   submit: {fileID: 1659056576}
-  startingPositionWidth: 10
+  startingPositionWidth: 9
   startingPositionHeight: 2
-  maxWidthAnswer: 16
+  maxWidthAnswer: 14
   defaultZPosition: -5.5
+  offset: .200000003
 --- !u!114 &891704002 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 11400662, guid: 66eb2dce377114b41a6572cf51216ce3,
