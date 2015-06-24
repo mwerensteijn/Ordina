@@ -72,7 +72,7 @@ public class EnterQuestions : MonoBehaviour {
         _changeQuestionLabelPos = new Rect(_QuestionsWindow.width / 8f, 0 + (_QuestionsWindow.height * 0.25f), _changeButtonPos.width, _changeButtonPos.height);
         _changeQuestionButtonPos = new Rect(_changeQuestionLabelPos.x + (_QuestionsWindow.width / 5), _changeQuestionLabelPos.y, _changeQuestionLabelPos.width * 2f, _changeQuestionLabelPos.height);
 
-        _changeButtonPos = new Rect(_changeQuestionLabelPos.x, 0 + (_QuestionsWindow.height / 10), _QuestionsWindow.width / 5, _QuestionsWindow.height / 10f);
+        _changeButtonPos = new Rect(_changeQuestionLabelPos.x, 0 + (_QuestionsWindow.height / 10), _QuestionsWindow.width / 5, _QuestionsWindow.height / 12f);
         _newButtonPos = new Rect(_changeButtonPos.x + (_changeButtonPos.width * 3f), _changeButtonPos.y, _changeButtonPos.width, _changeButtonPos.height);
 
         _labelAlignLeft = 10f;
@@ -87,7 +87,7 @@ public class EnterQuestions : MonoBehaviour {
         _backButtonPos = new Rect(0 + _questionPos.x, _answer3Pos.y + (_answer3Pos.height * 2f), _newButtonPos.width, _newButtonPos.height);
         _submitButtonPos = new Rect(_backButtonPos.x + (_backButtonPos.width * 3f), _backButtonPos.y, _backButtonPos.width, _backButtonPos.height);
 
-        _boxRect = new Rect(Screen.width / 4, Screen.height / 12, Screen.width / 2, Screen.height / 1.2f);
+        _boxRect = new Rect(Screen.width / 4, Screen.height / 9, Screen.width / 1.9f, Screen.height / 1.5f);
 
         _checkBox1Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer1Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
         _checkBox2Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer2Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
