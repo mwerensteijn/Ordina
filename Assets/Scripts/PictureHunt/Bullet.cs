@@ -15,12 +15,18 @@ public class Bullet : MonoBehaviour {
     private Ray ray;
     private RaycastHit hit;
 
+    private Camera camera;
     private static GameObject answer = null;
 
 	// Use this for initialization
 	void Start () {
+        GameObject c = GameObject.FindGameObjectWithTag("CenterCamera");
+        if (c == null) {
+            c = GameObject.FindGameObjectWithTag("MainCamera");
+        }
 
-	}
+        camera = c.GetComponent<Camera>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -31,7 +37,7 @@ public class Bullet : MonoBehaviour {
     {
         ContactPoint contact = collision.contacts[0];
         // Cast ray to be sure about the position.
-        ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         if (!(Physics.Raycast(ray, out hit, 100)))
         {
             // ray didn't hit an object, return.

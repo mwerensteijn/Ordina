@@ -40,8 +40,11 @@ public class GameManager : MonoBehaviour
         return spelID;
     }
 
-    public void loadLevel(int level)
-    {
-        Application.LoadLevel(level);
+    public void StartPictureHunt() {
+        Application.LoadLevel("Basic");
+    }
+
+    public void StartMultipleChoice() {
+        Application.LoadLevel("MultipleChoice");
     }
 }

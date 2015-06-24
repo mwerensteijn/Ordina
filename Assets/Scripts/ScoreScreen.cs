@@ -24,7 +24,7 @@ public class ScoreScreen : MonoBehaviour {
     public void returnToMainMenu()
     {
         // level 0 is main menu
-        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().loadLevel(0);
+        Application.LoadLevel("MainMenu2d");
     }
 }
 
