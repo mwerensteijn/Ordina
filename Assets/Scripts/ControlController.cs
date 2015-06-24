@@ -6,6 +6,7 @@ public class ControlController : MonoBehaviour {
     
     public BulletSpawner bulletSpawner;
     public Watergun watershooter;
+    public PopUpWindow popUp;
 
     public List<GameObject> paintSpots;
 
@@ -19,9 +20,11 @@ public class ControlController : MonoBehaviour {
         if (Input.GetButtonDown("Submit"))
         {
             bulletSpawner.Shoot();
+            popUp.disablePopUp();
         } else if (Input.GetButtonDown("Fire1"))
         {
             watershooter.Shoot();
+            popUp.disablePopUp();
         }
 	}
 }

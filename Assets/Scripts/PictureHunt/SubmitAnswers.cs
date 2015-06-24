@@ -11,7 +11,9 @@ public class SubmitAnswers : MonoBehaviour, IScore
     public dbController db;
     public ScoreScreen scoreScreen;
     public Canvas canvas;
-    private DigitalClock gameTimer;
+    private GameManager gameManager;
+    public DigitalClock gameTimer;
+    public PopUpWindow popUp;
     private int elapsedTime = 0;
 
     //public GameManager gameManager;
@@ -30,7 +32,8 @@ public class SubmitAnswers : MonoBehaviour, IScore
 
     void Start()
     {
-        gameTimer = new DigitalClock();
+        //gameTimer = new DigitalClock();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
     }
 
@@ -47,7 +50,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
     }
 
     
-    void Submit()
+    public void Submit()
     {
        // bool check = true;
         Debug.Log("Submit");
@@ -55,6 +58,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
         {
             if (!(question.isAnswered()))
             {
+                popUp.enablePopUp("Niet alle onderdelen zijn beantwoord");
                 Debug.Log("Not all questions are answered");
                 return;
             }
@@ -72,22 +76,20 @@ public class SubmitAnswers : MonoBehaviour, IScore
             }
         }
 
-        // Check if all answer were right
-       /* if (check)
-        {
-            Debug.Log("Well done");
-        }*/
         int totalSeconds = gameTimer.GetTotalSeconds();
         SaveScore(CalculateScore(), totalSeconds - elapsedTime);
-        //db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), score,  totalSeconds - elapsedTime, TotalAskedQuestions, TotalCorrectQuestions);
         elapsedTime = totalSeconds;
+        popUp.enablePopUp(totalCorrectQuestions + " onderdelen goed beantwoord");
         foreach(PictureQuestion question in m_Questions){
             question.removeFromScene();
         }
         m_Questions = new List<PictureQuestion>();
-        scoreScreen.ShowScoreScreen(totalSeconds, gameTimer.ToString());
-        canvas.gameObject.SetActive(false);
-        questionController.spawnQuestion();
+        if (!questionController.spawnQuestion())
+        {
+            popUp.disablePopUp();
+            scoreScreen.ShowScoreScreen(CalculateScore(), gameTimer.GetFormatedTime());
+            canvas.gameObject.SetActive(false);
+        }
     }
 
     public int CalculateScore()
@@ -102,7 +104,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
         //database connectie en opslag nodig.
         try
         {
-            //db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
+            db.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
         }
         catch (Exception e) { Debug.Log("foutmelding: " + e.Message); }
         Debug.Log("total score: " + totalScore);

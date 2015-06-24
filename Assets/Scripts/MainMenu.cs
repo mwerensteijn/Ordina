@@ -21,6 +21,7 @@ public class MainMenu : MonoBehaviour
     public bool NoSubject;
 
     private Rect windowRect = new Rect(Screen.width / 3, Screen.height / 3, Screen.width / 3, Screen.height / 8);
+    private Rect changeSubjectRect = new Rect(Screen.width / 3, Screen.height / 3, Screen.width / 3, Screen.height / 7);
 
     public float offset;
 
@@ -41,6 +42,7 @@ public class MainMenu : MonoBehaviour
 
     private Rect _currentSubjectPos;
     public static bool _subjectChosen = false;
+    private bool _changeSubjectName = false;
     private Rect _subjectWindow;
     private Rect _subjectButtonPos;
 
@@ -50,7 +52,7 @@ public class MainMenu : MonoBehaviour
     private Rect _inPutArea;
     private Rect _addNewSubjectButtonPos;
 
-    private string Subject, _newSubject;
+    private string Subject, _newSubject, changeSubjectName = "", currentSubject = "";
     private bool executeOnce;
 
     private Vector2 scrollViewVector = Vector2.zero;
@@ -129,6 +131,11 @@ public class MainMenu : MonoBehaviour
 
             GUI.skin = customSkin2;
 
+            GUIStyle g = new GUIStyle(GUI.skin.label);
+            g.fontSize = 18;
+            g.normal.textColor = new Color(1, 1, 1);
+            GUI.Label(new Rect(offset, buttonPos1 - buttonSizeHeight / 2, buttonSizeWidth, buttonSizeHeight / 2), "Huidige onderwerp: " + currentSubject, g);
+
             if (GUI.Button(new Rect(offset, buttonPos1, buttonSizeWidth, buttonSizeHeight), "Meerkeuze vragen invoeren"))
             {
                 Application.LoadLevel("EnterQuestions");
@@ -138,17 +145,23 @@ public class MainMenu : MonoBehaviour
             {
                 Application.LoadLevel("ImageOverview");
             }
-            if (GUI.Button(new Rect(offset, buttonPos3, buttonSizeWidth, buttonSizeHeight), "Onderwerp veranderen"))
+            if (GUI.Button(new Rect(offset, buttonPos3, buttonSizeWidth, buttonSizeHeight), "Onderwerpnaam aanpassen"))
+            {
+                _changeSubjectName = true;
+            }
+            if (GUI.Button(new Rect(offset, buttonPos4, buttonSizeWidth, buttonSizeHeight), "Onderwerp kiezen"))
             {
                 _subjectChosen = false;
-            }
-            if (GUI.Button(new Rect(offset, buttonPos4, buttonSizeWidth, buttonSizeHeight), "Exit"))
-            {
-                Application.Quit();
+                Application.LoadLevel("GUI");
             }
 
             GUI.skin = customSkin3;
             GUI.Box(new Rect(0, Screen.height - (Screen.height / 20), bottomBannerWidth, buttonSizeHeight), "Ordina the Game 1.0 made by Hogeschool Utrecht");
+        }
+
+        if (_changeSubjectName) {
+            GUI.skin = customSkin2;
+            GUI.Window(3, changeSubjectRect, ChangeSubjectName, "Onderwerpnaam aanpaasen");
         }
     }
 
@@ -295,6 +308,8 @@ public class MainMenu : MonoBehaviour
                     _subjectChosen = true;
                     NoSubject = false;
                     selectedSubjectID = database.getSubjectID(list[indexNumber]);
+                    currentSubject = database.getSubject(selectedSubjectID);
+                    changeSubjectName = currentSubject;
                 }
                 else
                 {
@@ -302,6 +317,20 @@ public class MainMenu : MonoBehaviour
                 } 
             }   
             }
+    }
+
+    private void ChangeSubjectName(int windowID) {
+        GUI.FocusWindow(3);
+
+        changeSubjectName = GUI.TextArea(new Rect(20, 20, windowRect.width - 40, 20), changeSubjectName);
+
+        if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 3), windowRect.width / 3, windowRect.height / 3), "Opslaan")) {
+            _changeSubjectName = false;
+            database.updateSubject(selectedSubjectID, changeSubjectName);
+            currentSubject = changeSubjectName;
+        }
+        //GUI.FocusWindow(0);
+        //GUI.DragWindow();
     }
 
     private void ShowPopup(int windowID)

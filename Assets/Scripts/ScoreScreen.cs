@@ -4,11 +4,8 @@ using UnityEngine.UI;
 public class ScoreScreen : MonoBehaviour {
 
     private Canvas _ScoreScreen;
-    //public DigitalClock gameTimer;
-    //public WorldMovement worldMovement;
     public Text TotalScore;
     public Text TotalTime;
-    public AirplaneMovement airPlane;
 
 	// Use this for initialization
 	void Start () 
@@ -17,13 +14,17 @@ public class ScoreScreen : MonoBehaviour {
         _ScoreScreen.enabled = false;
 	}
 
-    public void ShowScoreScreen(int totalTimeInSeconds, string formatedTime) 
+    public void ShowScoreScreen(int score, string formatedTime) 
     {
-        Vector3 scoreScreenPosition = airPlane.transform.position;
-        scoreScreenPosition.z += 1;
-        _ScoreScreen.transform.position = scoreScreenPosition;
         _ScoreScreen.enabled = true;
-        TotalScore.text = "Score: " + totalTimeInSeconds;
-        TotalTime.text =  "Time:  " +formatedTime;
+        TotalScore.text = "Score: " + score;
+        TotalTime.text =  "Time:  " + formatedTime;
+    }
+
+    public void returnToMainMenu()
+    {
+        // level 0 is main menu
+        GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().loadLevel(0);
     }
 }
+
