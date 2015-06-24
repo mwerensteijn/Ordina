@@ -37,13 +37,6 @@ public class SubmitAnswers : MonoBehaviour, IScore
 
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.tag.Equals("Bullet") ){
-            Submit();
-        }    
-    }
-
     public void addQuestion(PictureQuestion question)
     {
         m_Questions.Add(question);
