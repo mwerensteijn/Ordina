@@ -287,6 +287,7 @@ MonoBehaviour:
   buttonPos2: 0
   buttonPos3: 0
   buttonPos4: 0
+  buttonPos5: 0
   bottomBannerWidth: 0
   bottomBannerHeight: 0
   bottomBannerPos: 0

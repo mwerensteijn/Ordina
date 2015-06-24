@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/GUI.unity
+  - enabled: 1
     path: Assets/Scenes/MainMenu2d.unity
   - enabled: 1
     path: Assets/Scenes/MultipleChoice.unity
   - enabled: 1
     path: Assets/Scenes/Basic.unity
-  - enabled: 1
-    path: Assets/Scenes/GUI.unity
   - enabled: 1
     path: Assets/Scenes/EnterQuestions.unity
   - enabled: 1
