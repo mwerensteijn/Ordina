@@ -1,20 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class TextQuadBackGround : MonoBehaviour {
 
     public TextMesh tm;
-    public float xScaleFactor = 1.7f;
-    public float yScaleFactor = 1.7f;
+    public float xScaleFactor = 1.0f;
+    public float yScaleFactor = 1.0f;
+    public bool IgnoreTextLength = false;
+    public SmartTextMesh smTm;
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 
     public void UpdateTextQuadBackGroundSize() 
     {
-        var x = tm.GetComponent<Renderer>().bounds.size.x * xScaleFactor;
-        var y = tm.GetComponent<Renderer>().bounds.size.y * yScaleFactor;
+        float x = 0f;
+        float y = 0f;
+
+        if (IgnoreTextLength)
+        {
+            x = tm.GetComponent<Renderer>().bounds.size.x * xScaleFactor;
+            y = tm.GetComponent<Renderer>().bounds.size.y * yScaleFactor;
+        }
+        else if (!IgnoreTextLength)
+        {
+            float lineHigh = (float)Math.Ceiling(tm.text.Length / smTm.MaxWidth);
+
+            x = (tm.GetComponent<Renderer>().bounds.size.x + (smTm.MaxWidth * 0.25f)) * xScaleFactor;
+            y = (tm.GetComponent<Renderer>().bounds.size.y + (lineHigh * 1.5f)) * yScaleFactor;
+        }
+
         transform.localScale = new Vector3(x, y, 1);
     }
 }

@@ -211,11 +211,13 @@ public class WorldMovement : MonoBehaviour, IScore {
 
         // Set question and answer text
         questionText.text = _questions[currentQuestion].question;
-        questionText.GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
         answerRowFront.A = _questions[currentQuestion].answers[0];
         answerRowFront.B = _questions[currentQuestion].answers[1];
         answerRowFront.C = _questions[currentQuestion].answers[2];
         answerRowFront.SizePlane();
+        answerRowFront.SizeTextMesh();
+
+        questionText.GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
 
         currentState = WorldMovement.State.Idle;
         progressBar.SetMaxAwnsers(_questions.Count);
@@ -250,11 +252,13 @@ public class WorldMovement : MonoBehaviour, IScore {
         {
             ++currentQuestion;
             questionText.text = _questions[currentQuestion].question;
-            questionText.GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
             answerRowFront.A = _questions[currentQuestion].answers[0];
             answerRowFront.B = _questions[currentQuestion].answers[1];
             answerRowFront.C = _questions[currentQuestion].answers[2];
             answerRowFront.SizePlane();
+            answerRowFront.SizeTextMesh();
+
+            questionText.GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
 
             currentState = WorldMovement.State.Idle;
         }

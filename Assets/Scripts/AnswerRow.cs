@@ -38,6 +38,13 @@ public class AnswerRow {
         row.transform.FindChild("C").FindChild("Answer").GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
     }
 
+    public void SizeTextMesh() 
+    {
+        row.transform.FindChild("A").FindChild("Answer").GetComponent<SmartTextMesh>().UpdateTextLayOut();
+        row.transform.FindChild("B").FindChild("Answer").GetComponent<SmartTextMesh>().UpdateTextLayOut();
+        row.transform.FindChild("C").FindChild("Answer").GetComponent<SmartTextMesh>().UpdateTextLayOut();
+    }
+
     public void HideAnswersText() 
     {
         answerAText.GetComponent<MeshRenderer>().enabled = false;
