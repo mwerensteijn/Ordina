@@ -326,7 +326,7 @@ public class MainMenu : MonoBehaviour
 
         if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 3), windowRect.width / 3, windowRect.height / 3), "Opslaan")) {
             _changeSubjectName = false;
-            database.updateSubject(selectedSubjectID, changeSubjectName);
+            database.updateSubject(selectedSubjectID, changeSubjectName, );
             currentSubject = changeSubjectName;
         }
         //GUI.FocusWindow(0);
