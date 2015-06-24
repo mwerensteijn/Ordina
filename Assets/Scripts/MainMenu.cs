@@ -35,6 +35,7 @@ public class MainMenu : MonoBehaviour
     public float buttonPos2;
     public float buttonPos3;
     public float buttonPos4;
+    public float buttonPos5;
 
     public float bottomBannerWidth;
     public float bottomBannerHeight;
@@ -101,13 +102,14 @@ public class MainMenu : MonoBehaviour
         topBannerHeight = Screen.height / 3;
         topBannerWidth = offset;
 
-        buttonSizeHeight = Screen.height / 10;
+        buttonSizeHeight = Screen.height / 12;
         buttonSizeWidth = offset;
 
         buttonPos1 = topBannerHeight + buttonSizeHeight* 2;
         buttonPos2 = topBannerHeight + buttonSizeHeight * 3;
         buttonPos3 = topBannerHeight + (buttonSizeHeight * 4);
         buttonPos4 = topBannerHeight + (buttonSizeHeight * 5);
+        buttonPos5 = topBannerHeight + (buttonSizeHeight * 6);
 
         bottomBannerHeight = Screen.height;
         bottomBannerWidth = offset;
@@ -153,6 +155,10 @@ public class MainMenu : MonoBehaviour
             {
                 _subjectChosen = false;
                 Application.LoadLevel("GUI");
+            }
+            if (GUI.Button(new Rect(offset, buttonPos5, buttonSizeWidth, buttonSizeHeight), "Exit"))
+            {
+                Application.Quit();
             }
 
             GUI.skin = customSkin3;
@@ -326,7 +332,6 @@ public class MainMenu : MonoBehaviour
 
         if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 3), windowRect.width / 3, windowRect.height / 3), "Opslaan")) {
             _changeSubjectName = false;
-            database.updateSubject(selectedSubjectID, changeSubjectName);
             currentSubject = changeSubjectName;
         }
         //GUI.FocusWindow(0);

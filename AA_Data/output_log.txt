@@ -22,7 +22,7 @@ Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\Mono.Data.Sq
 Loading C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\Mono.Data.Sqlite.dll into Unity Child Domain
 Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Data.dll (this message is harmless)
 Loading C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Data.dll into Unity Child Domain
-- Completed reload, in  0.201 seconds
+- Completed reload, in  0.209 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
@@ -32,5 +32,5 @@ Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.dll (
 Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Transactions.dll (this message is harmless)
 Platform assembly: C:\Users\Chanan\Documents\Ordina\AA_Data\Managed\System.Xml.dll (this message is harmless)
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 1a68 -> priority: 1 
-  Thread -> id: 1b8c -> priority: 1 
+  Thread -> id: 1838 -> priority: 1 
+  Thread -> id: ccc -> priority: 1 
