@@ -652,15 +652,28 @@ public class dbController : MonoBehaviour
     }
     public void updateSubject(int subjectID, string newSubject)
     {
-        dbconn = new SqliteConnection(sqliteConnection);
-        dbconn.Open();
+        List<string> strl = getSubjects();
+        bool insert = true;
 
-        SqliteCommand cmd = new SqliteCommand(dbconn);
-        cmd.CommandText = "UPDATE Onderwerp SET Subject='" + newSubject + "' WHERE OnderwerpID=" + subjectID;
+        for (int i = 0; i < strl.Count; i++)
+        {
+            if (newSubject == strl[i])
+            {
+                insert = false;
+            }
+        }
+        if (insert)
+        {
+            dbconn = new SqliteConnection(sqliteConnection);
+            dbconn.Open();
 
-        cmd.ExecuteScalar();
+            SqliteCommand cmd = new SqliteCommand(dbconn);
+            cmd.CommandText = "UPDATE Onderwerp SET Subject='" + newSubject + "' WHERE OnderwerpID=" + subjectID;
 
-        dbconn.Close();
+            cmd.ExecuteScalar();
+
+            dbconn.Close();
+        }
     }
     public void updateAnswer(int answerID, string answer, bool correct)
     {

@@ -8,6 +8,8 @@ public class ImageAnswer : MonoBehaviour {
     public bool SavedInDatabase = false;
     public int rectID = -1;
 
+    //! \brief OnMouseDown will remove the selected crop.
+    //! \return void
     public void OnMouseDown() {
         Destroy(leftLine.gameObject);
         Destroy(topLine.gameObject);

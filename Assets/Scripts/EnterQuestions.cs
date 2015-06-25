@@ -43,7 +43,9 @@ public class EnterQuestions : MonoBehaviour {
 
     private int indexNumber;
 
-    // Initialize database and list with subjects
+    //! \brief Start is called on the frame when a script is enabled.
+    //! Initialize the database and assign subjects to a list
+    //! \return void
     void Start()
     {
         database = Camera.main.GetComponent<dbController>();
@@ -51,11 +53,7 @@ public class EnterQuestions : MonoBehaviour {
         list = database.getSubjects();
         if (list.Count >= 0)
             _subject = database.getSubject(MainMenu.selectedSubjectID);
-    }
 
-    // Make strings empty
-    void Awake()
-    {
         _question = "";
         _answer1 = "";
         _answer2 = "";
@@ -64,6 +62,10 @@ public class EnterQuestions : MonoBehaviour {
         _selectedSubject = "";
     }
 
+    //! \brief Update is called every frame.
+    //! Since the GUI is resizeable every frame some rects need to be 
+    //! recalculated
+    //! \return void
     void Update()
     {
         _QuestionsWindow = new Rect(Screen.width / 4, Screen.height / 10, Screen.width / 2, Screen.height / 2);
@@ -88,7 +90,7 @@ public class EnterQuestions : MonoBehaviour {
         _backButtonPos = new Rect(0 + _questionPos.x, _answer3Pos.y + (_answer3Pos.height * 2f), _newButtonPos.width, _newButtonPos.height);
         _submitButtonPos = new Rect(_backButtonPos.x + (_backButtonPos.width * 3f), _backButtonPos.y, _backButtonPos.width, _backButtonPos.height);
 
-        _boxRect = new Rect(Screen.width / 4, Screen.height / 9, Screen.width / 1.9f, Screen.height / 1.5f);
+        _boxRect = new Rect(Screen.width / 4.3f, Screen.height / 6, Screen.width / 1.9f, Screen.height / 1.5f);
 
         _checkBox1Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer1Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
         _checkBox2Pos = new Rect(_changeQuestionButtonPos.x + (_changeQuestionButtonPos.width * 1.38f), _answer2Pos.y, _changeQuestionButtonPos.width / 9f, _changeQuestionButtonPos.height);
@@ -101,7 +103,9 @@ public class EnterQuestions : MonoBehaviour {
         }
     }
 
-
+    //! \brief OnGUI is called for rendering and handling GUI events. 
+    //! Creates GUI based on different booleans
+    //! \return void
     void OnGUI()
     {
         GUI.skin = CustomSkin2;
@@ -132,6 +136,9 @@ public class EnterQuestions : MonoBehaviour {
         }
     }
 
+    //! \brief This method will draw the interface to enter questions.
+    //! \param windowID. ID number for the window
+    //! \return void
     private void createWindow(int windowID)
     {
         GUI.FocusWindow(4);
@@ -193,7 +200,6 @@ public class EnterQuestions : MonoBehaviour {
                         GUI.Label(new Rect(10f, (index * _changeQuestionButtonPos.height + (_changeQuestionButtonPos.height * 0.01f)), _changeQuestionButtonPos.width, _changeQuestionButtonPos.height), _questionsPerSubject[index]);
                     }
                     GUI.EndScrollView();
-                    //Debug.Log("Geselecteerde vraag: " + _selectedSubject);
                 }
 
             }
@@ -222,11 +228,13 @@ public class EnterQuestions : MonoBehaviour {
                 else if (_changeExistingQuestion)
                     _succesFullyUpdated = true;
             }
-            //_ReadQuestionsFromDatabase();
-            //if()
-
         }
     }
+
+    //! \brief This method will draw the interface if user has pressed Submit button.
+    //! This interface has one button and if pressed current scene will be reloaded
+    //! \param windowID. ID number for the window
+    //! \return void
     private void ShowSuccesFullySend(int windowID)
     {
         if (GUI.Button(new Rect(_windowRect.width / 3, _windowRect.height - (_windowRect.height / 2), _windowRect.width / 3, _windowRect.height / 3), "Doorgaan"))
@@ -245,6 +253,10 @@ public class EnterQuestions : MonoBehaviour {
         GUI.DragWindow();
     }
 
+    //! \brief This method will draw the interface if user has pressed Change button
+    //! This interface has one button and if pressed current scene will be reloaded
+    //! \param windowID. ID number for the window
+    //! \return void
     private void ShowSuccesFullyUpdated(int windowID)
     {
         if (GUI.Button(new Rect(_windowRect.width / 3, _windowRect.height - (_windowRect.height / 2), _windowRect.width / 3, _windowRect.height / 3), "Doorgaan"))
@@ -258,18 +270,17 @@ public class EnterQuestions : MonoBehaviour {
             database.updateAnswer(lint[0], _answer1, _answer1IsRight);
             database.updateAnswer(lint[1], _answer2, _answer2IsRight);
             database.updateAnswer(lint[2], _answer3, _answer3IsRight);
-            //database.insertQuestion(Question, database.getSubjectID(Subject)); //TODO - De string moet ingevuld worden met de string!
-            //database.insertAnswer(Answer1, database.getQuestionID(Question), answer1IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
-            //database.insertAnswer(Answer2, database.getQuestionID(Question), answer2IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
-            //database.insertAnswer(Answer3, database.getQuestionID(Question), answer3IsRight); //TODO - Een functie maken voor het getten van een questionID aan de hand van de ingevulde question string!
 
             Application.LoadLevel("EnterQuestions");
-
         }
         GUI.FocusWindow(2);
         GUI.DragWindow();
     }
 
+    //! \brief This method will draw the interface if user has not filled in all fields required for a question
+    //! This interface has one button and if pressed the user will return to previous screen
+    //! \param windowID. ID number for the window
+    //! \return void
     private void ShowGui(int windowID)
     {
         if (GUI.Button(new Rect(_windowRect.width / 3, _windowRect.height - (_windowRect.height / 2), _windowRect.width / 3, _windowRect.height / 3), "Doorgaan"))
@@ -279,6 +290,9 @@ public class EnterQuestions : MonoBehaviour {
         GUI.FocusWindow(0);
         GUI.DragWindow();
     }
+
+    //! \brief This method will set a texture on one of the three buttons
+    //! \return void
     private void _CheckSelectedCheckbox()
     {
         if (GUI.Button(_checkBox1Pos, checkBox1.image))
@@ -328,6 +342,9 @@ public class EnterQuestions : MonoBehaviour {
         }
     }
 
+    //! \brief This method will set a texture on one of the three buttons
+    //! \param changed
+    //! \return void
     private void _CheckSelectedCheckbox(bool changed)
     {
         if (_answer1IsRight)
@@ -347,7 +364,9 @@ public class EnterQuestions : MonoBehaviour {
         }
     }
 
-
+    //! \brief This method get all the data from the selected question.
+    //! \param selectedQuestion. This string contains the question the user want to change
+    //! \return void
     private void changeQuestion(string selectedQuestion)
     {
         _changeExistingQuestion = true;
@@ -377,6 +396,8 @@ public class EnterQuestions : MonoBehaviour {
 
     }
 
+    //! \brief This method takes care of the labels and text area for the questions
+    //! \return void
     private void _UserInsertQuestions()
     {
         GUI.Label(_questionPos, "Vraag");

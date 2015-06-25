@@ -18,11 +18,15 @@ public class FileBrowser : MonoBehaviour {
     public static string selectedFile = "";
     public static int selectedPictureID = -1;
 
-	// Use this for initialization
+    //! \brief Start is called on the fram when a script is enabled.
+    //! This method will call a method called ProcessPath
+    //! \return void
 	void Start () {
         ProcessPath();
 	}
 
+    //! \brief This method is literally the file browser code
+    //! \return void
     public void ProcessPath() {
         if (File.Exists(path)) {
             Debug.Log("Error: the path is a file.");
@@ -49,6 +53,9 @@ public class FileBrowser : MonoBehaviour {
         }
     }
 
+    //! \brief OnGUI is called for rendering and handling GUI events. 
+    //! Creates GUI for the File Browser
+    //! \return void
     void OnGUI() {
         GUI.skin = skin;
 
@@ -119,8 +126,9 @@ public class FileBrowser : MonoBehaviour {
             }
         }
     }
-	
-	// Update is called once per frame
+
+    //! \brief Update is called every frame.
+    //! \return void
 	void Update () {
 	
 	}

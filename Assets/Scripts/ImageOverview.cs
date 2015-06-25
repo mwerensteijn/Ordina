@@ -10,7 +10,10 @@ public class ImageOverview : MonoBehaviour {
     public int imagesAmount = 0;
     public GameObject meerAfbeeldingen;
 
-	// Use this for initialization
+    //! \brief Start is called on the frame when a script is enabled.
+    //! This method will get all the pictures of the selected subject from the
+    //! database and the user will get a overview of that
+    //! \return void
 	void Start () {
         Scrollbar s = GameObject.FindGameObjectWithTag("ImageOverviewScrollbar").GetComponent<Scrollbar>();
         s.gameObject.SetActive(false);
@@ -51,15 +54,20 @@ public class ImageOverview : MonoBehaviour {
         s.value = 1;
 	}
 
+    //! \brief This method will change the scene to scene named "GUI"
+    //! \return void
     public void Exit() {
         Application.LoadLevel("GUI");
     }
 
+    //! \brief This method will change the scene to scene named "FileBrowser"
+    //! \return void
     public void AddImage() {
         Application.LoadLevel("FileBrowser");
     }
 
-	// Update is called once per frame
+    //! \brief Update is called every frame.
+    //! \return void
 	void Update () {
 
 	}

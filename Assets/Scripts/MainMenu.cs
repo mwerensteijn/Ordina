@@ -64,6 +64,10 @@ public class MainMenu : MonoBehaviour
     bool show = false;
 
     public int ScreenShotInt = 1;
+
+    //! \brief Start is called on the fram when a script is enabled.
+    //! Initialize the database and assign subjects to a list
+    //! \return void
     void Start()
     {
         database = Camera.main.GetComponent<dbController>();
@@ -71,10 +75,7 @@ public class MainMenu : MonoBehaviour
         list = database.getSubjects();
         if (list.Count > 0)
             Subject = list[0];
-    }
 
-    void Awake()
-    {
         _newSubject = "";
         Subject = "";
 
@@ -83,9 +84,12 @@ public class MainMenu : MonoBehaviour
         _subjectWindow = new Rect(Screen.width / 3, Screen.height / 10, Screen.width / 3, Screen.height / 2);
         _subjectButtonPos = new Rect(_subjectWindow.x / 10, _subjectWindow.height / 5, _subjectWindow.width / 3, _subjectWindow.height / 15);
         _currentSubjectPos = new Rect(_subjectButtonPos.x, _subjectButtonPos.y - _subjectButtonPos.height, _subjectButtonPos.width, _subjectButtonPos.height);
-
     }
 
+    //! \brief Update is called every frame.
+    //! Since the GUI is resizeable every frame some rects need to be 
+    //! recalculated
+    //! \return void
     void Update()
     {
         Screen.fullScreen = true;
@@ -122,6 +126,10 @@ public class MainMenu : MonoBehaviour
             ScreenShotInt++;
         }
     }
+
+    //! \brief OnGUI is called for rendering and handling GUI events. 
+    //! Creates GUI based on different booleans
+    //! \return void
     void OnGUI()
     {
         Screen.fullScreen = true;
@@ -178,6 +186,11 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    //! \brief This method will draw the GUI so user can select a subject
+    //! In this interface the user has to select a subject before he can move to next menu
+    //! Several buttons and text area's are added so the user can add a new subject or remove a subject
+    //! \param windowID. ID number for the window
+    //! \return void
     private void chooseSubject(int windowID)
     {
         if (!NoSubject)
@@ -332,6 +345,10 @@ public class MainMenu : MonoBehaviour
             }
     }
 
+    //! \brief This method will draw the interface so the user can change the name of current subject
+    //! This interface has one button and if pressed the user will return to previous screen
+    //! \param windowID. ID number for the window
+    //! \return void
     private void ChangeSubjectName(int windowID) {
         GUI.FocusWindow(3);
 
@@ -342,10 +359,12 @@ public class MainMenu : MonoBehaviour
             database.updateSubject(database.getSubjectID(list[indexNumber]), changeSubjectName);
             currentSubject = changeSubjectName;
         }
-        //GUI.FocusWindow(0);
-        //GUI.DragWindow();
     }
 
+    //! \brief This method will draw the interface if user has not selected a subject
+    //! This interface has one button and if pressed the user will return to previous screen
+    //! \param windowID. ID number for the window
+    //! \return void
     private void ShowPopup(int windowID)
     {
         GUI.FocusWindow(1);
@@ -353,7 +372,5 @@ public class MainMenu : MonoBehaviour
         {
             NoSubject = false;
         }
-        //GUI.FocusWindow(0);
-        //GUI.DragWindow();
     }
 }

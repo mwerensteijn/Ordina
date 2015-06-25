@@ -22,6 +22,9 @@ public class CropSprite : MonoBehaviour
 //	For sides of rectangle. Rectangle that will display cropping area
 	private LineRenderer leftLine, rightLine, topLine, bottomLine;
 
+    //! \brief This method removes selected sprite from database.
+    //! \param ImageAnswer i.
+    //! \return void
     public static void RemoveAnswer(ImageAnswer i) {
         if (i.SavedInDatabase) {
             removeFromDatabase.Add(i);
@@ -30,6 +33,8 @@ public class CropSprite : MonoBehaviour
         answers.Remove(i);
     }
 
+    //! \brief This method will resize the texture
+    //! \return void
     public void ResizeTexture() {
         SpriteRenderer sr = spriteToCrop.GetComponent<SpriteRenderer>();
         if (sr == null)
@@ -55,6 +60,10 @@ public class CropSprite : MonoBehaviour
         spriteToCrop.transform.localScale = new Vector3(newWidth, newHeight);
     }
 
+    //! \brief This method will load a PNG image
+    //! This method will create a Texture2D object and applies PNG image to it
+    //! \param filePath. String contains filepath
+    //! \return void
     public static Texture2D LoadPNG(string filePath) {
 
         Texture2D tex = null;
@@ -68,6 +77,8 @@ public class CropSprite : MonoBehaviour
         return tex;
     }
 
+    //! \brief This method will save the texture in the database
+    //! \return void
     public void saveTexture() {
         if (FileBrowser.selectedPictureID == -1) {
             FileBrowser.selectedPictureID = GetComponent<dbController>().insertPicture(spriteToCrop.GetComponent<SpriteRenderer>().sprite.texture, MainMenu.selectedSubjectID);
@@ -75,6 +86,7 @@ public class CropSprite : MonoBehaviour
            
         StartCoroutine(generateTexturesFromList(answers));
     }
+    
 
     public void SetPlane() {
         plane = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -84,6 +96,8 @@ public class CropSprite : MonoBehaviour
         plane.transform.position = new Vector3(0, 0, 9);
     }
 
+    //! \brief This method removes selected image from database
+    //! \return void
     public void DeleteImage() {
         if (FileBrowser.selectedPictureID != -1) {
             dbController db = GetComponent<dbController>();
@@ -131,7 +145,8 @@ public class CropSprite : MonoBehaviour
         //saveTexture();
 	}
 
-    //	Creates line through LineRenderer component
+    //! \brief Creates line through LineRenderer component
+    //! \return void
 	private LineRenderer createAndGetLine (string lineName) {
 		GameObject lineObject = new GameObject(lineName);
 		LineRenderer line = lineObject.AddComponent<LineRenderer>();
@@ -140,6 +155,8 @@ public class CropSprite : MonoBehaviour
 		return line;
 	}
 
+    //! \brief Load rects from database
+    //! \return void
     public void LoadRects() {
         dbController db = GetComponent<dbController>();
         List<dbController.Rectangle> rects = db.getRect(FileBrowser.selectedPictureID);
@@ -179,6 +196,8 @@ public class CropSprite : MonoBehaviour
         }
     }
 
+    //! \brief Update is called every frame.
+    //! \return void
 	void Update () {
 		if(Input.GetMouseButtonDown(0) && isSpriteTouched(spriteToCrop)) {
 			isMousePressed = true; 
@@ -208,7 +227,11 @@ public class CropSprite : MonoBehaviour
 		bottomLine.SetPosition(0, new Vector3(startPoint.x, endPoint.y, 0));
 		bottomLine.SetPosition(1, new Vector3(endPoint.x, endPoint.y, 0));
 	}
-	//	Following method crops as per displayed cropping area
+
+    //! \brief Following method crops as per displayed cropping areae.
+    //! Since the GUI is resizeable every frame some rects need to be 
+    //! recalculated
+    //! \return void
 	private IEnumerator cropSprite() {
 
         yield return new WaitForEndOfFrame();
@@ -265,62 +288,10 @@ public class CropSprite : MonoBehaviour
             ia.rect = croppedSpriteRect;
             answers.Add(ia);
         }
-
-        /*
-        Debug.Log(croppedRects.Count);
-        croppedRects.Add(croppedSpriteRect);
-        Debug.Log(croppedRects.Count);
-
-        //leftBottomCorner[0] = croppedSpriteRect.xMin;
-        //leftBottomCorner[1] = croppedSpriteRect.yMin;
-
-        //rightUpperCorner[0] = croppedSpriteRect.xMax;
-        //rightUpperCorner[1] = croppedSpriteRect.yMax;
-
-        Sprite croppedSprite = Sprite.Create(spriteTexture, croppedSpriteRect, new Vector2(0,1), pixelsToUnits);
-		SpriteRenderer cropSpriteRenderer = croppedSpriteObj.AddComponent<SpriteRenderer>();	
-		cropSpriteRenderer.sprite = croppedSprite;
-		topLeftPoint.z = -1;
-
-		croppedSpriteObj.transform.position = new Vector3(0,0,0);
-		croppedSpriteObj.transform.parent = spriteToCrop.transform.parent;
-		croppedSpriteObj.transform.localScale = spriteToCrop.transform.localScale;
-        ImageAnswer imageAnswer = croppedSpriteObj.AddComponent<ImageAnswer>();
-        imageAnswer.position = croppedSpriteRect;
-        imageAnswer.HideOriginalAnswer(topLeftPoint, bottomRightPoint);
-
-        Debug.Log(croppedSprite.texture.width + " " + croppedSprite.texture.height);
-
-        Texture2D CroppedTexture = new Texture2D((int)croppedSprite.rect.width, (int)croppedSprite.rect.height, TextureFormat.RGB24, false);
-        CroppedTexture.ReadPixels(croppedSprite.textureRect, 0, 0);
-        Color[] pixels = croppedSprite.texture.GetPixels((int)croppedSprite.rect.x,
-                                                            (int)croppedSprite.rect.y,
-                                                            (int)croppedSprite.rect.width ,
-                                                            (int)croppedSprite.rect.height);
-        CroppedTexture.SetPixels(pixels);
-        CroppedTexture.Apply();
-        byte[] test = CroppedTexture.EncodeToPNG();
-        cropCounter++;
-        File.WriteAllBytes(Application.dataPath + "/../SavedScreen" + cropCounter + ".png", test);
-         */
     }
 
-//	Following method checks whether sprite is touched or not. There are two methods for simple collider and 2DColliders. you can use as per requirement and comment another one.
-
-//	For simple 3DCollider
-//	private bool isSpriteTouched(GameObject sprite)
-//	{
-//		RaycastHit hit;
-//		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-//		if (Physics.Raycast (ray, out hit)) 
-//		{
-//			if (hit.collider != null && hit.collider.name.Equals (sprite.name)) 
-//				return true;
-//		}
-//		return false;
-//	}
-
-//	For 2DCollider
+    //! \brief For 2DCollider.
+    //! \return void
 	private bool isSpriteTouched(GameObject sprite) {
 		Vector3 posFor2D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		RaycastHit2D hit2D = Physics2D.Raycast(posFor2D, Vector2.zero);
@@ -333,6 +304,9 @@ public class CropSprite : MonoBehaviour
 		return false;
 	}
 
+    //! \brief This method generature the texture which he will recieve from the database
+    //! \param List<ImageAnswer> answers.
+    //! \return void
     public IEnumerator generateTexturesFromList(List<ImageAnswer> answers){
         yield return new WaitForEndOfFrame();
         
