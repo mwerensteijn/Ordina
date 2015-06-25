@@ -15,6 +15,7 @@ public class WorldMovement : MonoBehaviour, IScore {
         FinishMiniGame,
         ScoreScreen
 	}
+    private GameManager gameManager;
 
     private DigitalClock gameTimer;
     private ProgressBar progressBar;
@@ -63,6 +64,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     private bool StartGameMovement = false;
 	// Initialization
 	void Start () {
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answers"));
         _dbController = GetComponentInParent<dbController>();        
 
@@ -187,7 +189,8 @@ public class WorldMovement : MonoBehaviour, IScore {
     {
         //TODO
         //onderwerpId = getonderwip of iets..
-        List<int> dbvragenIds = _dbController.getQuestionIDs(111, false);
+        int subjectId = _dbController.getSubjectID(gameManager.getSubject());
+        List<int> dbvragenIds = _dbController.getQuestionIDs(subjectId, false);
 
         foreach (int vraagid in dbvragenIds) 
         {
@@ -307,10 +310,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     public int CalculateScore()
     {
-        Debug.Log("answerscoreweight " + answerScoreWeigth);
-        Debug.Log("totalcorrect questions" + totalCorrectQuestions);
-        return AnswerScoreWeigth * TotalCorrectQuestions;
-        
+        return AnswerScoreWeigth * TotalCorrectQuestions;   
     }
     public void SaveScore(int totalScore, int totalTimeSeconds)
     {
@@ -318,10 +318,8 @@ public class WorldMovement : MonoBehaviour, IScore {
         //TODO parameters moeten er nog aangepast worden.spelid, ondwererp spel naak
         try
         {
-            _dbController.insertScore(0, "VliegtuigSpel", 0, totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
+            _dbController.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
         }
         catch (Exception e) { Debug.Log("foutmelding: " + e.Message);} 
-        Debug.Log("total score: " + totalScore);
-        Debug.Log("total time in seconds: " + totalTimeSeconds);
     }
 }
