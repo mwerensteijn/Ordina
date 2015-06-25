@@ -474,6 +474,7 @@ GameObject:
   - 224: {fileID: 22446132}
   - 102: {fileID: 10234900}
   - 23: {fileID: 2355844}
+  - 114: {fileID: 11408592}
   m_Layer: 0
   m_Name: Answer
   m_TagString: Untagged
@@ -888,6 +889,7 @@ GameObject:
   - 4: {fileID: 464010}
   - 23: {fileID: 2313440}
   - 102: {fileID: 10297282}
+  - 114: {fileID: 11450094}
   m_Layer: 0
   m_Name: Answer
   m_TagString: Untagged
@@ -1603,6 +1605,7 @@ GameObject:
   - 4: {fileID: 498910}
   - 23: {fileID: 2350434}
   - 102: {fileID: 10254068}
+  - 114: {fileID: 11429606}
   m_Layer: 0
   m_Name: Answer
   m_TagString: Untagged
@@ -3772,6 +3775,8 @@ MonoBehaviour:
   tm: {fileID: 10239648}
   xScaleFactor: 2
   yScaleFactor: 1.5
+  IgnoreTextLength: 1
+  smTm: {fileID: 0}
 --- !u!114 &11405894
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3806,6 +3811,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11408592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 133660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2012a6d4f9652499c06ec0174fdc40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnwrappedText: 
+  MaxWidth: 10
+  NeedsLayout: 1
+  ConvertNewLines: 0
 --- !u!114 &11415862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3820,6 +3840,8 @@ MonoBehaviour:
   tm: {fileID: 10297282}
   xScaleFactor: 1.70000005
   yScaleFactor: 1.70000005
+  IgnoreTextLength: 0
+  smTm: {fileID: 11450094}
 --- !u!114 &11417026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3967,6 +3989,8 @@ MonoBehaviour:
   tm: {fileID: 10254068}
   xScaleFactor: 1.70000005
   yScaleFactor: 1.70000005
+  IgnoreTextLength: 0
+  smTm: {fileID: 11429606}
 --- !u!114 &11425344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4051,6 +4075,21 @@ MonoBehaviour:
   lockedPosition: 1
   disableMovement: 0
   airplaneEngineParticleBeam: {fileID: 1217334}
+--- !u!114 &11429606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 197482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2012a6d4f9652499c06ec0174fdc40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnwrappedText: 
+  MaxWidth: 10
+  NeedsLayout: 1
+  ConvertNewLines: 0
 --- !u!114 &11433800
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4217,6 +4256,21 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 0123456789
+--- !u!114 &11450094
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 156368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2012a6d4f9652499c06ec0174fdc40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnwrappedText: 
+  MaxWidth: 10
+  NeedsLayout: 1
+  ConvertNewLines: 0
 --- !u!114 &11452168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4867,6 +4921,8 @@ MonoBehaviour:
   tm: {fileID: 10234900}
   xScaleFactor: 1.70000005
   yScaleFactor: 1.70000005
+  IgnoreTextLength: 0
+  smTm: {fileID: 11408592}
 --- !u!114 &11493206
 MonoBehaviour:
   m_ObjectHideFlags: 1
