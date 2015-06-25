@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(TextMesh))]
 public class SmartTextMesh : MonoBehaviour
@@ -10,9 +11,12 @@ public class SmartTextMesh : MonoBehaviour
     public bool NeedsLayout = true;
     public bool ConvertNewLines = false;
 
-    void Start()
+    void Awake() 
     {
         TheMesh = GetComponent<TextMesh>();
+    }
+    void Start()
+    {
         if (ConvertNewLines)
             UnwrappedText = UnwrappedText.Replace("\\n", System.Environment.NewLine);
     }
@@ -70,6 +74,7 @@ public class SmartTextMesh : MonoBehaviour
         }
         string builder = "";
         string text = TheMesh.text;
+
         TheMesh.text = "";
         //.text = "";
         string[] parts = text.Split(' ');

@@ -377,6 +377,7 @@ GameObject:
   - 4: {fileID: 496212}
   - 23: {fileID: 2372224}
   - 102: {fileID: 10220212}
+  - 114: {fileID: 11454220}
   m_Layer: 0
   m_Name: Vraag
   m_TagString: Question
@@ -4417,6 +4418,21 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11454220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 119752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a2012a6d4f9652499c06ec0174fdc40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UnwrappedText: 
+  MaxWidth: 0
+  NeedsLayout: 0
+  ConvertNewLines: 0
 --- !u!114 &11456062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4836,7 +4852,7 @@ MonoBehaviour:
   xScaleFactor: 2
   yScaleFactor: 1.5
   IgnoreTextLength: 1
-  smTm: {fileID: 0}
+  smTm: {fileID: 11454220}
 --- !u!114 &11494908
 MonoBehaviour:
   m_ObjectHideFlags: 1
