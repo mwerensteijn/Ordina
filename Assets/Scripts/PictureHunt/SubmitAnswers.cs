@@ -45,7 +45,6 @@ public class SubmitAnswers : MonoBehaviour, IScore
     
     public void Submit()
     {
-        if (!popUp.gameObject.activeSelf) {
             // bool check = true;
             Debug.Log("Submit");
             foreach (PictureQuestion question in m_Questions) {
@@ -80,7 +79,7 @@ public class SubmitAnswers : MonoBehaviour, IScore
                 scoreScreen.ShowScoreScreen(CalculateScore(), gameTimer.GetFormatedTime());
                 canvas.gameObject.SetActive(false);
             }
-        }
+        
     }
 
     public int CalculateScore()

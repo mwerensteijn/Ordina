@@ -83,7 +83,7 @@ public class WorldMovement : MonoBehaviour, IScore {
         float x = answerRowFront.transform.position.x;
         float y = answerRowFront.transform.position.y;
 
-        if (Input.GetMouseButton(0) && !airplaneMovement.disableMovement)
+        if ((Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Period)) && !airplaneMovement.disableMovement)
         {
             movementSpeed = 80f;
             airplaneMovement.SetSideMovementSpeed(80f);

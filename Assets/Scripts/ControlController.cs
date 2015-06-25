@@ -17,11 +17,11 @@ public class ControlController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetButtonDown("Submit"))
+        if (Input.GetKeyDown(KeyCode.PageUp) || Input.GetButtonDown("Submit"))
         {
             bulletSpawner.Shoot();
             popUp.disablePopUp();
-        } else if (Input.GetButtonDown("Fire1"))
+        } else if (Input.GetKeyDown(KeyCode.PageDown) || Input.GetButtonDown("Fire1"))
         {
             watershooter.Shoot();
             popUp.disablePopUp();
