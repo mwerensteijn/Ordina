@@ -24,7 +24,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
-	public static float movementSpeed = 20f;
+	public static float movementSpeed = 10f;
 
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
@@ -85,7 +85,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
         if ((Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Period)) && !airplaneMovement.disableMovement)
         {
-            movementSpeed = 80f;
+            movementSpeed = 40f;
             airplaneMovement.SetSideMovementSpeed(80f);
             airplaneMovement.disableMovement = true;
             airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.3f;

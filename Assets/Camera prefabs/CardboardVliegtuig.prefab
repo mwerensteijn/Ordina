@@ -3838,7 +3838,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tm: {fileID: 10297282}
-  xScaleFactor: 1.70000005
+  xScaleFactor: 1
   yScaleFactor: 1.70000005
   IgnoreTextLength: 0
   smTm: {fileID: 11450094}
@@ -3865,8 +3865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5139b8abf74fdf14bb1f86804113c474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dissapearPositionZ: -240
-  terrainDistance: 0
   airPlanePosition: {fileID: 491486}
 --- !u!114 &11422160
 MonoBehaviour:
@@ -3987,7 +3985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tm: {fileID: 10254068}
-  xScaleFactor: 1.70000005
+  xScaleFactor: 1
   yScaleFactor: 1.70000005
   IgnoreTextLength: 0
   smTm: {fileID: 11429606}
@@ -4919,7 +4917,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tm: {fileID: 10234900}
-  xScaleFactor: 1.70000005
+  xScaleFactor: 1
   yScaleFactor: 1.70000005
   IgnoreTextLength: 0
   smTm: {fileID: 11408592}
