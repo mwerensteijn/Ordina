@@ -5,9 +5,9 @@ public class TerrainMovement : MonoBehaviour {
     private GameObject terrain1;
     private GameObject terrain2;
 
-    public float dissapearPositionZ = -70;
+    private float dissapearPositionZ = 0;
     private float appearPositionZ;
-    public float terrainDistance = 0;
+    private float terrainDistance = 0;
     public Transform airPlanePosition;
 
 	// Use this for initialization
