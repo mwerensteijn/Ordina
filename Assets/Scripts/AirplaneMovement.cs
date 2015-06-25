@@ -16,7 +16,7 @@ public class AirplaneMovement : MonoBehaviour {
     public bool disableMovement = false;
 
 	// The movement speed of the airplane
-	private float sideMovementSpeed = 30f;
+	private float sideMovementSpeed = 10f;
 
     public AnswerRow answerRowFront;
     public ParticleAnimator airplaneEngineParticleBeam;
@@ -43,7 +43,7 @@ public class AirplaneMovement : MonoBehaviour {
 
             float distance = Vector3.Distance(transform.position, answerRowFront.transform.position);
 
-            if (distance < 50)
+            if (distance < 35)
             {
                 disableMovement = true;                
             }

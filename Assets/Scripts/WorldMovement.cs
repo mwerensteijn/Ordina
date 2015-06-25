@@ -24,7 +24,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 	// Holds the current state.
 	public State currentState;
 	// The movement speed of the gaming world.
-	public static float movementSpeed = 10f;
+	public static float movementSpeed = 5f;
 
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
@@ -59,6 +59,8 @@ public class WorldMovement : MonoBehaviour, IScore {
     private int totalCorrectQuestions = 0;
     public int TotalCorrectQuestions { get { return totalCorrectQuestions; } set { totalCorrectQuestions = value; } }
 
+    public bool InitGameStartButtonPressed = false;
+    private bool StartGameMovement = false;
 	// Initialization
 	void Start () {
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answers"));
@@ -69,10 +71,7 @@ public class WorldMovement : MonoBehaviour, IScore {
         currentState = WorldMovement.State.Init;
         gameTimer = HUD.GetComponentInChildren<DigitalClock>();
         progressBar = HUD.GetComponentInChildren<ProgressBar>();
-        //questionText = GameObject.FindGameObjectWithTag("Question").GetComponent<TextMesh>();
-        //gameTimer = GameObject.FindGameObjectWithTag("time").GetComponent<DigitalClock>();
-        //progressBar = GameObject.FindGameObjectWithTag("progressbar").GetComponent<ProgressBar>();
-        //airplaneMovement = GameObject.FindGameObjectWithTag("CardBoardMain").GetComponent<AirplaneMovement>();
+
 		// Start finite state machine.
 		StartCoroutine("FSM");
 	}
@@ -83,36 +82,47 @@ public class WorldMovement : MonoBehaviour, IScore {
         float x = answerRowFront.transform.position.x;
         float y = answerRowFront.transform.position.y;
 
-        if ((Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Period)) && !airplaneMovement.disableMovement)
+        if ((Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.PageUp) || Input.GetKeyDown(KeyCode.PageDown) || Input.GetKeyDown(KeyCode.Period)) && !airplaneMovement.disableMovement)
         {
-            movementSpeed = 40f;
-            airplaneMovement.SetSideMovementSpeed(80f);
-            airplaneMovement.disableMovement = true;
-            airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.3f;
+            if (InitGameStartButtonPressed)
+            {
+                movementSpeed = 40f;
+                airplaneMovement.SetSideMovementSpeed(80f);
+                airplaneMovement.disableMovement = true;
+                airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.3f;
+            }
+            else 
+            { 
+                InitGameStartButtonPressed = true; 
+                StartGameMovement = true; 
+            }
         }
-        
-		// Move the rows towards the player.
-        answerRowFront.transform.position = new Vector3(x, y, answerRowFront.transform.position.z + -movementSpeed * Time.deltaTime);
+        if (StartGameMovement)
+        {
+            // Move the rows towards the player.
+            answerRowFront.transform.position = new Vector3(x, y, answerRowFront.transform.position.z + -movementSpeed * Time.deltaTime);
 
-		// If a row is not visible anymore, respawn it at the appearing position.
-        if (answerRowFront.transform.position.z <= airplaneMovement.transform.position.z) {
-            answerRowFront.transform.position = new Vector3(x, y, appearPositionZ);
+            // If a row is not visible anymore, respawn it at the appearing position.
+            if (answerRowFront.transform.position.z <= airplaneMovement.transform.position.z)
+            {
+                answerRowFront.transform.position = new Vector3(x, y, appearPositionZ);
 
-            airplaneMovement.disableMovement = false;
-            airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f;
-            airplaneMovement.SetSideMovementSpeed(30f);
-            movementSpeed = 20f;
+                airplaneMovement.disableMovement = false;
+                airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f;
+                airplaneMovement.SetSideMovementSpeed(10f);
+                movementSpeed = 5f;
 
-            Color a = new Color(1f / 255 * 231, 1f / 255 * 155, 1f / 255 * 19);
+                Color a = new Color(1f / 255 * 231, 1f / 255 * 155, 1f / 255 * 19);
 
-            answerRowFront.answerA.color = a;
-            answerRowFront.answerB.color = a;
-            answerRowFront.answerC.color = a;
+                answerRowFront.answerA.color = a;
+                answerRowFront.answerB.color = a;
+                answerRowFront.answerC.color = a;
 
-            AnswerRow temp = answerRowFront;
-            //answerRowFront = answerRowBack;
-            //answerRowBack = temp;
-            currentState = WorldMovement.State.ChangeQuestion;
+                AnswerRow temp = answerRowFront;
+                //answerRowFront = answerRowBack;
+                //answerRowBack = temp;
+                currentState = WorldMovement.State.ChangeQuestion;
+            }
         }
 	}
 
@@ -273,6 +283,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     public void StopMovement() 
     {
         movementSpeed = 0f;
+        airplaneMovement.SetSideMovementSpeed(0f);
         airplaneMovement.disableMovement = true;
         airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f    ;
         currentState = WorldMovement.State.ScoreScreen;
@@ -283,7 +294,7 @@ public class WorldMovement : MonoBehaviour, IScore {
         HUD.enabled = false;
         questionText.GetComponent<MeshRenderer>().enabled = false;
         answerRowFront.HideAnswersText();
-        int totalScore = CalculateScore(); 
+        int totalScore = CalculateScore();
 
         Vector3 scoreScreenPosition = airplaneMovement.transform.position;
         scoreScreenPosition.z += 1;
