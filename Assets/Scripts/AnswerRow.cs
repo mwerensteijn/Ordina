@@ -2,15 +2,18 @@
 using System.Collections;
 
 public class AnswerRow {
+    // The multiple choice answers
     public string A { set { answerAText.text = value; } }
     public string B { set { answerBText.text = value; } }
     public string C { set { answerCText.text = value; } }
 
+    // Answer textmeshes
     private TextMesh answerAText;
     private Plane answerAPlane;
     private TextMesh answerBText;
     private TextMesh answerCText;
 
+    // Answer materials
     public Material answerA;
     public Material answerB;
     public Material answerC;
@@ -31,6 +34,7 @@ public class AnswerRow {
         answerC = row.transform.FindChild("C").GetComponent<MeshRenderer>().material;
 	}
 
+    //! \brief This function resizes the clouds behind the answers.
     public void SizePlane() 
     {        
         row.transform.FindChild("A").FindChild("Answer").GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
@@ -38,6 +42,7 @@ public class AnswerRow {
         row.transform.FindChild("C").FindChild("Answer").GetComponentInChildren<TextQuadBackGround>().UpdateTextQuadBackGroundSize();
     }
 
+    //! \brief This function cuts the text to fit it in the cloud.
     public void SizeTextMesh() 
     {
         row.transform.FindChild("A").FindChild("Answer").GetComponent<SmartTextMesh>().UpdateTextLayOut();
@@ -45,6 +50,7 @@ public class AnswerRow {
         row.transform.FindChild("C").FindChild("Answer").GetComponent<SmartTextMesh>().UpdateTextLayOut();
     }
 
+    //! \brief This function hides the answers.
     public void HideAnswersText() 
     {
         answerAText.GetComponent<MeshRenderer>().enabled = false;

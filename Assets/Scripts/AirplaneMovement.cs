@@ -13,15 +13,20 @@ public class AirplaneMovement : MonoBehaviour {
 	private float middleLaneX;
 	private float rightLaneX;
     
+    // Disable movement.
     public bool disableMovement = false;
 
 	// The movement speed of the airplane
 	private float sideMovementSpeed = 10f;
 
+    // The answers
     public AnswerRow answerRowFront;
+    // The engine particle
     public ParticleAnimator airplaneEngineParticleBeam;
 
-	// Initialization
+    //! \brief Start is called on the frame when a script is enabled.
+    //! Initialize variables
+    //! \return void
 	void Start () {
 		// Save the x positions for the answers
 		leftLaneX = GameObject.FindGameObjectWithTag("LeftLane").transform.position.x;
@@ -29,8 +34,11 @@ public class AirplaneMovement : MonoBehaviour {
 		rightLaneX = GameObject.FindGameObjectWithTag("RightLane").transform.position.x;
         answerRowFront = new AnswerRow(GameObject.FindGameObjectWithTag("Answers"));
 	}
-	
-	// Update is called once per frame
+
+    //! \brief Update is called once every frame.
+    //! Move the airplane according to the looking position of the player.
+    //! If the player looks at the left answer, the plane will move to the left lane.
+    //! \return void
 	void Update () {
 
         // Save the current position of the airplane
@@ -40,7 +48,6 @@ public class AirplaneMovement : MonoBehaviour {
 
         if (!disableMovement)
         {
-
             float distance = Vector3.Distance(transform.position, answerRowFront.transform.position);
 
             if (distance < 35)
@@ -157,6 +164,7 @@ public class AirplaneMovement : MonoBehaviour {
         transform.position = new Vector3(x, y, z);
 	}
 
+    // On collission
 	void OnTriggerEnter(Collider other) {
             if (other.tag == "LeftLane")
             { // The player is looking at the left lane.
@@ -172,6 +180,8 @@ public class AirplaneMovement : MonoBehaviour {
             }
 	}
 
+    //! \brief This function changes the horizontal movementspeed.
+    //! \param newSpeed the new speed
     public void SetSideMovementSpeed(float newSpeed) 
     {
         sideMovementSpeed = newSpeed;

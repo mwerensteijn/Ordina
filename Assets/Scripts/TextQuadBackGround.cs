@@ -14,6 +14,9 @@ public class TextQuadBackGround : MonoBehaviour {
 
 	}
 
+    //! \brief UpdateTextQuadBackGroundSize is called to scale the cloud.
+    //! Scale the cloud to the size of the answer.
+    //! \return void
     public void UpdateTextQuadBackGroundSize() 
     {
         float x = 0f;

@@ -13,8 +13,10 @@ public class AnswerCollision : MonoBehaviour {
 		worldMovementScript = GameObject.FindGameObjectWithTag("WorldMovement");
 	}
 	
+    // Collision detection
 	void OnTriggerEnter(Collider other) {
-		if(other.tag == "LeftLane" || other.tag == "MiddleLane" || other.tag == "RightLane") { // The player has chosen the left answer.
+		if(other.tag == "LeftLane" || other.tag == "MiddleLane" || other.tag == "RightLane") { 
+            // The player hits an answer
 			worldMovementScript.SendMessage ("AnswerCollision", other.transform);
 		}
 	}

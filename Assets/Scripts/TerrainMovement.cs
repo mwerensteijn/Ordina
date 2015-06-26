@@ -10,7 +10,9 @@ public class TerrainMovement : MonoBehaviour {
     private float terrainDistance = 0;
     public Transform airPlanePosition;
 
-	// Use this for initialization
+    //! \brief Start is called on the frame when a script is enabled.
+    //! Setup the terrain variables.
+    //! \return void
     void Start() {
         terrain1 = GameObject.Find("Terrain1") as GameObject;
         terrain2 = GameObject.Find("Terrain2") as GameObject;
@@ -21,8 +23,10 @@ public class TerrainMovement : MonoBehaviour {
         //appearPositionZ = terrain2.transform.position.z + terrainDistance;
         dissapearPositionZ = airPlanePosition.position.z + (terrainDistance / 2) * -1;
 	}
-	
-	// Update is called once per frame
+
+    //! \brief Update is called every frame.
+    //! Move the terrains to create a seamless game world.
+    //! \return void
 	void Update () {
         // Cache the x and y position of a row.
         float x = terrain1.transform.position.x;

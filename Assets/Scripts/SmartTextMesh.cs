@@ -11,16 +11,26 @@ public class SmartTextMesh : MonoBehaviour
     public bool NeedsLayout = true;
     public bool ConvertNewLines = false;
 
+    //! \brief Awake is called first when the script is enabled.
+    //! \return void
     void Awake() 
     {
         TheMesh = GetComponent<TextMesh>();
     }
+
+    //! \brief Start is called on the frame when a script is enabled.
+    //! Initialize the variables.
+    //! \return void
     void Start()
     {
         if (ConvertNewLines)
             UnwrappedText = UnwrappedText.Replace("\\n", System.Environment.NewLine);
     }
 
+    //! \brief BreakPartIfNeeded cuts a string in multiple lines.
+    //! This function cuts a string in multiple lines to fit an answer
+    //! in a cloud.
+    //! \return void
     string BreakPartIfNeeded(string part)
     {
         string saveText = TheMesh.text;
@@ -59,6 +69,9 @@ public class SmartTextMesh : MonoBehaviour
         return part;
     }
 
+    //! \brief UpdateTextLayOut updates the text.
+    //! Format the string to fit in a cloud.
+    //! \return void
     public void UpdateTextLayOut()
     {
 

@@ -55,56 +55,9 @@ public class dbController : MonoBehaviour
         } else {
             sqliteConnection = "URI=file:" + Application.dataPath + "/StreamingAssets" + "/Database.s3db";
         }
-        /*Debug.Log("Inserting score: ");
-        insertPlayerData("Klaas Kaas");
-        insertScore("Klaas Kaas", "Kaas", 1, 500, 150, 50, 47);
-        Debug.Log("Score inserted!");
-        Debug.Log("Klaas his score: " + getScore("Klaas Kaas"));
-        deletePlayer("Chanan");
-        Debug.Log("Deleted chanan from database!");*/
-        //testshit();
     }
 
     private static string sqliteConnection;
-
-    public void testshit() {
-        dbconn = new SqliteConnection(sqliteConnection);
-        dbconn.Open();
-
-        //FileStream fs = new FileStream(Application.dataPath + "/database/DOGGOE.png", FileMode.Open, FileAccess.Read);
-        //imgByteArr = new byte[fs.Length];
-
-        //fs.Read(imgByteArr, 0, Convert.ToInt32(fs.Length));
-        //fs.Close();
-
-        Texture2D tex = new Texture2D(2, 2);
-
-        //tex.LoadImage(imgByteArr);
-
-        List<int> lsss = getPictureIDs(9);
-
-        for (int i = 0; i < lsss.Count; i++)
-        {
-            Debug.Log(lsss[i]);
-        }
-
-        // List<Texture2D> test = getPictures(getSubject("Wiskunde"));
-
-        //tex = test[0];
-
-        //MeshRenderer rend = plane.GetComponent<MeshRenderer>();
-        //rend.material.SetTexture(1, tex);
-
-        //Debug things
-        //insertSubject("Wiskunde");
-        //int Subbbbje = getSubject("Wiskunde");
-        //insertQuestion("Wat is 1+1?", Subbbbje);
-        //List<int> lstr = getQuestionIDs(Subbbbje);
-        //Debug.Log(lstr[0]);
-        //insertAnswer("1+1 = 2", Convert.ToInt32(lstr[0]));
-
-        dbconn.Close();
-    }
 
     //! \brief This function puts a given texture2D object in the linked database.
     //! \param pic the Texture2D object

@@ -15,10 +15,15 @@ public class WorldMovement : MonoBehaviour, IScore {
         FinishMiniGame,
         ScoreScreen
 	}
+
+    // To receive the chosen subjectID.
     private GameManager gameManager;
 
+    // The game timer
     private DigitalClock gameTimer;
+    // The progressbar
     private ProgressBar progressBar;
+    // The scorescreen
     public ScoreScreen scoreScreen;
     public Canvas HUD;
     private dbController _dbController;
@@ -30,6 +35,7 @@ public class WorldMovement : MonoBehaviour, IScore {
     // answerRowFront always is the row with answers in the front of the player
     public AnswerRow answerRowFront;
 
+    // The airplanemovement script
     public AirplaneMovement airplaneMovement;
     private ParticleAnimator airplaneEngine;
 

@@ -8,15 +8,17 @@ public class DigitalClock : MonoBehaviour {
 	public Text timer;
 	private float secondsTimer, minutesTimer;
 
-	// Use this for initialization
+    //! \brief Start is called on the frame when a script is enabled.
+    //! Initialize the variables.
+    //! \return void
 	void Start () {
 		timer = this.GetComponent<Text>();
 		secondsTimer = 0;
 		minutesTimer = 0;
 		timer.text = minutesTimer.ToString("00") + ":" + secondsTimer.ToString("00");
 	}
-	
-	// Update is called once per frame
+
+    //! \brief Update the digital timer.
 	void FixedUpdate () {
 		secondsTimer += Time.fixedDeltaTime;
 		if (secondsTimer >= 60) {
@@ -26,6 +28,8 @@ public class DigitalClock : MonoBehaviour {
 		timer.text = minutesTimer.ToString("00") + ":" + Math.Floor(secondsTimer).ToString("00");
 	}
 
+    //! \brief Returns the passed time in seconds
+    //! \return int the time in seconds.
     public int GetTotalSeconds() 
     {
         int roundedSeconds = (int)Math.Round(secondsTimer, 0);
@@ -33,6 +37,8 @@ public class DigitalClock : MonoBehaviour {
         return roundedSeconds + (roundedMinuts * 60);
     }
 
+    //! \brief Get the time in the following format: 00:00:00
+    //! \return string the time formatted as string
     public string GetFormatedTime() 
     {
         return minutesTimer.ToString("00") + ":" + Math.Floor(secondsTimer).ToString("00");
