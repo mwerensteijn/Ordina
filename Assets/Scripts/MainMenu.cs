@@ -53,14 +53,15 @@ public class MainMenu : MonoBehaviour
     private Rect _inPutArea;
     private Rect _addNewSubjectButtonPos;
 
-    private string Subject, _newSubject, changeSubjectName = "", currentSubject = "";
+    private string Subject, _newSubject, changeSubjectName = "";
+    public static string currentSubject;
     private bool executeOnce;
 
     private Vector2 scrollViewVector = Vector2.zero;
     public Rect dropDownRect = new Rect(Screen.width/3, 0f, 50f, 50f);
     public static List<string> list = new List<string>();
 
-    int indexNumber = 0;
+    public static int indexNumber;
     bool show = false;
 
     public int ScreenShotInt = 1;
@@ -92,6 +93,7 @@ public class MainMenu : MonoBehaviour
     //! \return void
     void Update()
     {
+        Debug.Log("Selected subjectID: " + selectedSubjectID);
         Screen.fullScreen = true;
         _subjectWindow = new Rect(Screen.width / 3, Screen.height / 4, Screen.width / 3, Screen.height / 2);
         _subjectButtonPos = new Rect(_subjectWindow.x / 10, _subjectWindow.height / 5, _subjectWindow.width / 2, _subjectWindow.height / 15);
@@ -351,12 +353,12 @@ public class MainMenu : MonoBehaviour
     //! \return void
     private void ChangeSubjectName(int windowID) {
         GUI.FocusWindow(3);
-
+        string oldString = changeSubjectName;
         changeSubjectName = GUI.TextArea(new Rect(20, 20, windowRect.width - 40, 20), changeSubjectName);
 
         if (GUI.Button(new Rect(windowRect.width / 3, windowRect.height - (windowRect.height / 3), windowRect.width / 3, windowRect.height / 3), "Opslaan")) {
             _changeSubjectName = false;
-            database.updateSubject(database.getSubjectID(list[indexNumber]), changeSubjectName);
+            database.updateSubject(database.getSubjectID(list[indexNumber]), oldString);
             currentSubject = changeSubjectName;
         }
     }

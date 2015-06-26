@@ -60,6 +60,7 @@ public class EnterQuestions : MonoBehaviour {
         _answer3 = "";
         _submitString = "";
         _selectedSubject = "";
+
     }
 
     //! \brief Update is called every frame.
