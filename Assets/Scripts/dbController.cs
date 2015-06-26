@@ -820,9 +820,11 @@ public class dbController : MonoBehaviour
         } else {
             answerINT = Convert.ToInt32(result);
         }
-        
+
         if (answerINT > 0)
+        {
             answer = true;
+        }
 
         dbconn.Close();
 
@@ -1136,4 +1138,151 @@ public class dbController : MonoBehaviour
 
         return player;
     }
+
+    public void insertGameData(int playerID, int subjectID)
+    {
+
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Spel(SpelerID, OnderwerpID) VALUES(@player, @subject)";
+
+        cmd.Parameters.Add(new SqliteParameter("@player", playerID));
+        cmd.Parameters.Add(new SqliteParameter("@subject", subjectID));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void insertGameData(string player, int subjectID)
+    {
+        int playerID = 0;
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Spel(SpelerID, OnderwerpID) VALUES(@player, @SubjID)";
+
+        playerID = getPlayerID(player);
+
+        cmd.Parameters.Add(new SqliteParameter("@player", playerID));
+        cmd.Parameters.Add(new SqliteParameter("@SubjID", subjectID));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void insertGameData(int playerID, string subject)
+    {
+        int subjectID = 0;
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Spel(SpelerID, OnderwerpID) VALUES(@player, @SubjID)";
+
+        subjectID = getSubjectID(subject);
+
+        cmd.Parameters.Add(new SqliteParameter("@player", playerID));
+        cmd.Parameters.Add(new SqliteParameter("@SubjID", subjectID));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public void insertGameData(string player, string subject)
+    {
+        int subjectID = 0;
+        int playerID = 0;
+
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "INSERT INTO Spel(SpelerID, OnderwerpID) VALUES(@player, @SubjID)";
+
+        subjectID = getSubjectID(subject);
+        playerID = getPlayerID(player);
+
+        cmd.Parameters.Add(new SqliteParameter("@player", playerID));
+        cmd.Parameters.Add(new SqliteParameter("@SubjID", subjectID));
+        cmd.ExecuteNonQuery();
+
+        dbconn.Close();
+    }
+
+    public int getGameID(int playerID, int subjectID)
+    {
+        int gameID = 0;
+
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT MAX(SpelID) FROM Spel WHERE Spel.SpelerID=" + playerID + " AND Spel.OnderwerpID=" + subjectID;
+
+        gameID = Convert.ToInt32(cmd.ExecuteScalar());
+
+        dbconn.Close();
+        return gameID;
+    }
+
+    public int getGameID(int playerID, string subject)
+    {
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT MAX(SpelID) FROM Spel WHERE Spel.SpelerID = " + playerID + " AND Spel.OnderwerpID=" + getSubjectID(subject);
+        int gameID = Convert.ToInt32(cmd.ExecuteScalar());
+
+        dbconn.Close();
+
+        return gameID;
+    }
+
+    public int getGameID(string player, int subjectID)
+    {
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT MAX(SpelID) FROM Spel WHERE Spel.SpelerID = " + getPlayerID(player) + " AND Spel.OnderwerpID=" + subjectID;
+        int gameID = Convert.ToInt32(cmd.ExecuteScalar());
+
+        dbconn.Close();
+
+        return gameID;
+    }
+
+    public int getGameID(string player, string subject)
+    {
+        dbconn = new SqliteConnection(sqliteConnection);
+        dbconn.Open();
+
+        SqliteCommand cmd = new SqliteCommand();
+
+        cmd.Connection = dbconn;
+        cmd.CommandText = "SELECT MAX(SpelID) FROM Spel WHERE Spel.SpelerID = " + getPlayerID(player) + " AND Spel.OnderwerpID=" + getSubjectID(subject);
+        int gameID = Convert.ToInt32(cmd.ExecuteScalar());
+
+        dbconn.Close();
+
+        return gameID;
+    }
+
 }

@@ -238,7 +238,7 @@ public class WorldMovement : MonoBehaviour, IScore {
 
     private void CheckAnswer()
     {
-        if (givenAnswer.FindChild("Answer").GetComponent<TextMesh>().text.Equals(_questions[currentQuestion].correctAnswer))
+        if (givenAnswer.FindChild("Answer").GetComponent<TextMesh>().text.ToString().Trim().Equals(_questions[currentQuestion].correctAnswer.ToString().Trim()))
         {
             givenAnswer.GetComponent<MeshRenderer>().material.color = Color.green;
             totalCorrectQuestions += 1;
@@ -288,7 +288,7 @@ public class WorldMovement : MonoBehaviour, IScore {
         movementSpeed = 0f;
         airplaneMovement.SetSideMovementSpeed(0f);
         airplaneMovement.disableMovement = true;
-        airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f    ;
+        airplaneMovement.airplaneEngineParticleBeam.sizeGrow = -0.9f;
         currentState = WorldMovement.State.ScoreScreen;
     }
 
@@ -299,13 +299,13 @@ public class WorldMovement : MonoBehaviour, IScore {
         answerRowFront.HideAnswersText();
         int totalScore = CalculateScore();
 
+        //laat score screen zien.
         Vector3 scoreScreenPosition = airplaneMovement.transform.position;
         scoreScreenPosition.z += 1;
         scoreScreen.transform.position = scoreScreenPosition;
         scoreScreen.ShowScoreScreen(totalScore, gameTimer.GetFormatedTime());
 
         SaveScore(totalScore, gameTimer.GetTotalSeconds());
-        //laat score screen zien.
     }
 
     public int CalculateScore()
@@ -314,8 +314,6 @@ public class WorldMovement : MonoBehaviour, IScore {
     }
     public void SaveScore(int totalScore, int totalTimeSeconds)
     {
-        //database connectie en opslag nodig.
-        //TODO parameters moeten er nog aangepast worden.spelid, ondwererp spel naak
         try
         {
             _dbController.insertScore(gameManager.getPlayerName(), gameManager.getSubject(), gameManager.getSpelID(), totalScore, totalTimeSeconds, TotalAskedQuestions, TotalCorrectQuestions);
