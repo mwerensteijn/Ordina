@@ -102,7 +102,7 @@ public class FileBrowser : MonoBehaviour {
                     break;
             }
         }
-        float scrollBarHeight = 22 * entries;
+        float scrollBarHeight = (Screen.height / 25f) * entries;
         if (scrollBarHeight < browserRect.height)
         {
             scrollBarHeight = browserRect.height;
@@ -112,7 +112,7 @@ public class FileBrowser : MonoBehaviour {
         scrollPosition = GUI.BeginScrollView(browserRect, scrollPosition, new Rect(0, 0, browserRect.height, scrollBarHeight), false, true);
 
         for (int i = 0; i < directoryEntries.Length; i++) {
-            if (GUI.Button(new Rect(2, (i * 22), browserRect.width * 0.96f, browserRect.height / 10f), directoryEntries[i]))
+            if (GUI.Button(new Rect(2, (i * (Screen.height / 25f)), browserRect.width * 0.96f, browserRect.height / 10f), directoryEntries[i]))
             {
                 path += directoryEntries[i];
                 selectedFileEntry = -1;
@@ -125,9 +125,9 @@ public class FileBrowser : MonoBehaviour {
 
         for (int i = 0; i < fileEntries.Length; i++) {
             if (i == selectedFileEntry) {
-                GUI.Button(new Rect(2, ((i + directoryEntries.Length) * 22), browserRect.width * 0.96f, browserRect.height / 10f), fileEntries[i], selectedFileStyle);
+                GUI.Button(new Rect(2, ((i + directoryEntries.Length) * (Screen.height / 25f)), browserRect.width * 0.96f, browserRect.height / 10f), fileEntries[i], selectedFileStyle);
             } else {
-                if (GUI.Button(new Rect(2, ((i + directoryEntries.Length) * 22), browserRect.width * 0.96f, browserRect.height / 10f), fileEntries[i]))
+                if (GUI.Button(new Rect(2, ((i + directoryEntries.Length) * (Screen.height / 25f)), browserRect.width * 0.96f, browserRect.height / 10f), fileEntries[i]))
                 {
                     selectedFileEntry = i;
                 }
@@ -151,5 +151,6 @@ public class FileBrowser : MonoBehaviour {
     //! \return void
 	void Update () {
         windowRect = new Rect(Screen.width / 3, Screen.height / 6, Screen.width / 3, Screen.height / 8);
+        browserRect = new Rect(windowRect.x, windowRect.y + windowRect.height, Screen.width / 3, Screen.height / 3);
 	}
 }

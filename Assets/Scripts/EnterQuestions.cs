@@ -58,8 +58,13 @@ public class EnterQuestions : MonoBehaviour {
         _answer1 = "";
         _answer2 = "";
         _answer3 = "";
-        _submitString = "";
         _selectedSubject = "";
+
+        _submitString = "Voeg toe";
+        checkBox1.image = null;
+        checkBox2.image = null;
+        checkBox3.image = null;
+        _changeExistingQuestion = false;
 
     }
 
