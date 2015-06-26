@@ -21,20 +21,26 @@ public class BulletSpawner : MonoBehaviour {
 	void Update () {
 	
 	}
+    
+    // Shoot the paintball bullet
     public void Shoot()
     {
+        // Time limit so the player can't spawn any bullets
         if ((Time.time - lastShotTime) < shotDelay)
         {
             return;
         }
         lastShotTime = Time.time;
 
+
+        // Reset bullet position and reuse it
         if (bulletClone != null)
         {
             bulletClone.GetComponent<MeshRenderer>().enabled = true;
             bulletClone.position = transform.position;
             bulletClone.velocity = transform.forward * speed;
         }
+        // No bullet available, so spawn a new one
         else
         {
             GameObject bulletCloneGO = Instantiate(bullet, transform.position, transform.rotation) as GameObject;

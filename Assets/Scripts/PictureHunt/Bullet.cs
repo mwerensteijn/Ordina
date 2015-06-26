@@ -2,20 +2,25 @@
 using System.Collections;
 using System.Collections.Generic;
 
+// Bullet is the paintballBullet.
+// This handles the behaviour of the paintball when a collider is hit.
 public class Bullet : MonoBehaviour {
     public GameObject impact;
     public static List<GameObject> ImpactList = new List<GameObject>();
 
+    // Used for positioning the bullet impact
     private float xOffset = 0.0f;
     private float yOffset = 0.0f;
     private float zOffset = 0.0f;
-
     private float offsetValue = 0.001f;
 
+    // Raycasting 
     private Ray ray;
     private RaycastHit hit;
 
     private Camera camera;
+
+    // Selected answer will be saved temporary
     private static GameObject answer = null;
 
 	// Use this for initialization
@@ -33,6 +38,7 @@ public class Bullet : MonoBehaviour {
 	
 	}
 
+    // When the bullet hits a collider
     void OnCollisionEnter(Collision collision)
     {
         ContactPoint contact = collision.contacts[0];
@@ -66,19 +72,21 @@ public class Bullet : MonoBehaviour {
         // Check if the bullet did hit an answer
         if (hit.collider.tag == "Answer")
         {
+            // Save answer
             answer = hit.collider.gameObject;
             answer.SetActive(false);
             // Destroy bullet
             Destroy(this.gameObject);
             return;
         }
+        // Check if the bullet did hit the submitButton
         else if(hit.collider.tag == "Submit")
         {
             hit.collider.GetComponent<SubmitAnswers>().Submit();
         }
 
 
-
+        // Check if the max amount of impactList is reached
         if (ImpactList.Count > 50)
         {
             GameObject firstImpactInList = ImpactList[0];
@@ -92,15 +100,15 @@ public class Bullet : MonoBehaviour {
         // Spawn impact
         GameObject impactA = Instantiate(impact, new Vector3(hit.point.x + xOffset, hit.point.y + yOffset, hit.point.z + zOffset), Quaternion.FromToRotation(Vector3.up, hit.normal)) as GameObject;
 
+        // Make impact a child object of the object which is hit
         impactA.transform.parent = hit.collider.gameObject.transform;
         ImpactList.Add(impactA);
-        //Debug.Log(ImpactList.Count);
 
         // Destroy bullet
         Destroy(this.gameObject);
     }
 
-    // Offset is needed for impact because otherwise impact will get stuck in the object.
+    // Offset is needed for impact because otherwise the bullet impact will get stuck in the object.
     private void calculateOffset(Vector3 normal)
     {
         if (normal.x > 0)
@@ -141,7 +149,7 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-
+    // Return Answer gameObject
     public GameObject getAnswer()
     {
         return answer;
