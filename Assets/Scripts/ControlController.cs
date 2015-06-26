@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// This class will control the controls of the Picture hunt game.
+//! \brief This class will control the controls of the Picture hunt game.
 public class ControlController : MonoBehaviour {
     // The bulletspawner which shoots the paintball bullets
     public BulletSpawner bulletSpawner;
@@ -10,14 +10,10 @@ public class ControlController : MonoBehaviour {
     public Watergun watershooter;
     // PopUpWindow used for disabling popUp messages when shooting
     public PopUpWindow popUp;
-
-
-	// Use this for initialization
-	void Start () {
-
-	}
 	
-	// Update is called once per frame
+	//! \brief Update is called once per frame
+    //! It checks if a key is pressed and handles when needed.
+    //! \return void
 	void Update () {
         // Check if a key is pressed
         if (Input.GetKeyDown(KeyCode.PageUp) || Input.GetButtonDown("Submit"))

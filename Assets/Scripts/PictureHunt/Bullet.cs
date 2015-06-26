@@ -2,8 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-// Bullet is the paintballBullet.
-// This handles the behaviour of the paintball when a collider is hit.
+//! \brief Bullet is the paintballBullet.
+//! This handles the behaviour of the paintball when a collider is hit.
 public class Bullet : MonoBehaviour {
     public GameObject impact;
     public static List<GameObject> ImpactList = new List<GameObject>();
@@ -23,7 +23,8 @@ public class Bullet : MonoBehaviour {
     // Selected answer will be saved temporary
     private static GameObject answer = null;
 
-	// Use this for initialization
+	//! \brief Use this for initialization
+    //! \return void
 	void Start () {
         GameObject c = GameObject.FindGameObjectWithTag("CenterCamera");
         if (c == null) {
@@ -32,13 +33,9 @@ public class Bullet : MonoBehaviour {
 
         camera = c.GetComponent<Camera>();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-    // When the bullet hits a collider
+    //! \brief Called when the bullet hits a collider
+    //! \return void
     void OnCollisionEnter(Collision collision)
     {
         ContactPoint contact = collision.contacts[0];
@@ -108,7 +105,8 @@ public class Bullet : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
-    // Offset is needed for impact because otherwise the bullet impact will get stuck in the object.
+    //! \brief Offset is needed for impact because otherwise the bullet impact will get stuck in the object.
+    //! return void
     private void calculateOffset(Vector3 normal)
     {
         if (normal.x > 0)
@@ -149,7 +147,8 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    // Return Answer gameObject
+    //! \brief Return Answer gameObject
+    //! \return GameObject answer
     public GameObject getAnswer()
     {
         return answer;

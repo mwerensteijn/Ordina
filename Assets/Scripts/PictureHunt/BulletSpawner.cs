@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//! \brief BulletSpawner class shoots the paintball bullet
 public class BulletSpawner : MonoBehaviour {
     public GameObject bullet;
     public float speed = 10f;
@@ -11,18 +12,15 @@ public class BulletSpawner : MonoBehaviour {
 
    
 
-	// Use this for initialization
+	//! \brief Use this for initialization
 	void Start () {
         GameObject test = Instantiate(bullet, transform.position, transform.rotation) as GameObject;
         test.gameObject.GetComponent<MeshRenderer>().enabled = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
     
-    // Shoot the paintball bullet
+    //! \brief Shoot the paintball bullet
+    //! \return void
     public void Shoot()
     {
         // Time limit so the player can't spawn any bullets

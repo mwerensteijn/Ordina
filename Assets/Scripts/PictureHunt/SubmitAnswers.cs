@@ -32,9 +32,10 @@ public class SubmitAnswers : MonoBehaviour, IScore
     private int totalCorrectQuestions = 0;
     public int TotalCorrectQuestions { get { return totalCorrectQuestions; } set { totalCorrectQuestions = value; } }
 
+    //! \brief Use this for initialization
+    //! \return void
     void Start()
     {
-        //gameTimer = new DigitalClock();
         gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
 
     }
@@ -44,7 +45,8 @@ public class SubmitAnswers : MonoBehaviour, IScore
         m_Questions.Add(question);
     }
 
-    // Submit answers
+    //! \brief Submit answers
+    //! \return void
     public void Submit()
     {
             // Check if every question is answered
@@ -90,13 +92,15 @@ public class SubmitAnswers : MonoBehaviour, IScore
         
     }
 
-    // Calculate the score
+    //! \brief Calculate the score
+    //! \return int score
     public int CalculateScore()
     {
         return AnswerScoreWeigth * TotalCorrectQuestions;
 
     }
-    // Save the score in the database
+    //! \brief Save the score in the database
+    //! \return void
     public void SaveScore(int totalScore, int totalTimeSeconds)
     {
         try

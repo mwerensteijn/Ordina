@@ -1,41 +1,44 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-// This class represents the answer parts which should be filled in to the question answer.
+//! \brief This class represents the answer parts which should be filled in to the question answer.
 public class Answer: MonoBehaviour{
     // The description of the answer
     public string answerDescription = "Default answer";
 
-    // Constructor to set the description
+    //! \brief Constructor to set the description
     public Answer(string description){
         answerDescription = description;
     }
 
-    // Use this for initialization
+    //! \brief Use this for initialization
+    //! \return void
     void Start()
     {
 
     }
 
-    // Update is called once per frame
+    //! \brief Update is called once per frame
+    //! \return void
     void Update()
     {
     }
 
-    // Reset method reactive the gameObject
+    //! \brief Reset method reactive the gameObject
+    //! \return void
     public void reset()
     {
         gameObject.SetActive(true);
     }
-    // Answer description will be returned
-    // 
-    // @return answerDescription
+    //! \brief Answer description will be returned
+    //! \return answerDescription
     public string getAnswerDescription()
     {
         return answerDescription;
     }
 
-    // Remove bullet impacts which are on this object.
+    //! \brief Remove bullet impacts which are on this object.
+    //! \return void
     public void removeImpacts()
     {
         // Bullet impacts are added as childs

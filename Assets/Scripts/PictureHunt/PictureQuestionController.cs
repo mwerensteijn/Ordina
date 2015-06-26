@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+//!\brief This class controls the questions from the Picture hunt game
 public class PictureQuestionController : MonoBehaviour {
     private int subjectID = -1;
     private int amountOfQuestions = 0; // Total amount of questions
@@ -28,7 +29,8 @@ public class PictureQuestionController : MonoBehaviour {
 
     List<int> questionsListID = new List<int>();
 
-    // Use this for initialization
+    //! \brief Use this for initialization
+    //! \return void
 	void Start () {
         lastPositionWidth = startingPositionWidth;
         lastPositionHeight = startingPositionHeight;
@@ -42,13 +44,9 @@ public class PictureQuestionController : MonoBehaviour {
         spawnQuestion();
         
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
-
+    //! \brief Find the next random question from the already selected questions
+    //! \return int questionID
     public int findRandomNextQuestion()
     {
         Debug.Log("RandomQuestions: " + questionsListID.Count);
@@ -61,6 +59,9 @@ public class PictureQuestionController : MonoBehaviour {
         return question;
     }
 
+    //! \brief Spawn the next question in the game
+    //! this function will spawn all answers and missing question parts
+    //! \return bool return if a new questions is found and spawned
     public bool spawnQuestion()
     {
         Texture2D questionTexture;
@@ -110,24 +111,24 @@ public class PictureQuestionController : MonoBehaviour {
             pictureQuestionGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * r.width, mainPictureQuestion.transform.localScale.y / questionTexture.height * r.height, 1);
             
             // Spawn answer object
-//GameObject answerGO = Instantiate(pictureAnswer, new Vector3(calculatePosition(amountOfSubImages, subImage, 10, 4), 3,  -6), Quaternion.Euler(0,180,0)) as GameObject;
             float answerWidth = mainPictureQuestion.transform.localScale.x / questionTexture.width * r.width;
             float answerHeight = mainPictureQuestion.transform.localScale.y / questionTexture.height * r.height;
             GameObject answerGO = Instantiate(pictureAnswer, calculatePostionAnswers(answerWidth, answerHeight), Quaternion.Euler(0, 180, 0)) as GameObject;
             answerGO.GetComponent<Answer>().answerDescription = answer;
-            //answerGO.GetComponent<Transform>().localScale = new Vector3(0.1f, rects[subImage].height / 100, rects[subImage].width / 100);
-            //answerGO.transform.localScale = new Vector3(mainPictureQuestion.transform.localScale.x / questionTexture.width * rects[subImage].width, mainPictureQuestion.transform.localScale.y / questionTexture.height * rects[subImage].height, 1);
             answerGO.transform.localScale = new Vector3(answerWidth, answerHeight, 1f);
+            // Change UV to fit the texture
             changeUV(answerGO, questionTexture, r);
         }
         return true;
     }
 
+    //! \brief Calculate the position of the answer
+    //! \return Vector3 contains the position of the answer
     private Vector3 calculatePostionAnswers(float width, float height ){
         bool first = false;
         if (lastPositionWidth == startingPositionWidth)
         {
-            //first
+            //first in the row
             first = true;
         }
         lastPositionWidth += (width + offset);
@@ -149,6 +150,9 @@ public class PictureQuestionController : MonoBehaviour {
         return new Vector3(lastPositionWidth - width, lastPositionHeight, defaultZPosition);
     }
 
+    //! \brief Reset the position for calculate answers 
+    //! This is used when a new question is spawned
+    //! \return void
     private void resetPosition()
     {
         lastPositionHeight = startingPositionHeight;
@@ -157,7 +161,8 @@ public class PictureQuestionController : MonoBehaviour {
     }
 
 
-
+    //! \brief Resize the questionObject to texture size
+    //! \return void
     private void resizeQuestionImage(Texture questionTexture)
     {
         float textureWidth = questionTexture.width;
@@ -175,6 +180,8 @@ public class PictureQuestionController : MonoBehaviour {
         mainPictureQuestion.transform.localScale = new Vector3(width, height, 1f);
     }
 
+    //! \brief Change the UV of the gameObject to scale the texture to the right position and size
+    //! \return void
     public void changeUV(GameObject gObject, Texture2D texture, Rect test)
     {
         if (texture != null)
@@ -204,11 +211,15 @@ public class PictureQuestionController : MonoBehaviour {
         }
     }
 
+    //! \brief Get the total amount of questions which will be asked
+    //! \return int width total amount of questions
     public int getTotalAmountOfQuestions()
     {
         return amountOfQuestions;
     }
 
+    //! \brief Get the amount of questions which are answered
+    //! \return int total amount of questions answered
     public int getAmountOfQuestionsAnswered()
     {
         return amountOfQuestions - questionsListID.Count;
